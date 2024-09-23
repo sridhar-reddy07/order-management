@@ -19,7 +19,7 @@ const Completed = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch('http://localhost:5000/completedList');
+        const response = await fetch('http://137.184.75.176:5000/completedList');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
