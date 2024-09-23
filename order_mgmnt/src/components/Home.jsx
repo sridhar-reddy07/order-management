@@ -57,7 +57,7 @@ const Home = () => {
   // Fetch data when the dropdown selection changes
   useEffect(() => {
     if (selectedTeam) {
-      axios.get(`http://localhost:5000/pieorders?team=${selectedTeam}`)
+      axios.get(`http://137.184.75.176:5000/pieorders?team=${selectedTeam}`)
         .then(response => {
         console.log(response.data)
           const { totalOrders, embroideryOrders, screenPrintingOrders, dtgOrders,dtgEmbOrders } = response.data;

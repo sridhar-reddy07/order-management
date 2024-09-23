@@ -13,7 +13,7 @@ const LoginPage = () => {
 
     // Send data to backend for validation
     try {
-      const response = await fetch('http://localhost:5000/login', {
+      const response = await fetch('http://137.184.75.176:5000/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

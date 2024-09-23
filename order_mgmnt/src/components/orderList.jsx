@@ -21,7 +21,7 @@ const OrderList = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch('http://localhost:5000/ordersList');
+        const response = await fetch('http://137.184.75.176:5000/ordersList');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -38,7 +38,7 @@ const OrderList = () => {
   }, []);
   useEffect(() => {
     // Fetch orders with the search query
-    axios.get(`http://localhost:5000/ordersList?search=${search}`)
+    axios.get(`http://137.184.75.176:5000/ordersList?search=${search}`)
       .then((response) => {
         console.log(response)
         setOrders(response.data);
@@ -76,7 +76,7 @@ const OrderList = () => {
   const updateOrderStatusInDatabase = async (e, orderNumber) => {
     const status = e.target.value;
     try {
-      const response = await fetch(`http://localhost:5000/updateOrderStatus/${orderNumber}`, {
+      const response = await fetch(`http://137.184.75.176:5000/updateOrderStatus/${orderNumber}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ const OrderList = () => {
 
   const handleSubmitTrackingLabel = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/updateTrackingLabel/${selectedOrder}`, {
+      const response = await fetch(`http://137.184.75.176:5000/updateTrackingLabel/${selectedOrder}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -143,7 +143,7 @@ const OrderList = () => {
 
 const handleupdatenotes = async () => {
   try {
-    const response = await fetch(`http://localhost:5000/updateordernotes/${selectedOrder}`, {
+    const response = await fetch(`http://137.184.75.176:5000/updateordernotes/${selectedOrder}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

@@ -43,7 +43,7 @@ const AddOrder = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/addOrder', {
+      const response = await fetch('http://137.184.75.176:5000/addOrder', {
         method: 'POST',
         body: formData,
       });

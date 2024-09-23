@@ -35,7 +35,7 @@ const Completed = () => {
   }, []);
   useEffect(() => {
     // Fetch orders with the search query
-    axios.get(`http://localhost:5000/completedList?search=${search}`)
+    axios.get(`http://137.184.75.176:5000/completedList?search=${search}`)
       .then((response) => {
         console.log(response)
         setOrders(response.data);
@@ -57,7 +57,7 @@ const Completed = () => {
 
   const handleSubmitTrackingLabel = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/updateTrackingLabel/${selectedOrder}`, {
+      const response = await fetch(`http://137.184.75.176:5000/updateTrackingLabel/${selectedOrder}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
