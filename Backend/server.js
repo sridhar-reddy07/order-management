@@ -183,7 +183,7 @@ app.get('/rizList', (req, res) => {
       orderMethod COLLATE utf8mb4_general_ci LIKE ? OR
       orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
       team COLLATE utf8mb4_general_ci LIKE ?
-    ) And Team = "RIZ"
+    ) And team = 'RIZ'
     ORDER BY 
       CASE 
         WHEN orderStatus = 'HARDDATE' THEN 1
@@ -239,7 +239,7 @@ app.get('/mussaList', (req, res) => {
       orderMethod COLLATE utf8mb4_general_ci LIKE ? OR
       orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
       team COLLATE utf8mb4_general_ci LIKE ?
-    ) And Team = "Mussa"
+    ) And team = 'Mussa'
     ORDER BY 
       CASE 
         WHEN orderStatus = 'HARDDATE' THEN 1
@@ -292,7 +292,7 @@ app.get('/karachiList', (req, res) => {
       orderMethod COLLATE utf8mb4_general_ci LIKE ? OR
       orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
       team COLLATE utf8mb4_general_ci LIKE ?
-    ) And Team = "KARACHI TEAM"
+    ) And team = 'KARACHI TEAM'
     ORDER BY 
       CASE 
         WHEN orderStatus = 'HARDDATE' THEN 1
@@ -349,7 +349,7 @@ app.get('/karachiList', (req, res) => {
         orderMethod COLLATE utf8mb4_general_ci LIKE ? OR
         orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
         team COLLATE utf8mb4_general_ci LIKE ?
-      ) And Team = "WAREHOUSE JOBS"
+      ) And team = 'WAREHOUSE JOBS'
       ORDER BY 
         CASE 
           WHEN orderStatus = 'HARDDATE' THEN 1
@@ -847,7 +847,7 @@ app.get('/karachiList', (req, res) => {
   
 
 // Start the server
-const port = 5000;
+const port = process.env.PORT;
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
