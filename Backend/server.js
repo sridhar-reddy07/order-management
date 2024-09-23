@@ -42,12 +42,12 @@ app.use(express.json());
 
 // MySQL connection
 const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'SanjuArjun090', // Replace with your MySQL password
-  database: 'Order_Management'  // Replace with your MySQL database name
+  host: process.env.DB_HOST,          // DigitalOcean DB Host
+  user: process.env.DB_USER,          // DigitalOcean DB User
+  password: process.env.DB_PASSWORD,  // DigitalOcean DB Password
+  database: process.env.DB_NAME,      // DigitalOcean DB Name
+  port: process.env.DB_PORT           // DigitalOcean DB Port (25060)
 });
-
 db.connect((err) => {
   if (err) {
     console.log('Error connecting to MySQL:', err);
