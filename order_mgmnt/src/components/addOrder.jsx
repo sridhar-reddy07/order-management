@@ -62,7 +62,7 @@ const AddOrder = () => {
   };
 
   return (
-    <div style={{ paddingTop: 20, paddingBottom: 60 }}>
+    <div style={{ marginLeft: 250, paddingTop: 20,marginBottom:70 }}>
       <form className="order-form" onSubmit={handleSubmit}>
         {/* Order Number */}
         <div className="form-group">

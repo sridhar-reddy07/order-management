@@ -173,7 +173,7 @@ const handleupdatenotes = async () => {
 };
 
   return (
-    <div className="container" style={{ marginLeft: 250, paddingTop: 20  , marginBottom:70}}>
+    <div className="container" style={{ marginLeft: 250, paddingTop: 20  , marginBottom:70,marginBottom:70}}>
       <h2>KARACHI TEAM</h2>
       <input
         type="text"

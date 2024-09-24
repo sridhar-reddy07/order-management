@@ -163,7 +163,7 @@ const handleupdatenotes = async () => {
 };
 
   return (
-    <div className="container" style={{ marginLeft: 250, paddingTop: 20 }}>
+    <div className="container" style={{ marginLeft: 250, paddingTop: 20,marginBottom:70 }}>
       <h2>Packing List</h2>
       <input
         type="text"
