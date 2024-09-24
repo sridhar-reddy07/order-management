@@ -184,6 +184,8 @@ const handleupdatenotes = async () => {
             <th scope="col">Order Status</th>
             <th scope="col">Order Method</th>
             <th scope="col">Job Type</th>
+            <th scope="col">Due Date</th>
+            <th scope="col">Order Quantity</th>
             <th scope="col">Client Name</th>
             <th scope="col">Tracking Number</th>
           </tr>
@@ -213,6 +215,8 @@ const handleupdatenotes = async () => {
 
                   <td>{order.orderMethod}</td>
                   <td>{order.jobType}</td>
+                  <td>{order.dueDate}</td>
+                  <td>{order.orderQty}</td>
                   <td>{order.clientName}</td>
                   <td>
                     {order.trackingLabel ? (

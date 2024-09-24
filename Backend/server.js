@@ -117,7 +117,7 @@ app.get('/ordersList', (req, res) => {
   const search = req.query.search || '';  // Get the search query from the request
 
   const sql = `
-    SELECT orderNumber, orderStatus, clientName, shippingAddress, trackingLabel, jobType, orderMethod, team, files
+    SELECT *
     FROM orders
     WHERE (orderStatus IN ('PENDING', 'NEED PAYMENT', 'PENDING ARTWORK', 'APPROVED', 'HARDDATE', 'PENDING APPROVAL'))
     AND (
@@ -171,7 +171,7 @@ app.get('/rizList', (req, res) => {
   const search = req.query.search || '';  // Get the search query from the request
 
   const sql = `
-    SELECT orderNumber, orderStatus, clientName, shippingAddress, trackingLabel, jobType, orderMethod, team, files
+    SELECT *
     FROM orders
     WHERE (orderStatus IN ('PENDING', 'NEED PAYMENT', 'PENDING ARTWORK', 'APPROVED', 'HARDDATE', 'PENDING APPROVAL'))
     AND (
@@ -227,7 +227,7 @@ app.get('/mussaList', (req, res) => {
   const search = req.query.search || '';  // Get the search query from the request
 
   const sql = `
-    SELECT orderNumber, orderStatus, clientName, shippingAddress, trackingLabel, jobType, orderMethod, team, files
+    SELECT *
     FROM orders
     WHERE (orderStatus IN ('PENDING', 'NEED PAYMENT', 'PENDING ARTWORK', 'APPROVED', 'HARDDATE', 'PENDING APPROVAL'))
     AND (
@@ -280,7 +280,7 @@ app.get('/karachiList', (req, res) => {
   const search = req.query.search || '';  // Get the search query from the request
 
   const sql = `
-    SELECT orderNumber, orderStatus, clientName, shippingAddress, trackingLabel, jobType, orderMethod, team, files
+    SELECT *
     FROM orders
     WHERE (orderStatus IN ('PENDING', 'NEED PAYMENT', 'PENDING ARTWORK', 'APPROVED', 'HARDDATE', 'PENDING APPROVAL'))
     AND (
@@ -337,7 +337,7 @@ app.get('/karachiList', (req, res) => {
     const search = req.query.search || '';  // Get the search query from the request
   
     const sql = `
-      SELECT orderNumber, orderStatus, clientName, shippingAddress, trackingLabel, jobType, orderMethod, team, files
+      SELECT *
       FROM orders
       WHERE (orderStatus IN ('PENDING', 'NEED PAYMENT', 'PENDING ARTWORK', 'APPROVED', 'HARDDATE', 'PENDING APPROVAL'))
       AND (
