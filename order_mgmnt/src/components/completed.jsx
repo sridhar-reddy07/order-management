@@ -124,7 +124,7 @@ const Completed = () => {
                   </td>
                   <td>{order.orderMethod}</td>
                   <td>{order.jobType}</td>
-                  <td>{order.dueDate}</td>
+                  <td>{new Date(order.dueDate).toLocaleDateString('en-US')}</td>
                   <td>{order.orderQty}</td>
                   <td>{order.clientName}</td>
                   <td>
