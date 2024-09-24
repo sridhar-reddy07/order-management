@@ -226,7 +226,7 @@ const handleupdatenotes = async () => {
                   <td>{order.jobType}</td>
                   
                   <td>{new Date(order.dueDate).toLocaleDateString('en-US')}</td>
-                  <td>{order.OrderQty}</td>
+                  <td>{order.orderQty}</td>
                   <td>{order.clientName}</td>
                   
                   <td>
