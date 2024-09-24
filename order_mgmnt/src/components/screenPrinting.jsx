@@ -22,7 +22,7 @@ const ScreenPrinting = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch('http://localhost:5000/spList');
+        const response = await fetch('http://137.184.75.176:5000/spList');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -38,7 +38,7 @@ const ScreenPrinting = () => {
   }, []);
   useEffect(() => {
     // Fetch orders with the search query
-    axios.get(`http://localhost:5000/spList?search=${search}`)
+    axios.get(`http://137.184.75.176:5000/spList?search=${search}`)
       .then((response) => {
         console.log(response)
         setOrders(response.data);
@@ -70,7 +70,7 @@ const ScreenPrinting = () => {
   const updateOrderStatusInDatabase = async (e, orderNumber) => {
     const status = e.target.value;
     try {
-      const response = await fetch(`http://localhost:5000/updateOrderStatus/${orderNumber}`, {
+      const response = await fetch(`http://137.184.75.176:5000/updateOrderStatus/${orderNumber}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -102,7 +102,7 @@ const ScreenPrinting = () => {
 
   const handleSubmitTrackingLabel = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/updateTrackingLabel/${selectedOrder}`, {
+      const response = await fetch(`http://137.184.75.176:5000/updateTrackingLabel/${selectedOrder}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -137,7 +137,7 @@ const ScreenPrinting = () => {
 
 const handleupdatenotes = async () => {
   try {
-    const response = await fetch(`http://localhost:5000/updateordernotes/${selectedOrder}`, {
+    const response = await fetch(`http://137.184.75.176:5000/updateordernotes/${selectedOrder}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -215,7 +215,7 @@ const handleupdatenotes = async () => {
 
                   <td>{order.orderMethod}</td>
                   <td>{order.jobType}</td>
-                  <td>{order.dueDate}</td>
+                  <td>{new Date(order.dueDate).toLocaleDateString('en-US')}</td>
                   <td>{order.orderQty}</td>
                   <td>{order.clientName}</td>
                   <td>
