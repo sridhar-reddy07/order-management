@@ -164,6 +164,7 @@ const AddOrder = () => {
             value={shippingAddress}
             onChange={(e) => setShippingAddress(e.target.value)}
             className="form-input"
+            required
           />
         </div>
 
@@ -213,6 +214,7 @@ const AddOrder = () => {
             
             className="form-input"
           >
+            required
             <option value="">Select Team</option>
             <option value="KARACHI TEAM">KARACHI TEAM</option>
             <option value="RIZ">RIZ</option>
@@ -229,7 +231,7 @@ const AddOrder = () => {
             id="dueDate"
             value={dueDate}
             onChange={(e) => setDueDate(e.target.value)}
-            
+            required
             className="form-input"
           />
         </div>
@@ -267,6 +269,7 @@ const AddOrder = () => {
             multiple
             onChange={(e) => setFiles(e.target.files)}
             className="form-file"
+            required
           />
         </div>
 
