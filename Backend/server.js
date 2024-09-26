@@ -145,21 +145,21 @@ app.get('/ordersList', (req, res) => {
     FROM orders
     WHERE (orderStatus IN ('PENDING', 'NEED PAYMENT', 'PENDING ARTWORK', 'APPROVED', 'HARDDATE', 'PENDING APPROVAL'))
     AND (
-      orderNumber COLLATE utf8mb4_general_ci LIKE ? OR 
-      clientName COLLATE utf8mb4_general_ci LIKE ? OR 
-      shippingAddress COLLATE utf8mb4_general_ci LIKE ? OR 
-      trackingLabel COLLATE utf8mb4_general_ci LIKE ? OR
-      jobType COLLATE utf8mb4_general_ci LIKE ? OR
-      orderMethod COLLATE utf8mb4_general_ci LIKE ? OR
-      orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
-      team COLLATE utf8mb4_general_ci LIKE ?
+      orderNumber COLLATE utf8mb4_general_ci LIKE '%%' OR 
+      clientName COLLATE utf8mb4_general_ci LIKE '%%' OR 
+      shippingAddress COLLATE utf8mb4_general_ci LIKE '%%' OR 
+      trackingLabel COLLATE utf8mb4_general_ci LIKE '%%' OR
+      jobType COLLATE utf8mb4_general_ci LIKE '%%' OR
+      orderMethod COLLATE utf8mb4_general_ci LIKE '%%' OR
+      orderStatus COLLATE utf8mb4_general_ci LIKE '%%' OR
+      team COLLATE utf8mb4_general_ci LIKE '%%'
     )
     ORDER BY 
       CASE 
         WHEN orderStatus = 'HARDDATE' THEN 1
         ELSE 2
-      END
-      `; // Secondary sorting by orderNumber
+      END;
+    `; // Secondary sorting by orderNumber
 
   const searchQuery = '%' + search + '%';
 
