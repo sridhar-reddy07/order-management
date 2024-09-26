@@ -22,6 +22,17 @@ const AddOrder = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+
+     // Manual validation for required fields
+     if (!garmentPo || !dueDate) {
+      setError('Garment PO is required.');
+      return;
+    }
+    if ( !dueDate) {
+      setError(' Due Date is required.');
+      return;
+    }
+
     const formData = new FormData();
     formData.append('orderNumber', orderNumber);
     formData.append('orderStatus', orderStatus);
@@ -188,6 +199,7 @@ const AddOrder = () => {
             value={garmentPo}
             onChange={(e) => setGarmentPo(e.target.value)}
             className="form-input"
+            required
           />
         </div>
 
@@ -198,7 +210,7 @@ const AddOrder = () => {
             id="team"
             value={team}
             onChange={(e) => setTeam(e.target.value)}
-            required
+            
             className="form-input"
           >
             <option value="">Select Team</option>
@@ -217,7 +229,7 @@ const AddOrder = () => {
             id="dueDate"
             value={dueDate}
             onChange={(e) => setDueDate(e.target.value)}
-            required
+            
             className="form-input"
           />
         </div>
