@@ -159,7 +159,7 @@ app.get('/ordersList', (req, res) => {
         WHEN orderStatus = 'HARDDATE' THEN 1
         ELSE 2
       END,
-      orderNumber`; // Secondary sorting by orderNumber
+      `; // Secondary sorting by orderNumber
 
   const searchQuery = '%' + search + '%';
 
@@ -213,7 +213,7 @@ app.get('/rizList', (req, res) => {
         WHEN orderStatus = 'HARDDATE' THEN 1
         ELSE 2
       END,
-      orderNumber`; // Secondary sorting by orderNumber
+      `; // Secondary sorting by orderNumber
 
   const searchQuery = '%' + search + '%';
 
@@ -269,7 +269,7 @@ app.get('/mussaList', (req, res) => {
         WHEN orderStatus = 'HARDDATE' THEN 1
         ELSE 2
       END,
-      orderNumber`; // Secondary sorting by orderNumber
+      `; // Secondary sorting by orderNumber
 
   const searchQuery = '%' + search + '%';
 
@@ -322,7 +322,7 @@ app.get('/karachiList', (req, res) => {
         WHEN orderStatus = 'HARDDATE' THEN 1
         ELSE 2
       END,
-      orderNumber`; // Secondary sorting by orderNumber
+      `; // Secondary sorting by orderNumber
 
   const searchQuery = '%' + search + '%';
 
@@ -379,7 +379,7 @@ app.get('/karachiList', (req, res) => {
           WHEN orderStatus = 'HARDDATE' THEN 1
           ELSE 2
         END,
-        orderNumber`; // Secondary sorting by orderNumber
+        `; // Secondary sorting by orderNumber
   
     const searchQuery = '%' + search + '%';
   
