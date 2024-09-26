@@ -24,14 +24,7 @@ const AddOrder = () => {
 
 
      // Manual validation for required fields
-     if (!garmentPo || !dueDate) {
-      setError('Garment PO is required.');
-      return;
-    }
-    if ( !dueDate) {
-      setError(' Due Date is required.');
-      return;
-    }
+    
 
     const formData = new FormData();
     formData.append('orderNumber', orderNumber);
