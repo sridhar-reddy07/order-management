@@ -204,16 +204,17 @@ const AddOrder = () => {
             id="team"
             value={team}
             onChange={(e) => setTeam(e.target.value)}
-            
+            required
             className="form-input"
           >
-            required
+            
             <option value="">Select Team</option>
             <option value="KARACHI TEAM">KARACHI TEAM</option>
             <option value="RIZ">RIZ</option>
             <option value="MUSSA">MUSSA</option>
             <option value="WAREHOUSE JOBS">WAREHOUSE JOBS</option>
           </select>
+          
         </div>
 
         {/* Due Date */}
