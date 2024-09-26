@@ -158,7 +158,7 @@ app.get('/ordersList', (req, res) => {
       CASE 
         WHEN orderStatus = 'HARDDATE' THEN 1
         ELSE 2
-      END,
+      END
       `; // Secondary sorting by orderNumber
 
   const searchQuery = '%' + search + '%';
@@ -212,7 +212,7 @@ app.get('/rizList', (req, res) => {
       CASE 
         WHEN orderStatus = 'HARDDATE' THEN 1
         ELSE 2
-      END,
+      END
       `; // Secondary sorting by orderNumber
 
   const searchQuery = '%' + search + '%';
@@ -268,7 +268,7 @@ app.get('/mussaList', (req, res) => {
       CASE 
         WHEN orderStatus = 'HARDDATE' THEN 1
         ELSE 2
-      END,
+      END
       `; // Secondary sorting by orderNumber
 
   const searchQuery = '%' + search + '%';
@@ -321,7 +321,7 @@ app.get('/karachiList', (req, res) => {
       CASE 
         WHEN orderStatus = 'HARDDATE' THEN 1
         ELSE 2
-      END,
+      END
       `; // Secondary sorting by orderNumber
 
   const searchQuery = '%' + search + '%';
@@ -378,7 +378,7 @@ app.get('/karachiList', (req, res) => {
         CASE 
           WHEN orderStatus = 'HARDDATE' THEN 1
           ELSE 2
-        END,
+        END
         `; // Secondary sorting by orderNumber
   
     const searchQuery = '%' + search + '%';
