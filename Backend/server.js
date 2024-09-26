@@ -45,10 +45,10 @@ app.use(express.json());
 
 
 
-
+let db;
 
 function handleDisconnect() {
-    const db = mysql.createConnection({
+    db = mysql.createConnection({
     host: process.env.DB_HOST,          // DigitalOcean DB Host
     user: process.env.DB_USER,          // DigitalOcean DB User
     password: process.env.DB_PASSWORD,  // DigitalOcean DB Password
