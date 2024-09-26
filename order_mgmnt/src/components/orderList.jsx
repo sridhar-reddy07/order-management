@@ -13,6 +13,7 @@ const OrderList = () => {
   const [search, setSearch] = useState('')
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState('');
+  const [sortByDueDate, setSortByDueDate] = useState(false); // Add sorting toggle
 
   const handleImageClick = (imageUrl) => {
     setSelectedImage(imageUrl);
@@ -172,6 +173,16 @@ const handleupdatenotes = async () => {
   }
 };
 
+  const toggleSortByDueDate = () => {
+    setSortByDueDate(!sortByDueDate);
+    const sortedOrders = [...orders].sort((a, b) => {
+      const dateA = new Date(a.dueDate);
+      const dateB = new Date(b.dueDate);
+      return sortByDueDate ? dateA - dateB : dateB - dateA;
+    });
+    setOrders(sortedOrders);
+  };
+
   return (
     <div className="container" style={{ marginLeft: 250, paddingTop: 20,marginBottom:70 }}>
       <h2>All Orders</h2>
@@ -190,7 +201,14 @@ const handleupdatenotes = async () => {
             <th scope="col">Order Status</th>
             <th scope="col">Order Method</th>
             <th scope="col">Job Type</th>
-            <th scope="col">Due Date</th>
+            <th scope="col">
+              Due Date
+              <i
+                className={`bi bi-sort-${sortByDueDate ? 'down' : 'up'}`}
+                style={{ cursor: 'pointer', marginLeft: '5px' }}
+                onClick={toggleSortByDueDate}
+              ></i>
+            </th>
             <th scope="col">Order Quantity</th>
             <th scope="col">Client Name</th>
             <th scope="col">Tracking Number</th>
