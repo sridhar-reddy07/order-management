@@ -41,21 +41,45 @@ app.use(cors());
 app.use(express.json());
 
 // MySQL connection
-const db = mysql.createConnection({
-  host: process.env.DB_HOST,          // DigitalOcean DB Host
-  user: process.env.DB_USER,          // DigitalOcean DB User
-  password: process.env.DB_PASSWORD,  // DigitalOcean DB Password
-  database: process.env.DB_NAME,      // DigitalOcean DB Name
-  port: process.env.DB_PORT           // DigitalOcean DB Port (25060)
-});
-db.connect((err) => {
-  if (err) {
-    console.log('Error connecting to MySQL:', err);
-    return;
-  }
-  console.log('Connected to MySQL');
-  
-});
+
+
+const mysql = require('mysql2');
+
+let connection;
+
+function handleDisconnect() {
+    connection = mysql.createConnection({
+    host: process.env.DB_HOST,          // DigitalOcean DB Host
+    user: process.env.DB_USER,          // DigitalOcean DB User
+    password: process.env.DB_PASSWORD,  // DigitalOcean DB Password
+    database: process.env.DB_NAME,      // DigitalOcean DB Name
+    port: process.env.DB_PORT           // DigitalOcean DB Port (25060)
+  });
+
+
+  connection.connect(function (err) {
+    if (err) {
+      console.log('Error when connecting to DB:', err);
+      setTimeout(handleDisconnect, 2000); // Retry after 2 seconds
+    }
+  });
+
+  connection.on('error', function (err) {
+    console.log('DB error', err);
+    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+      handleDisconnect(); // Reconnect if the connection was lost
+    } else {
+      throw err;
+    }
+  });
+}
+
+handleDisconnect();
+
+
+
+
+
 
 // POST route for login validation
 app.post('/login', (req, res) => {
