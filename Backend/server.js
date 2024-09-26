@@ -43,7 +43,7 @@ app.use(express.json());
 // MySQL connection
 
 
-const mysql = require('mysql2');
+
 
 let connection;
 
