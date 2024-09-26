@@ -45,10 +45,10 @@ app.use(express.json());
 
 
 
-let connection;
+
 
 function handleDisconnect() {
-    connection = mysql.createConnection({
+    const db = mysql.createConnection({
     host: process.env.DB_HOST,          // DigitalOcean DB Host
     user: process.env.DB_USER,          // DigitalOcean DB User
     password: process.env.DB_PASSWORD,  // DigitalOcean DB Password
@@ -57,14 +57,14 @@ function handleDisconnect() {
   });
 
 
-  connection.connect(function (err) {
+  db.connect(function (err) {
     if (err) {
       console.log('Error when connecting to DB:', err);
       setTimeout(handleDisconnect, 2000); // Retry after 2 seconds
     }
   });
 
-  connection.on('error', function (err) {
+  db.on('error', function (err) {
     console.log('DB error', err);
     if (err.code === 'PROTOCOL_CONNECTION_LOST') {
       handleDisconnect(); // Reconnect if the connection was lost
