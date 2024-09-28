@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 
 const AddOrder = () => {
   const [orderNumber, setOrderNumber] = useState('');
@@ -7,24 +7,38 @@ const AddOrder = () => {
   const [orderMethod, setOrderMethod] = useState('ONLINE'); // Default value
   const [jobType, setJobType] = useState('');
   const [clientName, setClientName] = useState('');
+  const [clientPhone, setClientPhone] = useState(''); // New Client Phone
+  const [clientgmail, setClientGmail] = useState(''); // New Client Email
   const [shippingAddress, setShippingAddress] = useState('');
   const [trackingLabel, setTrackingLabel] = useState('');
   const [garmentDetails, setGarmentDetails] = useState('');
   const [garmentPo, setGarmentPo] = useState('');
   const [team, setTeam] = useState('');
-  const [dueDate, setDueDate] = useState(''); // New state for Due Date
+  const [dueDate, setDueDate] = useState('');
   const [orderQty, setOrderQty] = useState(''); // New state for Order Quantity
+  const [size_S, setSizeS] = useState(0); // Size S
+  const [size_M, setSizeM] = useState(0); // Size M
+  const [size_L, setSizeL] = useState(0); // Size L
+  const [size_XL, setSizeXL] = useState(0); // Size XL
+  const [size_XXL, setSizeXXL] = useState(0); // Size XXL
+  const [size_3XL, setSize3XL] = useState(0); // Size 3XL
+  const [size_4XL, setSize4XL] = useState(0); // Size 4XL
+  const [size_5XL, setSize5XL] = useState(0); // Size 5XL
+  const [invoice, setInvoice] = useState(''); // New Invoice field
   const [notes, setNotes] = useState('');
   const [files, setFiles] = useState(null);
 
-  const navigate = useNavigate(); // Initialize navigate
-  
+  const navigate = useNavigate();
+
+  const handleFileChange = (e) => {
+    const selectedFiles = Array.from(e.target.files);
+    
+    // Append new files to the existing files state
+    setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-
-     // Manual validation for required fields
-    
 
     const formData = new FormData();
     formData.append('orderNumber', orderNumber);
@@ -32,14 +46,26 @@ const AddOrder = () => {
     formData.append('orderMethod', orderMethod);
     formData.append('jobType', jobType);
     formData.append('clientName', clientName);
+    formData.append('clientPhone', clientPhone);
+    formData.append('clientgmail', clientgmail);
     formData.append('shippingAddress', shippingAddress);
     formData.append('trackingLabel', trackingLabel);
     formData.append('garmentDetails', garmentDetails);
     formData.append('garmentPo', garmentPo);
     formData.append('team', team);
-    formData.append('dueDate', dueDate); // Append Due Date
-    formData.append('orderQty', orderQty); // Append Order Quantity
+    formData.append('dueDate', dueDate);
+    formData.append('orderQty', orderQty);
+    formData.append('size_S', size_S);
+    formData.append('size_M', size_M);
+    formData.append('size_L', size_L);
+    formData.append('size_XL', size_XL);
+    formData.append('size_XXL', size_XXL);
+    formData.append('size_3XL', size_3XL);
+    formData.append('size_4XL', size_4XL);
+    formData.append('size_5XL', size_5XL);
+    formData.append('invoice', invoice);
     formData.append('notes', notes);
+    
     if (files) {
       for (let i = 0; i < files.length; i++) {
         formData.append('files', files[i]);
@@ -54,7 +80,7 @@ const AddOrder = () => {
 
       if (response.ok) {
         alert('Order added successfully!');
-        navigate('/orderList'); // Redirect to All Orders page
+        navigate('/orderList');
       } else {
         const result = await response.json();
         alert(result.message);
@@ -66,7 +92,7 @@ const AddOrder = () => {
   };
 
   return (
-    <div style={{ marginLeft: 250, paddingTop: 20,marginBottom:70 }}>
+    <div style={{ marginLeft: 250, paddingTop: 20, marginBottom: 70 }}>
       <form className="order-form" onSubmit={handleSubmit}>
         {/* Order Number */}
         <div className="form-group">
@@ -132,6 +158,7 @@ const AddOrder = () => {
             <option value="SCREEN PRINTING">Screen Printing</option>
             <option value="DTG">DTG</option>
             <option value="DTG+EMB">DTG+EMB</option>
+            <option value="SP+EMB">SP+EMB</option>
           </select>
         </div>
 
@@ -148,6 +175,32 @@ const AddOrder = () => {
           />
         </div>
 
+        {/* Client Phone */}
+        <div className="form-group">
+          <label htmlFor="clientPhone">Client Phone:</label>
+          <input
+            type="tel"
+            id="clientPhone"
+            value={clientPhone}
+            onChange={(e) => setClientPhone(e.target.value)}
+            required
+            className="form-input"
+          />
+        </div>
+
+        {/* Client Email */}
+        <div className="form-group">
+          <label htmlFor="clientgmail">Client Email:</label>
+          <input
+            type="email"
+            id="clientgmail"
+            value={clientgmail}
+            onChange={(e) => setClientGmail(e.target.value)}
+            required
+            className="form-input"
+          />
+        </div>
+
         {/* Shipping Address */}
         <div className="form-group">
           <label htmlFor="shippingAddress">Shipping Address:</label>
@@ -156,31 +209,8 @@ const AddOrder = () => {
             id="shippingAddress"
             value={shippingAddress}
             onChange={(e) => setShippingAddress(e.target.value)}
-            className="form-input"
             required
-          />
-        </div>
-
-        {/* Tracking Number */}
-        <div className="form-group">
-          <label htmlFor="TrackingLabel">Tracking Number:</label>
-          <input
-            type="text"
-            id="TrackingLabel"
-            value={trackingLabel}
-            onChange={(e) => setTrackingLabel(e.target.value)}
             className="form-input"
-          />
-        </div>
-
-        {/* Garment Details */}
-        <div className="form-group">
-          <label htmlFor="garmentDetails">Garment Details:</label>
-          <textarea
-            id="garmentDetails"
-            value={garmentDetails}
-            onChange={(e) => setGarmentDetails(e.target.value)}
-            className="form-textarea"
           />
         </div>
 
@@ -192,8 +222,8 @@ const AddOrder = () => {
             id="garmentPo"
             value={garmentPo}
             onChange={(e) => setGarmentPo(e.target.value)}
-            className="form-input"
             required
+            className="form-input"
           />
         </div>
 
@@ -207,14 +237,12 @@ const AddOrder = () => {
             required
             className="form-input"
           >
-            
             <option value="">Select Team</option>
             <option value="KARACHI TEAM">KARACHI TEAM</option>
             <option value="RIZ">RIZ</option>
             <option value="MUSSA">MUSSA</option>
-            <option value="WAREHOUSE JOBS">WAREHOUSE JOBS</option>
+            <option value="BOB JOB">BOB JOB</option>
           </select>
-          
         </div>
 
         {/* Due Date */}
@@ -230,19 +258,87 @@ const AddOrder = () => {
           />
         </div>
 
-        {/* Order Quantity */}
+        {/* Size Inputs */}
         <div className="form-group">
-          <label htmlFor="orderQty">Order Quantity:</label>
+          <label htmlFor="size_S">Size S:</label>
           <input
             type="number"
-            id="orderQty"
-            value={orderQty}
-            onChange={(e) => setOrderQty(e.target.value)}
-            required
+            id="size_S"
+            value={size_S}
+            onChange={(e) => setSizeS(e.target.value)}
             className="form-input"
           />
         </div>
-
+        <div className="form-group">
+          <label htmlFor="size_M">Size M:</label>
+          <input
+            type="number"
+            id="size_M"
+            value={size_M}
+            onChange={(e) => setSizeM(e.target.value)}
+            className="form-input"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="size_L">Size L:</label>
+          <input
+            type="number"
+            id="size_L"
+            value={size_L}
+            onChange={(e) => setSizeL(e.target.value)}
+            className="form-input"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="size_XL">Size XL:</label>
+          <input
+            type="number"
+            id="size_XL"
+            value={size_XL}
+            onChange={(e) => setSizeXL(e.target.value)}
+            className="form-input"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="size_XXL">Size XXL:</label>
+          <input
+            type="number"
+            id="size_XXL"
+            value={size_XXL}
+            onChange={(e) => setSizeXXL(e.target.value)}
+            className="form-input"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="size_3XL">Size 3XL:</label>
+          <input
+            type="number"
+            id="size_3XL"
+            value={size_3XL}
+            onChange={(e) => setSize3XL(e.target.value)}
+            className="form-input"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="size_4XL">Size 4XL:</label>
+          <input
+            type="number"
+            id="size_4XL"
+            value={size_4XL}
+            onChange={(e) => setSize4XL(e.target.value)}
+            className="form-input"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="size_5XL">Size 5XL:</label>
+          <input
+            type="number"
+            id="size_5XL"
+            value={size_5XL}
+            onChange={(e) => setSize5XL(e.target.value)}
+            className="form-input"
+          />
+        </div>
         {/* Notes */}
         <div className="form-group">
           <label htmlFor="notes">Notes:</label>
@@ -250,25 +346,36 @@ const AddOrder = () => {
             id="notes"
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            className="form-textarea"
+            className="form-input"
           />
         </div>
 
-        {/* Add Files */}
+        <div>
+        {/* Upload File */}
         <div className="form-group">
-          <label htmlFor="files">Add Files:</label>
+          <label htmlFor="files">Upload File:</label>
           <input
             type="file"
             id="files"
-            multiple
-            onChange={(e) => setFiles(e.target.files)}
-            className="form-file"
-            required
+            onChange={handleFileChange}
+            className="form-input"
+            multiple // Allows multiple file selection
           />
         </div>
 
+        {/* Display selected files */}
+        <div className="file-list">
+          {files.length > 0 && (
+            <ul>
+              {files.map((file, index) => (
+                <li key={index}>{file.name}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
         {/* Submit Button */}
-        <button type="submit" className="submit-button">Submit</button>
+        <button type="submit" className="submit-button">Submit Order</button>
       </form>
     </div>
   );
