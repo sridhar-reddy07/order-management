@@ -41,6 +41,15 @@ const AddOrder = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const totalOrderQty = 
+    parseInt(size_S || 0) +
+    parseInt(size_M || 0) +
+    parseInt(size_L || 0) +
+    parseInt(size_XL || 0) +
+    parseInt(size_XXL || 0) +
+    parseInt(size_3XL || 0) +
+    parseInt(size_4XL || 0) +
+    parseInt(size_5XL || 0);
 
     const formData = new FormData();
     formData.append('orderNumber', orderNumber);
@@ -56,7 +65,7 @@ const AddOrder = () => {
     formData.append('garmentPo', garmentPo);
     formData.append('team', team);
     formData.append('dueDate', dueDate);
-    formData.append('orderQty',size_S+size_3XL+size_4XL+size_5XL+size_L+size_M+size_XL+size_XXL);
+    formData.append('orderQty',totalOrderQty);
     formData.append('size_S', size_S);
     formData.append('size_M', size_M);
     formData.append('size_L', size_L);

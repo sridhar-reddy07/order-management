@@ -139,8 +139,8 @@ app.post('/login', (req, res) => {
     orderNumber, orderStatus, orderMethod, jobType, clientName, 
     clientPhone, clientgmail, shippingAddress, trackingLabel, 
     garmentDetails, garmentPo, team, dueDate, orderQty, 
-    notes, files, 
-    size_S, size_M, size_L, size_XL, size_XXL, size_3XL, size_4XL, size_5XL
+    
+    size_S, size_M, size_L, size_XL, size_XXL, size_3XL, size_4XL, size_5XL,notes, files
   ], (err, result) => {
     if (err) {
       console.error(err);
