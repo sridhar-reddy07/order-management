@@ -26,7 +26,8 @@ const AddOrder = () => {
   const [size_5XL, setSize5XL] = useState(0); // Size 5XL
   const [invoice, setInvoice] = useState(''); // New Invoice field
   const [notes, setNotes] = useState('');
-  const [files, setFiles] = useState(null);
+  const [files, setFiles] = useState([]);
+
 
   const navigate = useNavigate();
 
