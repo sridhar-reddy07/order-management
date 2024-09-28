@@ -153,6 +153,33 @@ app.post('/login', (req, res) => {
 
 
 
+app.put('/updateOrder/:orderNumber', (req, res) => {
+  const { orderNumber } = req.params;
+  const updateData = req.body; // The field to update, e.g., { orderStatus: 'APPROVED' }
+
+  const field = Object.keys(updateData)[0]; // Get the field name
+  const value = updateData[field]; // Get the new value
+
+  const query = `UPDATE orders SET ${field} = ? WHERE orderNumber = ?`;
+
+  // Execute the SQL query
+  db.query(query, [value, orderNumber], (err, result) => {
+    if (err) {
+      console.error('Error updating order:', err);
+      return res.status(500).send({ message: 'Internal server error' });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).send({ message: 'Order not found' });
+    }
+
+    // Respond with success message or the updated data
+    res.status(200).send({ message: 'Order updated successfully', updatedField: { [field]: value } });
+  });
+});
+
+
+
 app.get('/ordersList', (req, res) => {
   const search = req.query.search || '';  // Get the search query from the request
 

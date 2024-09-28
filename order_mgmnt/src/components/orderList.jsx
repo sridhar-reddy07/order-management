@@ -9,12 +9,13 @@ const OrderList = () => {
   const [selectedOrder, setSelectedOrder] = useState(null); // To store the order for which "Add num" was clicked
   const [trackingLabel, setTrackingLabel] = useState(''); // To store the tracking label input
   const [showModal2, setShowModal2] = useState(false);
+  const [showModal3, setShowModal3] = useState('');
   const [ordernotes, setOrdernotes] = useState("");
   const [search, setSearch] = useState('')
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState('');
   const [sortByDueDate, setSortByDueDate] = useState(false); // Add sorting toggle
-
+  const [updatedOrder, setUpdatedOrder] =useState(null);
   const handleImageClick = (imageUrl) => {
     setSelectedImage(imageUrl);
     setShowImageModal(true);
@@ -172,6 +173,34 @@ const handleupdatenotes = async () => {
     console.error('Error updating notes:', error);
   }
 };
+  const handleUpdateOrder = async (show,updatedOrder) => {
+
+    try {
+      
+      const response = await axios.put(`http://137.184.75.176:5000/updateOrder/${selectedOrder}`, { [show]: updatedOrder });
+      alert('Order updated successfully ');
+      
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order.orderNumber === orderNumber ? { ...order, [field]: value } : order
+        )
+      );
+
+      setShowModal3('');
+      setSelectedOrder('');
+      
+      
+    } catch (error) {
+      console.error('Error updating order:', error);
+    }
+  };
+  const handleOrder =(orderNumber, field)=>
+  {
+    setShowModal3(`${field}`)
+    setSelectedOrder(orderNumber); 
+  }
+
+  
 
   const toggleSortByDueDate = () => {
     setSortByDueDate(!sortByDueDate);
@@ -245,7 +274,13 @@ const handleupdatenotes = async () => {
                   
                   <td>{new Date(order.dueDate).toLocaleDateString('en-US')}</td>
                   <td>{order.orderQty}</td>
-                  <td>{order.clientName}</td>
+                  <td>{order.clientName}
+                  <i 
+                          className="bi bi-pencil" 
+                          style={{ cursor: 'pointer', marginLeft: '5px' }} 
+                          onClick={() => handleOrder(order.orderNumber,clientName)}
+                        ></i>
+                  </td>
                   
                   <td>
                     {order.trackingLabel ? (
@@ -381,25 +416,25 @@ const handleupdatenotes = async () => {
       </table>
 
       {/* Modal for entering tracking label */}
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
+      <Modal show={showModal3} onHide={() => setShowModal3('')}>
         <Modal.Header closeButton>
-          <Modal.Title>Enter Tracking Label</Modal.Title>
+          <Modal.Title>Enter {show}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form.Group>
-            <Form.Label>Tracking Label</Form.Label>
+            <Form.Label>{show}</Form.Label>
             <Form.Control
               type="text"
               value={trackingLabel}
-              onChange={(e) => setTrackingLabel(e.target.value)}
+              onChange={(e) => setUpdatedOrder(e.target.value)}
             />
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
+          <Button variant="secondary" onClick={() => setShowModal3('')}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={handleSubmitTrackingLabel}>
+          <Button variant="primary" onClick={handleUpdateOrder(show,updatedOrder)}>
             Submit
           </Button>
         </Modal.Footer>
