@@ -16,6 +16,7 @@ const OrderList = () => {
   const [selectedImage, setSelectedImage] = useState('');
   const [sortByDueDate, setSortByDueDate] = useState(false); // Add sorting toggle
   const [updatedOrder, setUpdatedOrder] =useState(null);
+  const [field, setField] = useState('');
   const handleImageClick = (imageUrl) => {
     setSelectedImage(imageUrl);
     setShowImageModal(true);
@@ -173,32 +174,36 @@ const handleupdatenotes = async () => {
     console.error('Error updating notes:', error);
   }
 };
-  const handleUpdateOrder = async (show,updatedOrder) => {
-
+  const handleUpdateOrder = async () => {
     try {
+      // API call to update the selected order's specific field
+      const response = await axios.put(`http://137.184.75.176:5000/updateOrder/${selectedOrder}`, { [field]: updatedOrder });
       
-      const response = await axios.put(`http://137.184.75.176:5000/updateOrder/${selectedOrder}`, { [show]: updatedOrder });
-      alert('Order updated successfully ');
+      alert('Order updated successfully');
       
+      // Update the local state with the new order data
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
-          order.orderNumber === orderNumber ? { ...order, [field]: value } : order
+          order.orderNumber === selectedOrder ? { ...order, [field]: updatedOrder } : order
         )
       );
 
-      setShowModal3('');
+      // Reset the modal state after update
+      setShowModal3(false);
       setSelectedOrder('');
-      
+      setUpdatedOrder(''); // Clear updated order value
       
     } catch (error) {
       console.error('Error updating order:', error);
     }
   };
-  const handleOrder =(orderNumber, field)=>
-  {
-    setShowModal3(`${field}`)
-    setSelectedOrder(orderNumber); 
-  }
+
+  // Function to show modal and set the order and field being edited
+  const handleOrder = (orderNumber, field) => {
+    setShowModal3(true);
+    setSelectedOrder(orderNumber);
+    setField(field); // Track the field being updated
+  };
 
   
 
@@ -415,26 +420,25 @@ const handleupdatenotes = async () => {
         </tbody>
       </table>
 
-      {/* Modal for entering tracking label */}
-      <Modal show={showModal3} onHide={() => setShowModal3('')}>
+      <Modal show={showModal3} onHide={() => setShowModal3(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Enter {show}</Modal.Title>
+          <Modal.Title>Enter {field}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form.Group>
-            <Form.Label>{show}</Form.Label>
+            <Form.Label>{field}</Form.Label>
             <Form.Control
               type="text"
-              value={trackingLabel}
+              value={updatedOrder}
               onChange={(e) => setUpdatedOrder(e.target.value)}
             />
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal3('')}>
+          <Button variant="secondary" onClick={() => setShowModal3(false)}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={handleUpdateOrder(show,updatedOrder)}>
+          <Button variant="primary" onClick={() => handleUpdateOrder()}>
             Submit
           </Button>
         </Modal.Footer>
