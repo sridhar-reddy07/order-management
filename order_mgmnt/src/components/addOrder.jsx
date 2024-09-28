@@ -15,7 +15,7 @@ const AddOrder = () => {
   const [garmentPo, setGarmentPo] = useState('');
   const [team, setTeam] = useState('');
   const [dueDate, setDueDate] = useState('');
-  const [orderQty, setOrderQty] = useState(''); // New state for Order Quantity
+  const [orderQty, setOrderQty] = useState(0); // New state for Order Quantity
   const [size_S, setSizeS] = useState(0); // Size S
   const [size_M, setSizeM] = useState(0); // Size M
   const [size_L, setSizeL] = useState(0); // Size L
@@ -24,6 +24,7 @@ const AddOrder = () => {
   const [size_3XL, setSize3XL] = useState(0); // Size 3XL
   const [size_4XL, setSize4XL] = useState(0); // Size 4XL
   const [size_5XL, setSize5XL] = useState(0); // Size 5XL
+ 
   const [invoice, setInvoice] = useState(''); // New Invoice field
   const [notes, setNotes] = useState('');
   const [files, setFiles] = useState([]);

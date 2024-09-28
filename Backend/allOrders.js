@@ -12,7 +12,7 @@ const allOrdersTable = (db) => {
       shippingAddress TEXT,
       trackingLabel VARCHAR(255),
       garmentDetails TEXT,
-      garmentPurchaseOrder VARCHAR(255),
+      garmentPO VARCHAR(255),
       team ENUM('KARACHI TEAM', 'RIZ', 'MUSSA', 'BOB JOB') NOT NULL,
       dueDate DATE,
       orderQuantity INT, -- Total quantity, can be derived from size quantities if needed
