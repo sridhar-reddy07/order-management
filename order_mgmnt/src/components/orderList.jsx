@@ -308,22 +308,51 @@ const handleupdatenotes = async () => {
                                       <i className="bi bi-download" style={{ marginLeft: '8px' }}></i>
                                     </a>
                                   </div>
-                                ) : (
-                                  // Non-image files (Preview + Download)
-                                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                                    <iframe
+                                ) : file.fileUrl.match(/\.(pdf)$/i) ? (
+                                  // PDF files (Preview + Download)
+                                  <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
+                                    <embed
                                       src={file.fileUrl}
+                                      type="application/pdf"
                                       style={{
-                                        width: '150px',
-                                        height: '150px',
+                                        width: '300px',
+                                        height: '300px',
                                         border: '1px solid #ddd',
+                                        borderRadius: '5px',
                                         marginRight: '10px',
                                       }}
                                       title={`file-preview-${idx}`}
                                     />
-                                    <a href={file.fileUrl} download={file.fileUrl.split('/').pop()} style={{ marginLeft: '10px' }}>
+                                    <a href={file.fileUrl} download={file.fileUrl.split('/').pop()} style={{ marginLeft: '10px', textDecoration: 'none', color: '#007bff' }}>
                                       <span>{file.fileUrl.split('/').pop()}</span>
-                                      <i className="bi bi-download" style={{ marginLeft: '8px' }}></i> {/* Download icon */}
+                                      <i className="bi bi-download" style={{ marginLeft: '8px', fontSize: '16px' }}></i> {/* Download icon */}
+                                    </a>
+                                  </div>
+                                ) : (
+                                  // Other file types (Preview + Download)
+                                  <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
+                                    <a
+                                      href={file.fileUrl}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      style={{
+                                        width: '100px',
+                                        height: '100px',
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        border: '1px solid #ddd',
+                                        borderRadius: '5px',
+                                        marginRight: '10px',
+                                        textDecoration: 'none',
+                                        backgroundColor: '#f8f9fa',
+                                      }}
+                                    >
+                                      <i className="bi bi-file-earmark" style={{ fontSize: '24px' }}></i> {/* Generic file icon */}
+                                    </a>
+                                    <a href={file.fileUrl} download={file.fileUrl.split('/').pop()} style={{ marginLeft: '10px', textDecoration: 'none', color: '#007bff' }}>
+                                      <span>{file.fileUrl.split('/').pop()}</span>
+                                      <i className="bi bi-download" style={{ marginLeft: '8px', fontSize: '16px' }}></i> {/* Download icon */}
                                     </a>
                                   </div>
                                 )}
