@@ -323,7 +323,7 @@ const handleupdatenotes = async () => {
                                     />
                                     <a href={file.fileUrl} download={file.fileUrl.split('/').pop()} style={{ marginLeft: '10px' }}>
                                       <span>{file.fileUrl.split('/').pop()}</span>
-                                      <FaDownload style={{ marginLeft: '10px' }} /> {/* Download icon */}
+                                      <i className="bi bi-download" style={{ marginLeft: '8px' }}></i> {/* Download icon */}
                                     </a>
                                   </div>
                                 )}
