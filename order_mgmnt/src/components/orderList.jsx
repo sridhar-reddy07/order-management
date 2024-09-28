@@ -325,7 +325,7 @@ const handleupdatenotes = async () => {
                                         marginRight: '10px',
                                         backgroundColor: '#f8f9fa',
                                       }}
-                                      onClick={() => window.open(file.fileUrl, '_blank')} // Opens PDF in a new tab for full preview
+                                      onClick={() => window.open(`https://docs.google.com/viewer?url=${file.fileUrl}&embedded=true`, '_blank')} // Opens PDF in a new tab for full preview
                                     >
                                       <i className="bi bi-file-earmark-pdf" style={{ fontSize: '24px', color: '#d9534f' }}></i> {/* PDF icon */}
                                     </div>
