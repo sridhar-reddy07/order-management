@@ -305,7 +305,7 @@ const OrderList = () => {
                         <i 
                           className="bi bi-pencil" 
                           style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                          onClick={() => handleOrder(order.orderNumber,notes)}
+                          onClick={() => handleOrder(order.orderNumber,"notes")}
                         ></i>
                         </p>
                         
