@@ -131,8 +131,8 @@ app.post('/login', (req, res) => {
 
   const sql = `INSERT INTO orders 
    (orderNumber, orderStatus, orderMethod, jobType, clientName, clientPhone, clientgmail, shippingAddress, 
-   trackingLabel, garmentDetails, garmentPo, team, dueDate, orderQty, notes, files, 
-   size_S, size_M, size_L, size_XL, size_XXL, size_3XL, size_4XL, size_5XL) 
+   trackingLabel, garmentDetails, garmentPo, team, dueDate, orderQty,  
+   size_S, size_M, size_L, size_XL, size_XXL, size_3XL, size_4XL, size_5XL,notes, files) 
    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
   db.query(sql, [
