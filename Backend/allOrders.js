@@ -15,7 +15,7 @@ const allOrdersTable = (db) => {
       garmentPO VARCHAR(255),
       team ENUM('KARACHI TEAM', 'RIZ', 'MUSSA', 'BOB JOB') NOT NULL,
       dueDate DATE,
-      orderQuantity INT, -- Total quantity, can be derived from size quantities if needed
+      orderQty INT, -- Total quantity, can be derived from size quantities if needed
       size_S INT DEFAULT 0,   -- Quantity for size S
       size_M INT DEFAULT 0,   -- Quantity for size M
       size_L INT DEFAULT 0,   -- Quantity for size L

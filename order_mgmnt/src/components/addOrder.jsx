@@ -56,7 +56,7 @@ const AddOrder = () => {
     formData.append('garmentPo', garmentPo);
     formData.append('team', team);
     formData.append('dueDate', dueDate);
-    formData.append('orderQty', orderQty);
+    formData.append('orderQty',size_S+size_3XL+size_4XL+size_5XL+size_L+size_M+size_XL+size_XXL);
     formData.append('size_S', size_S);
     formData.append('size_M', size_M);
     formData.append('size_L', size_L);
@@ -212,6 +212,28 @@ const AddOrder = () => {
             value={shippingAddress}
             onChange={(e) => setShippingAddress(e.target.value)}
             required
+            className="form-input"
+          />
+        </div>
+
+        <div className="form-group">
+          <label> Tracking Label</label>
+          <input
+            type="text"
+            id="trackingLabel"
+            value={trackingLabel}
+            onChange={(e) => setTrackingLabel(e.target.value)}
+            required
+            className="form-input"
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="garmentDetails">Garment Details:</label>
+          <textarea
+            id="garmentDetails"
+            value={garmentDetails}
+            onChange={(e) => setGarmentDetails(e.target.value)}
             className="form-input"
           />
         </div>
