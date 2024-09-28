@@ -304,8 +304,8 @@ const handleupdatenotes = async () => {
                                       }}
                                       onClick={() => handleImageClick(file.fileUrl)} // Open the image on click
                                     />
-                                    <a href={file.fileUrl} download={file.fileUrl.split('/').pop()} style={{ marginLeft: '10px' }}>
-                                      <FaDownload /> {/* Download icon */}
+                                    <a href={file.fileUrl} download={file.fileUrl.split('/').pop()}>
+                                      <i className="bi bi-download" style={{ marginLeft: '8px' }}></i>
                                     </a>
                                   </div>
                                 ) : (
