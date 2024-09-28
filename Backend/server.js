@@ -133,7 +133,7 @@ app.post('/login', (req, res) => {
    (orderNumber, orderStatus, orderMethod, jobType, clientName, clientPhone, clientgmail, shippingAddress, 
    trackingLabel, garmentDetails, garmentPo, team, dueDate, orderQty,  
    size_S, size_M, size_L, size_XL, size_XXL, size_3XL, size_4XL, size_5XL,notes, files) 
-   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)`;
 
   db.query(sql, [
     orderNumber, orderStatus, orderMethod, jobType, clientName, 
