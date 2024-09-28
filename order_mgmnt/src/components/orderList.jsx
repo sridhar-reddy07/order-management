@@ -19,8 +19,15 @@ const OrderList = () => {
   const [field, setField] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
 
-  const user = JSON.parse(localStorage.getItem('user'));
-  user === "admin@gmail.com" ? setIsAdmin(true) :setIsAdmin(false);
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    // Check if user is an admin
+    if (user && user.email === "admin@gmail.com") {
+      setIsAdmin(true);
+    } else {
+      setIsAdmin(false);
+    }
+  }, []);
 
 
   const handleImageClick = (imageUrl) => {
