@@ -17,10 +17,18 @@ const OrderList = () => {
   const [sortByDueDate, setSortByDueDate] = useState(false); // Add sorting toggle
   const [updatedOrder, setUpdatedOrder] =useState(null);
   const [field, setField] = useState('');
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  const user = JSON.parse(localStorage.getItem('user'));
+  user === "admin@gmail.com" ? setIsAdmin(true) :setIsAdmin(false);
+
+
   const handleImageClick = (imageUrl) => {
     setSelectedImage(imageUrl);
     setShowImageModal(true);
   };
+  
+
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -280,12 +288,17 @@ const handleupdatenotes = async () => {
                   <td>{new Date(order.dueDate).toLocaleDateString('en-US')}</td>
                   <td>{order.orderQty}</td>
                   <td>{order.clientName}
-                  <i 
+                    <>
+                    {isAdmin ? (<i 
                           className="bi bi-pencil" 
                           style={{ cursor: 'pointer', marginLeft: '5px' }} 
                           onClick={() => handleOrder(order.orderNumber,"clientName")}
-                        ></i>
-                  </td>
+                        ></i>) : ''}
+                  
+                  
+                    </>
+                    </td>
+                  
                   
                   <td>
                     {order.trackingLabel ? (
