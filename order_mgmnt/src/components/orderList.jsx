@@ -312,10 +312,7 @@ const handleupdatenotes = async () => {
                                 ) : file.fileUrl.match(/\.(pdf)$/i) ? (
                                   // PDF files (Preview + Download)
                                   <div style={{ display: 'flex', alignItems: 'center' }}>
-                                    <a
-                                      href={file.fileUrl}
-                                      target="_blank"
-                                      rel="noopener noreferrer" // Open PDF in a new tab
+                                    <div
                                       style={{
                                         width: '100px',
                                         height: '100px',
@@ -328,9 +325,10 @@ const handleupdatenotes = async () => {
                                         marginRight: '10px',
                                         backgroundColor: '#f8f9fa',
                                       }}
+                                      onClick={() => window.open(file.fileUrl, '_blank')} // Opens PDF in a new tab for full preview
                                     >
                                       <i className="bi bi-file-earmark-pdf" style={{ fontSize: '24px', color: '#d9534f' }}></i> {/* PDF icon */}
-                                    </a>
+                                    </div>
                                     <a href={file.fileUrl} download={file.fileUrl.split('/').pop()} style={{ marginLeft: '10px', textDecoration: 'none', color: '#007bff' }}>
                                       <span>{file.fileUrl.split('/').pop()}</span>
                                       <i className="bi bi-download" style={{ marginLeft: '8px', fontSize: '16px' }}></i> {/* Download icon */}
