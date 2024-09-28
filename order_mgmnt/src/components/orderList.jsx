@@ -286,6 +286,7 @@ const handleupdatenotes = async () => {
                         </p>
                         
                         <p><strong>Files Uploaded:</strong></p>
+                        <p><strong>Files Uploaded:</strong></p>
                         <ul>
                           {order.files && order.files.length > 0 ? (
                             order.files.map((file, idx) => (
@@ -310,19 +311,24 @@ const handleupdatenotes = async () => {
                                   </div>
                                 ) : file.fileUrl.match(/\.(pdf)$/i) ? (
                                   // PDF files (Preview + Download)
-                                  <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
-                                    <embed
-                                      src={file.fileUrl}
-                                      type="application/pdf"
+                                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    <div
                                       style={{
-                                        width: '300px',
-                                        height: '300px',
+                                        width: '100px',
+                                        height: '100px',
+                                        cursor: 'pointer',
                                         border: '1px solid #ddd',
                                         borderRadius: '5px',
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
                                         marginRight: '10px',
+                                        backgroundColor: '#f8f9fa',
                                       }}
-                                      title={`file-preview-${idx}`}
-                                    />
+                                      onClick={() => window.open(file.fileUrl)} // Opens PDF in a new tab for full preview
+                                    >
+                                      <i className="bi bi-file-earmark-pdf" style={{ fontSize: '24px', color: '#d9534f' }}></i> {/* PDF icon */}
+                                    </div>
                                     <a href={file.fileUrl} download={file.fileUrl.split('/').pop()} style={{ marginLeft: '10px', textDecoration: 'none', color: '#007bff' }}>
                                       <span>{file.fileUrl.split('/').pop()}</span>
                                       <i className="bi bi-download" style={{ marginLeft: '8px', fontSize: '16px' }}></i> {/* Download icon */}
@@ -362,6 +368,7 @@ const handleupdatenotes = async () => {
                             <li>No files uploaded.</li>
                           )}
                         </ul>
+
 
                       </div>
                     </Collapse>
