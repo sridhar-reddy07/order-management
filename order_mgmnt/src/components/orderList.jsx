@@ -283,7 +283,7 @@ const handleupdatenotes = async () => {
                   <i 
                           className="bi bi-pencil" 
                           style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                          onClick={() => handleOrder(order.orderNumber,order.clientName)}
+                          onClick={() => handleOrder(order.orderNumber,"clientName")}
                         ></i>
                   </td>
                   
