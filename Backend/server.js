@@ -108,24 +108,40 @@ app.post('/login', (req, res) => {
   
   // Route to handle form submission
  // Step 4: Route to handle form submission
-app.post('/addOrder', upload.array('files'), (req, res) => {
+ app.post('/addOrder', upload.array('files'), (req, res) => {
   const { 
     orderNumber, orderStatus, orderMethod, jobType, 
-    clientName, shippingAddress, trackingLabel, garmentDetails, 
-    garmentPo, team, dueDate, orderQty, notes 
+    clientName, clientPhone, clientgmail, shippingAddress, 
+    trackingLabel, garmentDetails, garmentPo, team, 
+    dueDate, orderQty, notes 
   } = req.body;
 
   // Step 5: Handle the file uploads - get the S3 URLs
   const files = req.files ? req.files.map(file => file.location).join(',') : '';
 
-  const sql = `INSERT INTO orders 
-    (orderNumber, orderStatus, orderMethod, jobType, clientName, 
-    shippingAddress, trackingLabel, garmentDetails, garmentPo, team, 
-    dueDate, orderQty, notes, files) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  // Get the sizes from req.body
+  const size_S = req.body.size_S || 0;
+  const size_M = req.body.size_M || 0;
+  const size_L = req.body.size_L || 0;
+  const size_XL = req.body.size_XL || 0;
+  const size_XXL = req.body.size_XXL || 0;
+  const size_3XL = req.body.size_3XL || 0;
+  const size_4XL = req.body.size_4XL || 0;
+  const size_5XL = req.body.size_5XL || 0;
 
-  db.query(sql, [orderNumber, orderStatus, orderMethod, jobType, clientName, 
-    shippingAddress, trackingLabel, garmentDetails, garmentPo, team, 
-    dueDate, orderQty, notes, files], (err, result) => {
+  const sql = `INSERT INTO orders 
+   (orderNumber, orderStatus, orderMethod, jobType, clientName, clientPhone, clientgmail, shippingAddress, 
+   trackingLabel, garmentDetails, garmentPo, team, dueDate, orderQty, notes, files, 
+   size_S, size_M, size_L, size_XL, size_XXL, size_3XL, size_4XL, size_5XL) 
+   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+  db.query(sql, [
+    orderNumber, orderStatus, orderMethod, jobType, clientName, 
+    clientPhone, clientgmail, shippingAddress, trackingLabel, 
+    garmentDetails, garmentPo, team, dueDate, orderQty, 
+    notes, files, 
+    size_S, size_M, size_L, size_XL, size_XXL, size_3XL, size_4XL, size_5XL
+  ], (err, result) => {
     if (err) {
       console.error(err);
       res.status(500).json({ message: 'An error occurred' });
