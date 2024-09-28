@@ -150,7 +150,7 @@ const AddOrder = () => {
             className="form-input"
           >
             <option value="ONLINE">ONLINE</option>
-            <option value="OFFLINE">OFFLINE</option>
+            <option value="WAREHOUSE JOBS">WAREHOUSE JOBS</option>
           </select>
         </div>
 
@@ -232,7 +232,7 @@ const AddOrder = () => {
             id="trackingLabel"
             value={trackingLabel}
             onChange={(e) => setTrackingLabel(e.target.value)}
-            required
+            
             className="form-input"
           />
         </div>

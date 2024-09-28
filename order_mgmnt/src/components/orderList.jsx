@@ -286,33 +286,53 @@ const handleupdatenotes = async () => {
                         </p>
                         
                         <p><strong>Files Uploaded:</strong></p>
-                          <ul>
-                            {order.files && order.files.length > 0 ? (
-                              order.files.map((file, idx) => (
-                                <li key={idx}>
-                                  
-                                    {file.fileUrl.match(/\.(jpeg|jpg|gif|png)$/i) ? (
-                                      <img
-                                        src={file.fileUrl}
-                                        alt={`file-${idx}`}
-                                        style={{
-                                          width: '100px',
-                                          height: '100px',
-                                          cursor: 'pointer',
-                                        }}
-                                        onClick={() => handleImageClick(file.fileUrl)} // Open the image on click
-                                      />
-                                    ) : (
-                                      <a href={file.fileUrl} download={file.fileUrl.split('/').pop()}>
-                                      <span>{file.fileUrl.split('/').pop()}</span> </a>
-                                    )}
-                                  
-                                </li>
-                              ))
-                            ) : (
-                              <li>No files uploaded.</li>
-                            )}
-                          </ul>
+                        <ul>
+                          {order.files && order.files.length > 0 ? (
+                            order.files.map((file, idx) => (
+                              <li key={idx} style={{ marginBottom: '15px' }}>
+                                {/* Image files (Preview + Download) */}
+                                {file.fileUrl.match(/\.(jpeg|jpg|gif|png)$/i) ? (
+                                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    <img
+                                      src={file.fileUrl}
+                                      alt={`file-${idx}`}
+                                      style={{
+                                        width: '100px',
+                                        height: '100px',
+                                        cursor: 'pointer',
+                                        marginRight: '10px',
+                                      }}
+                                      onClick={() => handleImageClick(file.fileUrl)} // Open the image on click
+                                    />
+                                    <a href={file.fileUrl} download={file.fileUrl.split('/').pop()} style={{ marginLeft: '10px' }}>
+                                      <FaDownload /> {/* Download icon */}
+                                    </a>
+                                  </div>
+                                ) : (
+                                  // Non-image files (Preview + Download)
+                                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    <iframe
+                                      src={file.fileUrl}
+                                      style={{
+                                        width: '150px',
+                                        height: '150px',
+                                        border: '1px solid #ddd',
+                                        marginRight: '10px',
+                                      }}
+                                      title={`file-preview-${idx}`}
+                                    />
+                                    <a href={file.fileUrl} download={file.fileUrl.split('/').pop()} style={{ marginLeft: '10px' }}>
+                                      <span>{file.fileUrl.split('/').pop()}</span>
+                                      <FaDownload style={{ marginLeft: '10px' }} /> {/* Download icon */}
+                                    </a>
+                                  </div>
+                                )}
+                              </li>
+                            ))
+                          ) : (
+                            <li>No files uploaded.</li>
+                          )}
+                        </ul>
 
                       </div>
                     </Collapse>
