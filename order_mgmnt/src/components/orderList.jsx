@@ -119,76 +119,7 @@ const OrderList = () => {
     }
   };
 
-  const handleAddTrackingLabel = (orderNumber) => {
-    setSelectedOrder(orderNumber); // Store the selected order number
-    setShowModal(true); // Show the modal for entering tracking label
-  };
-
-  const handleSubmitTrackingLabel = async () => {
-    try {
-      const response = await fetch(`http://137.184.75.176:5000/updateTrackingLabel/${selectedOrder}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ trackingLabel }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to update tracking label');
-      }
-
-      const updatedOrder = await response.json();
-      console.log('Tracking label updated successfully:', updatedOrder);
-
-      // Update the tracking label in the order list
-      setOrders((prevOrders) =>
-        prevOrders.map((order) =>
-          order.orderNumber === selectedOrder ? { ...order, trackingLabel } : order
-        )
-      );
-
-      setShowModal(false); // Hide the modal after submission
-      setTrackingLabel(''); // Clear the input field
-    } catch (error) {
-      console.error('Error updating tracking label:', error);
-    }
-  };
-  const handleaddnotes = (orderNumber) => {
-    setSelectedOrder(orderNumber); // Ensure the correct order is selected
-    setShowModal2(true); // Show the modal to edit notes
-  }
-
-const handleupdatenotes = async () => {
-  try {
-    const response = await fetch(`http://137.184.75.176:5000/updateordernotes/${selectedOrder}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ ordernotes }), // Send ordernotes instead of trackingLabel
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to update order notes');
-    }
-
-    const updatedOrder = await response.json();
-    alert('Order notes updated successfully 😘');
-
-    // Update the order notes in the order list
-    setOrders((prevOrders) =>
-      prevOrders.map((order) =>
-        order.orderNumber === selectedOrder ? { ...order, notes: ordernotes } : order
-      )
-    );
-
-    setShowModal2(false); // Hide the modal after submission
-    setOrdernotes(''); // Clear the input field
-  } catch (error) {
-    console.error('Error updating notes:', error);
-  }
-};
+  
   const handleUpdateOrder = async () => {
     try {
       // API call to update the selected order's specific field
@@ -292,8 +223,18 @@ const handleupdatenotes = async () => {
                   <td>{order.orderMethod}</td>
                   <td>{order.jobType}</td>
                   
-                  <td>{new Date(order.dueDate).toLocaleDateString('en-US')}</td>
-                  <td>{order.orderQty}</td>
+                  <td>{new Date(order.dueDate).toLocaleDateString('en-US')}
+                  
+                  </td>
+                  <td>{order.orderQty}
+                  <>
+                    {isAdmin ? (<i 
+                          className="bi bi-pencil" 
+                          style={{ cursor: 'pointer', marginLeft: '5px' }} 
+                          onClick={() => handleOrder(order.orderNumber,"orderQty")}
+                        ></i>) : ''}
+                  </>
+                  </td>
                   <td>{order.clientName}
                     <>
                     {isAdmin ? (<i 
@@ -301,8 +242,6 @@ const handleupdatenotes = async () => {
                           style={{ cursor: 'pointer', marginLeft: '5px' }} 
                           onClick={() => handleOrder(order.orderNumber,"clientName")}
                         ></i>) : ''}
-                  
-                  
                     </>
                     </td>
                   
@@ -311,17 +250,19 @@ const handleupdatenotes = async () => {
                     {order.trackingLabel ? (
                       <>
                         {order.trackingLabel}
-                        <i 
-                          className="bi bi-pencil" 
-                          style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                          onClick={() => handleAddTrackingLabel(order.orderNumber)}
-                        ></i>
+                        <>
+                          {isAdmin ? (<i 
+                                className="bi bi-pencil" 
+                                style={{ cursor: 'pointer', marginLeft: '5px' }} 
+                                onClick={() => handleOrder(order.orderNumber,"trackingLabel")}
+                              ></i>) : ''}
+                        </>
                       </>
                     ) : (
                       <button 
                         className="btn btn-primary" 
                         style={{ cursor: 'pointer' }} 
-                        onClick={() => handleAddTrackingLabel(order.orderNumber)}
+                        onClick={() => handleOrder(order.orderNumber,"trackingLabel")}
                       > 
                         Add num
                       </button>
@@ -333,15 +274,38 @@ const handleupdatenotes = async () => {
                   <td colSpan="6">
                     <Collapse in={openOrder === order.orderNumber}>
                       <div>
-                        <p><strong>Shipping Address:</strong> {order.shippingAddress}</p>
-                        <p><strong>Garment Details:</strong> {order.garmentDetails}</p>
-                        <p><strong>Garment PO:</strong> {order.garmentPo}</p>
+                        <p><strong>Shipping Address:</strong> {order.shippingAddress}
+                        <>
+                          {isAdmin ? (<i 
+                                className="bi bi-pencil" 
+                                style={{ cursor: 'pointer', marginLeft: '5px' }} 
+                                onClick={() => handleOrder(order.orderNumber,"shippingAddress")}
+                              ></i>) : ''}
+                        </>
+                        </p>
+                        <p><strong>Garment Details:</strong> {order.garmentDetails}
+                        <>
+                          {isAdmin ? (<i 
+                                className="bi bi-pencil" 
+                                style={{ cursor: 'pointer', marginLeft: '5px' }} 
+                                onClick={() => handleOrder(order.orderNumber,"garmentDetails")}
+                              ></i>) : ''}
+                        </></p>
+                        <p><strong>Garment PO:</strong> {order.garmentPo}
+                        <>
+                          {isAdmin ? (<i 
+                                className="bi bi-pencil" 
+                                style={{ cursor: 'pointer', marginLeft: '5px' }} 
+                                onClick={() => handleOrder(order.orderNumber,"garmentPO")}
+                              ></i>) : ''}
+                        </>
+                        </p>
                         <p><strong>Team:</strong> {order.team}</p>
                         <p><strong>Notes:</strong> {order.notes}
                         <i 
                           className="bi bi-pencil" 
                           style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                          onClick={() => handleaddnotes(order.orderNumber)}
+                          onClick={() => handleOrder(order.orderNumber,notes)}
                         ></i>
                         </p>
                         
@@ -464,32 +428,7 @@ const handleupdatenotes = async () => {
         </Modal.Footer>
       </Modal>
 
-      {/* Modal for updating notes */}
-      {/* Modal for updating notes */}
-      <Modal show={showModal2} onHide={() => setShowModal2(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Update Order Notes</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Group>
-            <Form.Label>Enter notes</Form.Label>
-            <Form.Control
-              as="textarea"  // Change to textarea
-              rows={3}       // Specify number of rows
-              value={ordernotes}
-              onChange={(e) => setOrdernotes(e.target.value)}  // Ensure state is updated on change
-            />
-          </Form.Group>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal2(false)}>
-            Cancel
-          </Button>
-          <Button variant="primary" onClick={handleupdatenotes}>
-            Submit
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      
       {/* Modal for displaying enlarged image */}
       <Modal show={showImageModal} onHide={() => setShowImageModal(false)} centered>
         <Modal.Header closeButton>
