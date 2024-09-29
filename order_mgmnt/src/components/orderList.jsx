@@ -151,7 +151,21 @@ const OrderList = () => {
     setField(field); // Track the field being updated
   };
 
-  
+  const deleteOrder = async (orderNumber) => {
+    const confirmDelete = window.confirm('Are you sure you want to delete this order?');
+    if (confirmDelete) {
+      try {
+        const response = await axios.delete(`http://137.184.75.176:5000/deleteorder/${orderNumber}`);
+        if (response.status === 200) {
+          setOrders(orders.filter(order => order.orderNumber !== orderNumber));
+          alert('Order deleted successfully.');
+        }
+      } catch (error) {
+        console.error('Error deleting order:', error);
+        alert('Failed to delete the order.');
+      }
+    }
+  };
 
   const toggleSortByDueDate = () => {
     setSortByDueDate(!sortByDueDate);
@@ -298,6 +312,14 @@ const OrderList = () => {
                         Add num
                       </button>
                     )}
+                  </td>
+
+                  <td>
+                    <i
+                      className="bi bi-trash"
+                      style={{ cursor: 'pointer', color: 'red' }}
+                      onClick={() => deleteOrder(order.orderNumber)}
+                    ></i>
                   </td>
 
                 </tr>

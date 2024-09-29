@@ -103,7 +103,25 @@ app.post('/login', (req, res) => {
   });
 });
 
+app.delete('/deleteorder/:orderNumber', (req, res) => {
+  const { orderNumber } = req.params;
 
+  // SQL query to delete the order from the database
+  const sql = 'DELETE FROM orders WHERE order_number = ?';
+
+  db.query(sql, [orderNumber], (err, result) => {
+    if (err) {
+      console.error('Error deleting the order:', err);
+      return res.status(500).json({ message: 'Failed to delete order' });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    res.status(200).json({ message: 'Order deleted successfully' });
+  });
+});
   
   
   // Route to handle form submission
