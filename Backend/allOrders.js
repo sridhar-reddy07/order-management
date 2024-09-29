@@ -4,7 +4,7 @@ const allOrdersTable = (db) => {
       id INT AUTO_INCREMENT PRIMARY KEY,
       orderNumber VARCHAR(255) NOT NULL , -- Unique order number
       orderStatus ENUM('PENDING', 'NEED PAYMENT', 'PENDING ARTWORK', 'APPROVED', 'HARDDATE', 'PENDING APPROVAL', 'READY', 'INPROGRESS', 'DONE', 'ONHOLD', 'COMPLETED', 'DTGEMD') NOT NULL,
-      orderMethod ENUM('ONLINE', 'OFFLINE') NOT NULL,
+      orderMethod ENUM('ONLINE', 'WAREHOUSE JOBS') NOT NULL,
       jobType ENUM('EMBROIDERY', 'SCREEN PRINTING', 'DTG', 'DTG+EMB', 'SP+EMB') NOT NULL,
       clientName VARCHAR(255) NOT NULL,
       clientPhone  VARCHAR(255) NOT NULL,
