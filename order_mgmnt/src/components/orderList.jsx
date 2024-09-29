@@ -65,6 +65,7 @@ const OrderList = () => {
 
         // Extract order_id from the response
         const orderId = data.order_id; // Ensure that the server returns { order_id: ... }
+        console.log(orderId)
 
         if (!orderId) {
             alert('Order not found');
