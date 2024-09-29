@@ -205,7 +205,7 @@ const OrderList = () => {
                 onClick={toggleSortByDueDate}
               ></i>
             </th>
-            <th scope="col" className="wide-col">Order Quantity</th>
+            
             <th scope="col" className="wide-col">Garment PO</th>
             <th scope="col" className="extra-wide-col">Tracking Number</th>
           </tr>
