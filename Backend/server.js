@@ -85,7 +85,7 @@ app.get('/getOrderId', async (req, res) => {
   try {
       // SQL query to get the order_id from the orders table using orderNumber and shippingAddress
       const query = 
-          'SELECT order_id FROM orders WHERE orderNumber = ? AND shippingAddress = ?';
+          'SELECT id FROM orders WHERE orderNumber = ? AND shippingAddress = ?';
           
       
       db.query(query,[orderNumber, shippingAddress], (err, result) => {
