@@ -177,14 +177,14 @@ const OrderList = () => {
       <table className="table table-striped table-hover">
         <thead className="thead-dark">
           <tr>
-            <th scope="col">Order Number</th>
-            <th scope="col">Client Name</th>
-            <th scope="col">Client Phone</th>
-            <th scope="col">Client Gmail</th>
-            <th scope="col">Order Status</th>
-            <th scope="col">Order Method</th>
-            <th scope="col">Job Type</th>
-            <th scope="col">
+            <th >Order Number</th>
+            <th >Client Name</th>
+            <th >Client Phone</th>
+            <th >Client Gmail</th>
+            <th >Order Status</th>
+            <th >Order Method</th>
+            <th >Job Type</th>
+            <th >
               Due Date
               <i
                 className={`bi bi-sort-${sortByDueDate ? 'down' : 'up'}`}
@@ -192,9 +192,9 @@ const OrderList = () => {
                 onClick={toggleSortByDueDate}
               ></i>
             </th>
-            <th scope="col">Order Quantity</th> 
-            <th scope="col">Garment PO</th>
-            <th scope="col">Tracking Number</th>
+            <th >Order Quantity</th> 
+            <th >Garment PO</th>
+            <th >Tracking Number</th>
           </tr>
         </thead>
         <tbody>
