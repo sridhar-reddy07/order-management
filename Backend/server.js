@@ -89,7 +89,7 @@ app.get('/getOrderId', async (req, res) => {
           
       
       db.query(query,[orderNumber, shippingAddress], (err, result) => {
-        console.log(result.id)
+        console.log(result[0].id)
         if (err) {
           console.error('Error querying MySQL:', err);
           res.status(500).json({ message: 'Error ' });
