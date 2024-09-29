@@ -93,10 +93,10 @@ app.get('/getOrderId', async (req, res) => {
         if (err) {
           console.error('Error querying MySQL:', err);
           res.status(500).json({ message: 'Error ' });
-        } else if (result.length > 0) {
+        } else if (result.id > 0) {
           // User exists and password matches
         res.status(200).json({ message: 'order found' });
-        return res.data;
+        return result.id;
         } else {
           // Invalid credentials
           res.status(401).json({ message: 'order not found' });
