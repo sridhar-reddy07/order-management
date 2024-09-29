@@ -84,17 +84,22 @@ app.get('/getOrderId', async (req, res) => {
   console.log(orderNumber,shippingAddress)
   try {
       // SQL query to get the order_id from the orders table using orderNumber and shippingAddress
-      const result = await pool.query(
-          'SELECT order_id FROM orders WHERE order_number = $1 AND shipping_address = $2', 
-          [orderNumber, shippingAddress]
-      );
+      const query = 
+          'SELECT order_id FROM orders WHERE order_number = ? AND shipping_address = ?';
+          
       
-      // Check if the order exists
-      if (result.rows.length > 0) {
-          return res.json(result.rows[0]);  // Return the found order_id
-      } else {
-          return res.status(404).json({ message: 'Order not found' });  // Return 404 if no order is found
-      }
+      db.query(query,[orderNumber, shippingAddress], (err, result) => {
+        if (err) {
+          console.error('Error querying MySQL:', err);
+          res.status(500).json({ message: 'Error ' });
+        } else if (result.length > 0) {
+          // User exists and password matches
+          res.status(200).json({ message: 'order found' });
+        } else {
+          // Invalid credentials
+          res.status(401).json({ message: 'order not found' });
+        }
+      });
   } catch (error) {
       console.error('Error fetching order:', error);
       return res.status(500).json({ message: 'Internal server error' });  // Handle server errors
