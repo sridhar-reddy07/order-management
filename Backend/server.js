@@ -187,6 +187,39 @@ app.put('/updateOrder/:orderNumber', (req, res) => {
 
 
 
+app.post('/orders/:order_id/sizes', async (req, res) => {
+  const { order_id } = req.params;
+  const sizeData = req.body;
+
+  try{
+
+    // Create the size record for the order
+    const orderSize = await OrderSize.create({
+      order_id: order_id, // Associate size with this order
+      category: sizeData.category,
+      description: sizeData.description,
+      color: sizeData.color,
+      xs: sizeData.xs,
+      s: sizeData.s,
+      m: sizeData.m,
+      l: sizeData.l,
+      xl: sizeData.xl,
+      xxl: sizeData.xxl,
+    });
+
+    res.status(201).json({
+      message: 'Size data added successfully',
+      orderSize,
+    });
+  } catch (error) {
+    console.error('Error adding size data:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+
+
 app.get('/ordersList', (req, res) => {
   const search = req.query.search || '';  // Get the search query from the request
 
