@@ -79,6 +79,30 @@ handleDisconnect();
 
 
 
+app.get('/getOrderId/:orderNumber', async (req, res) => {
+  const { orderId } = req.params;
+
+  try {
+      // SQL query to get the order_id from the orders table
+      const result = await pool.query('SELECT order_id FROM orders WHERE order_id = $1', [orderId]);
+      
+      // Check if order exists
+      if (result.rows.length > 0) {
+          return res.json(result.rows[0]);
+      } else {
+          return res.status(404).json({ message: 'Order not found' });
+      }
+  } catch (error) {
+      console.error('Error fetching order:', error);
+      return res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+// Start the server
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
+});
+
 
 
 // POST route for login validation

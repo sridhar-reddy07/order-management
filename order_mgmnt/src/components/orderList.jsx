@@ -19,7 +19,7 @@ const OrderList = () => {
   const [field, setField] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
   const [showSizeModal, setShowSizeModal] = useState(false); // State for Size Modal
-  const [selectedOrderForSize, setSelectedOrderForSize] = useState(null); // Track selected order for size
+ 
   const [address, setAddress] = useState('')
 
   const [sizeData, setSizeData] = useState({
@@ -34,34 +34,44 @@ const OrderList = () => {
     xxl: 0,
   });
   const handleSizeModalShow = (orderNumber,shippingAddress) => {
-    setSelectedOrderForSize(orderNumber); // Set the selected order number
+    setSelectedOrder(orderNumber); // Set the selected order number
     setAddress(shippingAddress)
     setShowSizeModal(true);
   };
+  
   const handleSizeFormSubmit = async () => {
     try {
-      // Replace these with actual values from the order
-      
-      
-  
-      // Step 1: Fetch order_id using orderNumber and shippingAddress
-      const orderId = await fetchOrderId(selectedOrder,address);
-  
-      if (!orderId) {
-        alert('Order not found');
-        return;
-      }
-  
-      // Step 2: Once the order_id is found, submit the size data
-      const response = await axios.post(`http://localhost:5000/orders/${orderId}/sizes`, sizeData);
-      console.log('Size data added:', response.data);
-  
-      // Close the modal after submission
-      setShowSizeModal(false);
+        // Step 1: Fetch order_id using orderNumber and shippingAddress
+        const response = await fetch(`http://137.184.75.176:3000/getOrderId/${selectedOrder}`);
+        
+        // Check if the response is ok
+        if (!response.ok) {
+            throw new Error('Order not found');
+        }
+
+        const data = await response.json(); // Parse the JSON response
+
+        // Extract order_id from the response
+        const orderId = data.order_id; // Ensure that the server returns { order_id: ... }
+
+        if (!orderId) {
+            alert('Order not found');
+            return;
+        }
+
+        // Step 2: Once the order_id is found, submit the size data
+        const sizeResponse = await axios.post(`http://137.184.75.176:5000/orders/${orderId}/sizes`, sizeData);
+
+        console.log('Size data added:', sizeResponse.data);
+
+        // Close the modal after submission
+        setShowSizeModal(false);
     } catch (error) {
-      console.error('Error adding size data:', error);
+        console.error('Error adding size data:', error);
+        alert(error.message); // Show alert for any errors
     }
-  };
+};
+
   
 
   useEffect(() => {
@@ -536,7 +546,7 @@ const OrderList = () => {
       </Modal>
 
       {/* Size Entry Modal */}
-      <Modal show={showSizeModal} onHide={handleSizeModalClose}>
+      <Modal show={showSizeModal} onHide={() => setShowSizeModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Add Sizes for Order #{selectedOrderForSize}</Modal.Title>
         </Modal.Header>
@@ -680,7 +690,7 @@ const OrderList = () => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleSizeModalClose}>
+          <Button variant="secondary" onClick={() => setShowSizeModal(false)}>
             Cancel
           </Button>
           <Button variant="primary" onClick={handleSizeFormSubmit}>
