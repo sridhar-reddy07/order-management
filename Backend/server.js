@@ -81,7 +81,7 @@ handleDisconnect();
 
 app.get('/getOrderId', async (req, res) => {
   const { orderNumber, shippingAddress } = req.query;  // Extract orderNumber and shippingAddress from query parameters
-
+  console.log(orderNumber,shippingAddress)
   try {
       // SQL query to get the order_id from the orders table using orderNumber and shippingAddress
       const result = await pool.query(
