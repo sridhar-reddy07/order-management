@@ -303,7 +303,7 @@ body {
 
 
 /* TableStyles.css */
-.th {
+.table-header th {
   padding: 10px 15px;
   min-width: 120px;
   text-align: left;
@@ -312,5 +312,16 @@ body {
   text-overflow: ellipsis; /* Add ellipsis for overflow */
 }
 
+.table-header .wide-col {
+  min-width: 150px;
+}
 
+.table-header .extra-wide-col {
+  min-width: 200px;
+}
+
+.table-header .sort-icon {
+  cursor: pointer;
+  margin-left: 5px;
+}
 

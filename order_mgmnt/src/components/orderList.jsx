@@ -175,26 +175,25 @@ const OrderList = () => {
       />
       
       <table className="table table-striped table-hover">
-        <thead className="thead-dark">
+        <thead className="thead-dark table-header">
           <tr>
-            <th >Order Number</th>
-            <th >Client Name</th>
-            <th >Client Phone</th>
-            <th >Client Gmail</th>
-            <th >Order Status</th>
-            <th >Order Method</th>
-            <th >Job Type</th>
-            <th >
+            <th scope="col">Order Number</th>
+            <th scope="col" className="wide-col">Client Name</th>
+            <th scope="col" className="wide-col">Client Phone</th>
+            <th scope="col" className="extra-wide-col">Client Gmail</th>
+            <th scope="col" className="wide-col">Order Status</th>
+            <th scope="col" className="wide-col">Order Method</th>
+            <th scope="col" className="wide-col">Job Type</th>
+            <th scope="col" className="wide-col">
               Due Date
               <i
-                className={`bi bi-sort-${sortByDueDate ? 'down' : 'up'}`}
-                style={{ cursor: 'pointer', marginLeft: '5px' }}
+                className={`bi bi-sort-${sortByDueDate ? 'down' : 'up'} sort-icon`}
                 onClick={toggleSortByDueDate}
               ></i>
             </th>
-            <th >Order Quantity</th> 
-            <th >Garment PO</th>
-            <th >Tracking Number</th>
+            <th scope="col" className="wide-col">Order Quantity</th>
+            <th scope="col" className="wide-col">Garment PO</th>
+            <th scope="col" className="extra-wide-col">Tracking Number</th>
           </tr>
         </thead>
         <tbody>
