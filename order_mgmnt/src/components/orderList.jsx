@@ -33,16 +33,25 @@ const OrderList = () => {
     xl: 0,
     xxl: 0,
   });
+
+  const handleSizeInputChange = (event) => {
+    const { name, value } = event.target;
+    setSizeData((prevData) => ({
+        ...prevData,
+        [name]: value
+    }));
+  };
+
   const handleSizeModalShow = (orderNumber,shippingAddress) => {
     setSelectedOrder(orderNumber); // Set the selected order number
     setAddress(shippingAddress)
     setShowSizeModal(true);
   };
-  
+
   const handleSizeFormSubmit = async () => {
     try {
-        // Step 1: Fetch order_id using orderNumber and shippingAddress
-        const response = await fetch(`http://137.184.75.176:3000/getOrderId/${selectedOrder}`);
+        // Step 1: Fetch order_id using orderNumber and shippingAddress via URL parameters
+        const response = await fetch(`http://137.184.75.176:3000/getOrderId?orderNumber=${encodeURIComponent(selectedOrder)}&shippingAddress=${encodeURIComponent(shippingAddress)}`);
         
         // Check if the response is ok
         if (!response.ok) {
@@ -548,7 +557,7 @@ const OrderList = () => {
       {/* Size Entry Modal */}
       <Modal show={showSizeModal} onHide={() => setShowSizeModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Add Sizes for Order #{selectedOrderForSize}</Modal.Title>
+          <Modal.Title>Add Sizes for Order #{selectedOrder}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
