@@ -324,4 +324,11 @@ body {
   cursor: pointer;
   margin-left: 5px;
 }
+.bi-trash {
+  font-size: 1.2em;
+  margin-left: 10px;
+}
 
+.bi-trash:hover {
+  color: darkred;
+}
