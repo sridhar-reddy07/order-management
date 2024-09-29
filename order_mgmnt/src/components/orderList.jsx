@@ -55,7 +55,7 @@ const OrderList = () => {
     try {
         // Step 1: Fetch order_id using orderNumber and shippingAddress via URL parameters
         const response = await fetch(`http://137.184.75.176:5000/getOrderId?orderNumber=${encodeURIComponent(selectedOrder)}&shippingAddress=${encodeURIComponent(address)}`);
-        
+        console.log(response);
         // Check if the response is ok
         if (!response.ok) {
             throw new Error('Order not found');
