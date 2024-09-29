@@ -112,7 +112,7 @@ app.post('/login', (req, res) => {
   const { 
     orderNumber, orderStatus, orderMethod, jobType, 
     clientName, clientPhone, clientgmail, shippingAddress, 
-    trackingLabel, garmentDetails, garmentPo, team, 
+    trackingLabel, garmentDetails, garmentPO, team, 
     dueDate, orderQty, notes 
   } = req.body;
 
@@ -131,14 +131,14 @@ app.post('/login', (req, res) => {
 
   const sql = `INSERT INTO orders 
    (orderNumber, orderStatus, orderMethod, jobType, clientName, clientPhone, clientgmail, shippingAddress, 
-   trackingLabel, garmentDetails, garmentPo, team, dueDate, orderQty,  
+   trackingLabel, garmentDetails, garmentPO, team, dueDate, orderQty,  
    size_S, size_M, size_L, size_XL, size_XXL, size_3XL, size_4XL, size_5XL,notes, files) 
    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)`;
 
   db.query(sql, [
     orderNumber, orderStatus, orderMethod, jobType, clientName, 
     clientPhone, clientgmail, shippingAddress, trackingLabel, 
-    garmentDetails, garmentPo, team, dueDate, orderQty, 
+    garmentDetails, garmentPO, team, dueDate, orderQty, 
     
     size_S, size_M, size_L, size_XL, size_XXL, size_3XL, size_4XL, size_5XL,notes, files
   ], (err, result) => {

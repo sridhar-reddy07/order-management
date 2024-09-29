@@ -178,6 +178,9 @@ const OrderList = () => {
         <thead className="thead-dark">
           <tr>
             <th scope="col">Order Number</th>
+            <th scope="col">Client Name</th>
+            <th scope="col">Client Phone</th>
+            <th scope="col">Client Gmail</th>
             <th scope="col">Order Status</th>
             <th scope="col">Order Method</th>
             <th scope="col">Job Type</th>
@@ -189,8 +192,8 @@ const OrderList = () => {
                 onClick={toggleSortByDueDate}
               ></i>
             </th>
-            <th scope="col">Order Quantity</th>
-            <th scope="col">Client Name</th>
+            <th scope="col">Order Quantity</th> 
+            <th scope="col">Garment PO</th>
             <th scope="col">Tracking Number</th>
           </tr>
         </thead>
@@ -203,6 +206,33 @@ const OrderList = () => {
                   <td className="order-cell">
                     <i className="bi bi-eye" onClick={() => handleOrderClick(order.orderNumber)}></i>
                     {order.orderNumber}
+                  </td>
+                  <td>{order.clientName}
+                    <>
+                    {isAdmin ? (<i 
+                          className="bi bi-pencil" 
+                          style={{ cursor: 'pointer', marginLeft: '5px' }} 
+                          onClick={() => handleOrder(order.orderNumber,"clientName")}
+                        ></i>) : ''}
+                    </>
+                  </td>
+                  <td>{order.clientPhone}
+                    <>
+                    {isAdmin ? (<i 
+                          className="bi bi-pencil" 
+                          style={{ cursor: 'pointer', marginLeft: '5px' }} 
+                          onClick={() => handleOrder(order.orderNumber,"clientPhone")}
+                        ></i>) : ''}
+                    </>
+                  </td>
+                  <td>{order.clientgmail}
+                    <>
+                    {isAdmin ? (<i 
+                          className="bi bi-pencil" 
+                          style={{ cursor: 'pointer', marginLeft: '5px' }} 
+                          onClick={() => handleOrder(order.orderNumber,"clientgmail")}
+                        ></i>) : ''}
+                    </>
                   </td>
                   <td>
                     <select
@@ -235,15 +265,17 @@ const OrderList = () => {
                         ></i>) : ''}
                   </>
                   </td>
-                  <td>{order.clientName}
-                    <>
+                  
+
+                  <td>{order.garmentPO}
+                  <>
                     {isAdmin ? (<i 
                           className="bi bi-pencil" 
                           style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                          onClick={() => handleOrder(order.orderNumber,"clientName")}
+                          onClick={() => handleOrder(order.orderNumber,"garmentPO")}
                         ></i>) : ''}
-                    </>
-                    </td>
+                  </>
+                  </td>
                   
                   
                   <td>
@@ -291,15 +323,7 @@ const OrderList = () => {
                                 onClick={() => handleOrder(order.orderNumber,"garmentDetails")}
                               ></i>) : ''}
                         </></p>
-                        <p><strong>Garment PO:</strong> {order.garmentPo}
-                        <>
-                          {isAdmin ? (<i 
-                                className="bi bi-pencil" 
-                                style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                                onClick={() => handleOrder(order.orderNumber,"garmentPO")}
-                              ></i>) : ''}
-                        </>
-                        </p>
+                        
                         <p><strong>Team:</strong> {order.team}</p>
                         <p><strong>Notes:</strong> {order.notes}
                         <i 
@@ -309,7 +333,7 @@ const OrderList = () => {
                         ></i>
                         </p>
                         
-                        <p><strong>Files Uploaded:</strong></p>
+                       
                         <p><strong>Files Uploaded:</strong></p>
                         <ul>
                           {order.files && order.files.length > 0 ? (
