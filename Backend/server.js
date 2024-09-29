@@ -107,7 +107,7 @@ app.delete('/deleteorder/:orderNumber', (req, res) => {
   const { orderNumber } = req.params;
 
   // SQL query to delete the order from the database
-  const sql = 'DELETE FROM orders WHERE order_number = ?';
+  const sql = 'DELETE FROM orders WHERE orderNumber = ?';
 
   db.query(sql, [orderNumber], (err, result) => {
     if (err) {
