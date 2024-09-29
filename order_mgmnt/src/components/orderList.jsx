@@ -269,15 +269,7 @@ const OrderList = () => {
                   <td>{new Date(order.dueDate).toLocaleDateString('en-US')}
                   
                   </td>
-                  <td>{order.orderQty}
-                  <>
-                    {isAdmin ? (<i 
-                          className="bi bi-pencil" 
-                          style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                          onClick={() => handleOrder(order.orderNumber,"orderQty")}
-                        ></i>) : ''}
-                  </>
-                  </td>
+                  
                   
 
                   <td>{order.garmentPO}

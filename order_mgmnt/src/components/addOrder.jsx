@@ -15,15 +15,7 @@ const AddOrder = () => {
   const [garmentPo, setGarmentPo] = useState('');
   const [team, setTeam] = useState('');
   const [dueDate, setDueDate] = useState('');
-  const [orderQty, setOrderQty] = useState(0); // New state for Order Quantity
-  const [size_S, setSizeS] = useState(0); // Size S
-  const [size_M, setSizeM] = useState(0); // Size M
-  const [size_L, setSizeL] = useState(0); // Size L
-  const [size_XL, setSizeXL] = useState(0); // Size XL
-  const [size_XXL, setSizeXXL] = useState(0); // Size XXL
-  const [size_3XL, setSize3XL] = useState(0); // Size 3XL
-  const [size_4XL, setSize4XL] = useState(0); // Size 4XL
-  const [size_5XL, setSize5XL] = useState(0); // Size 5XL
+  
  
   const [invoice, setInvoice] = useState(''); // New Invoice field
   const [notes, setNotes] = useState('');
@@ -41,15 +33,7 @@ const AddOrder = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const totalOrderQty = 
-    parseInt(size_S || 0) +
-    parseInt(size_M || 0) +
-    parseInt(size_L || 0) +
-    parseInt(size_XL || 0) +
-    parseInt(size_XXL || 0) +
-    parseInt(size_3XL || 0) +
-    parseInt(size_4XL || 0) +
-    parseInt(size_5XL || 0);
+    
 
     const formData = new FormData();
     formData.append('orderNumber', orderNumber);
@@ -65,15 +49,7 @@ const AddOrder = () => {
     formData.append('garmentPo', garmentPo);
     formData.append('team', team);
     formData.append('dueDate', dueDate);
-    formData.append('orderQty',totalOrderQty);
-    formData.append('size_S', size_S);
-    formData.append('size_M', size_M);
-    formData.append('size_L', size_L);
-    formData.append('size_XL', size_XL);
-    formData.append('size_XXL', size_XXL);
-    formData.append('size_3XL', size_3XL);
-    formData.append('size_4XL', size_4XL);
-    formData.append('size_5XL', size_5XL);
+    
     formData.append('invoice', invoice);
     formData.append('notes', notes);
     
@@ -291,87 +267,7 @@ const AddOrder = () => {
           />
         </div>
 
-        {/* Size Inputs */}
-        <div className="form-group">
-          <label htmlFor="size_S">Size S:</label>
-          <input
-            type="number"
-            id="size_S"
-            value={size_S}
-            onChange={(e) => setSizeS(e.target.value)}
-            className="form-input"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="size_M">Size M:</label>
-          <input
-            type="number"
-            id="size_M"
-            value={size_M}
-            onChange={(e) => setSizeM(e.target.value)}
-            className="form-input"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="size_L">Size L:</label>
-          <input
-            type="number"
-            id="size_L"
-            value={size_L}
-            onChange={(e) => setSizeL(e.target.value)}
-            className="form-input"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="size_XL">Size XL:</label>
-          <input
-            type="number"
-            id="size_XL"
-            value={size_XL}
-            onChange={(e) => setSizeXL(e.target.value)}
-            className="form-input"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="size_XXL">Size XXL:</label>
-          <input
-            type="number"
-            id="size_XXL"
-            value={size_XXL}
-            onChange={(e) => setSizeXXL(e.target.value)}
-            className="form-input"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="size_3XL">Size 3XL:</label>
-          <input
-            type="number"
-            id="size_3XL"
-            value={size_3XL}
-            onChange={(e) => setSize3XL(e.target.value)}
-            className="form-input"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="size_4XL">Size 4XL:</label>
-          <input
-            type="number"
-            id="size_4XL"
-            value={size_4XL}
-            onChange={(e) => setSize4XL(e.target.value)}
-            className="form-input"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="size_5XL">Size 5XL:</label>
-          <input
-            type="number"
-            id="size_5XL"
-            value={size_5XL}
-            onChange={(e) => setSize5XL(e.target.value)}
-            className="form-input"
-          />
-        </div>
+        
         {/* Notes */}
         <div className="form-group">
           <label htmlFor="notes">Notes:</label>
