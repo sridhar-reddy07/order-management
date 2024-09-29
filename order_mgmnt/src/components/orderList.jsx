@@ -24,7 +24,7 @@ const OrderList = () => {
 
   const [sizeData, setSizeData] = useState({
     category: 'Adult', // Default category
-    desc: '',
+    description: '',
     color: '',
     xs: 0,
     s: 0,
@@ -32,6 +32,9 @@ const OrderList = () => {
     l: 0,
     xl: 0,
     xxl: 0,
+    xxxl:0,
+    xxxxl:0,
+    xxxxxl:0,
   });
 
   const handleSizeInputChange = (event) => {
@@ -581,7 +584,7 @@ const OrderList = () => {
               <Form.Label>Description</Form.Label>
               <Form.Control
                 type="text"
-                name="desc"
+                name="description"
                 value={sizeData.description}
                 onChange={handleSizeInputChange}
                 placeholder="Enter description"
@@ -679,7 +682,7 @@ const OrderList = () => {
                   <Form.Control
                     type="number"
                     name="xxxxl"
-                    value={sizeData.xxxl}
+                    value={sizeData.xxxxl}
                     onChange={handleSizeInputChange}
                     placeholder="XXXXL"
                   />
