@@ -159,7 +159,7 @@ const OrderList = () => {
     const fetchOrderSizes = async (orderId) => {
       if (orderId) {
         try {
-          const response = await axios.get(`http://137.184.75.176:5000/orders/${orderId}/sizes`);
+          const response = await axios.get(`http://137.184.75.176:5000/fetchorders/${orderId}/sizes`);
           setOrderSizes((prevSizes) => ({
             ...prevSizes,
             [orderId]: response.data, // Store sizes for this order

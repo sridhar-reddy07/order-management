@@ -221,6 +221,32 @@ app.put('/updateOrder/:orderNumber', (req, res) => {
 
 
 
+app.get('/fetchorders/:order_id/sizes', (req, res) => {
+  const orderId = req.params.order_id;
+
+  const query = `
+      SELECT * FROM orderSizes
+      WHERE order_id = ?
+  `;
+
+  db.query(query, [orderId], (err, results) => {
+      if (err) {
+          console.error('Error fetching order sizes:', err);
+          return res.status(500).json({ message: 'Internal Server Error' });
+      }
+
+      if (results.length === 0) {
+          return res.status(404).json({ message: 'No sizes found for this order' });
+      }
+
+      return res.status(200).json(results);
+  });
+});
+
+
+
+
+
 app.post('/orders/:order_id/sizes', async (req, res) => {
   const { order_id } = req.params;
   const sizeData = req.body;
