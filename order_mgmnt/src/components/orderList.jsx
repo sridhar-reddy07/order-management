@@ -20,6 +20,7 @@ const OrderList = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [showSizeModal, setShowSizeModal] = useState(false); // State for Size Modal
   const [orderSizes, setOrderSizes] = useState({});
+  const [orderId, setOrderId] = useState(null);
  
   const [address, setAddress] = useState('')
 
@@ -156,7 +157,7 @@ const OrderList = () => {
 
 
   useEffect(() => {
-    const fetchOrderSizes = async (orderId) => {
+    const fetchOrderSizes = async () => {
       console.log(orderId)
       if (orderId) {
         try {
@@ -173,12 +174,14 @@ const OrderList = () => {
     };
 
     if (openOrder) {
-      fetchOrderSizes(orders.id); // Fetch sizes only when an order is opened
+      fetchOrderSizes(); // Fetch sizes only when an order is opened
     }
   }, [openOrder]);
 
-  const handleOrderClick = (orderNumber) => {
+  const handleOrderClick = (orderNumber,order_Id) => {
     setOpenOrder(openOrder === orderNumber ? null : orderNumber);
+    setOrderId(order_Id)
+
   };
 
   console.log(orderSizes);
@@ -330,7 +333,7 @@ const OrderList = () => {
               <React.Fragment key={index}>
                 <tr>
                   <td className="order-cell">
-                    <i className="bi bi-eye" onClick={() => handleOrderClick(order.orderNumber)}></i>
+                    <i className="bi bi-eye" onClick={() => handleOrderClick(order.orderNumber,order.id)}></i>
                     {order.orderNumber}
                   </td>
                   <td>{order.clientName}
