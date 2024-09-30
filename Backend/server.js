@@ -223,6 +223,7 @@ app.put('/updateOrder/:orderNumber', (req, res) => {
 
 app.get('/fetchorders/:order_id/sizes', (req, res) => {
   const orderId = req.params.order_id;
+  console.log(orderId);
 
   const query = `
       SELECT * FROM orderSizes
@@ -238,7 +239,7 @@ app.get('/fetchorders/:order_id/sizes', (req, res) => {
       if (results.length === 0) {
           return res.status(404).json({ message: 'No sizes found for this order' });
       }
-
+      console.log(results)
       return res.status(200).json(results);
   });
 });
