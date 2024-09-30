@@ -578,158 +578,174 @@ const OrderList = () => {
       </Modal>
 
       {/* Size Entry Modal */}
-      <Modal show={showSizeModal} onHide={() => setShowSizeModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add Sizes for Order #{selectedOrder}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            {/* Category Dropdown */}
-            <Form.Group controlId="formCategory">
-              <Form.Label>Category</Form.Label>
-              <Form.Control
-                as="select"
-                name="category"
-                value={sizeData.category}
-                onChange={handleSizeInputChange}
-              >
-                <option value="Adult">Adult</option>
-                <option value="Youth">Youth</option>
-                <option value="Ladies">Ladies</option>
-              </Form.Control>
-            </Form.Group>
+        <Modal show={showSizeModal} onHide={() => setShowSizeModal(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Add Sizes for Order #{selectedOrder}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              {/* Category Dropdown */}
+              <Form.Group controlId="formCategory">
+                <Form.Label>Category</Form.Label>
+                <Form.Control
+                  as="select"
+                  name="category"
+                  value={sizeData.category}
+                  onChange={handleSizeInputChange}
+                >
+                  <option value="Adult">Adult</option>
+                  <option value="Youth">Youth</option>
+                  <option value="Ladies">Ladies</option>
+                </Form.Control>
+              </Form.Group>
 
-            {/* Description */}
-            <Form.Group controlId="formDesc">
-              <Form.Label>Description</Form.Label>
-              <Form.Control
-                type="text"
-                name="description"
-                value={sizeData.description}
-                onChange={handleSizeInputChange}
-                placeholder="Enter description"
-              />
-            </Form.Group>
+              {/* Description */}
+              <Form.Group controlId="formDesc">
+                <Form.Label>Description</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="description"
+                  value={sizeData.description}
+                  onChange={handleSizeInputChange}
+                  placeholder="Enter description"
+                />
+              </Form.Group>
 
-            {/* Color */}
-            <Form.Group controlId="formColor">
-              <Form.Label>Color</Form.Label>
-              <Form.Control
-                type="text"
-                name="color"
-                value={sizeData.color}
-                onChange={handleSizeInputChange}
-                placeholder="Enter color"
-              />
-            </Form.Group>
+              {/* Color */}
+              <Form.Group controlId="formColor">
+                <Form.Label>Color</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="color"
+                  value={sizeData.color}
+                  onChange={handleSizeInputChange}
+                  placeholder="Enter color"
+                />
+              </Form.Group>
 
-            {/* Size Inputs */}
-            <Form.Group controlId="formSizes">
-              <Form.Label>Sizes</Form.Label>
-              <div className="row">
-                <div className="col-6">
-                  <Form.Label>XS</Form.Label>
-                  <Form.Control
-                    type="number"
-                    name="xs"
-                    value={sizeData.xs}
-                    onChange={handleSizeInputChange}
-                    placeholder="XS"
-                  />
+              {/* Size Inputs */}
+              <Form.Group controlId="formSizes">
+                <Form.Label>Sizes</Form.Label>
+
+                {/* First Row: XS, S, M, L */}
+                <div className="row mb-3">
+                  <div className="col-md-3 col-sm-4 col-6 mb-2">
+                    <Form.Label>XS</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="xs"
+                      value={sizeData.xs}
+                      onChange={handleSizeInputChange}
+                      placeholder="XS"
+                      min="0"
+                    />
+                  </div>
+                  <div className="col-md-3 col-sm-4 col-6 mb-2">
+                    <Form.Label>S</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="s"
+                      value={sizeData.s}
+                      onChange={handleSizeInputChange}
+                      placeholder="S"
+                      min="0"
+                    />
+                  </div>
+                  <div className="col-md-3 col-sm-4 col-6 mb-2">
+                    <Form.Label>M</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="m"
+                      value={sizeData.m}
+                      onChange={handleSizeInputChange}
+                      placeholder="M"
+                      min="0"
+                    />
+                  </div>
+                  <div className="col-md-3 col-sm-4 col-6 mb-2">
+                    <Form.Label>L</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="l"
+                      value={sizeData.l}
+                      onChange={handleSizeInputChange}
+                      placeholder="L"
+                      min="0"
+                    />
+                  </div>
                 </div>
-                <div className="col">
-                  <Form.Label>S</Form.Label>
-                  <Form.Control
-                    type="number"
-                    name="s"
-                    value={sizeData.s}
-                    onChange={handleSizeInputChange}
-                    placeholder="S"
-                  />
+
+                {/* Second Row: XL, XXL, XXXL, XXXXL, XXXXXL */}
+                <div className="row">
+                  <div className="col-md-2 col-sm-4 col-6 mb-2">
+                    <Form.Label>XL</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="xl"
+                      value={sizeData.xl}
+                      onChange={handleSizeInputChange}
+                      placeholder="XL"
+                      min="0"
+                    />
+                  </div>
+                  <div className="col-md-2 col-sm-4 col-6 mb-2">
+                    <Form.Label>2XL</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="xxl"
+                      value={sizeData.xxl}
+                      onChange={handleSizeInputChange}
+                      placeholder="XXL"
+                      min="0"
+                    />
+                  </div>
+                  <div className="col-md-2 col-sm-4 col-6 mb-2">
+                    <Form.Label>3XL</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="xxxl"
+                      value={sizeData.xxxl}
+                      onChange={handleSizeInputChange}
+                      placeholder="XXXL"
+                      min="0"
+                    />
+                  </div>
+                  <div className="col-md-2 col-sm-4 col-6 mb-2">
+                    <Form.Label>4XL</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="xxxxl"
+                      value={sizeData.xxxxl}
+                      onChange={handleSizeInputChange}
+                      placeholder="XXXXL"
+                      min="0"
+                    />
+                  </div>
+                  <div className="col-md-2 col-sm-4 col-6 mb-2">
+                    <Form.Label>5XL</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="xxxxxl"
+                      value={sizeData.xxxxxl}
+                      onChange={handleSizeInputChange}
+                      placeholder="XXXXXL"
+                      min="0"
+                    />
+                  </div>
                 </div>
-                <div className="col">
-                  <Form.Label>M</Form.Label>
-                  <Form.Control
-                    type="number"
-                    name="m"
-                    value={sizeData.m}
-                    onChange={handleSizeInputChange}
-                    placeholder="M"
-                  />
-                </div>
-                <div className="col">
-                  <Form.Label>L</Form.Label>
-                  <Form.Control
-                    type="number"
-                    name="l"
-                    value={sizeData.l}
-                    onChange={handleSizeInputChange}
-                    placeholder="L"
-                  />
-                </div>
-                <div className="col">
-                  <Form.Label>XL</Form.Label>
-                  <Form.Control
-                    type="number"
-                    name="xl"
-                    value={sizeData.xl}
-                    onChange={handleSizeInputChange}
-                    placeholder="XL"
-                  />
-                </div>
-                <div className="col">
-                  <Form.Label>2XL</Form.Label>
-                  <Form.Control
-                    type="number"
-                    name="xxl"
-                    value={sizeData.xxl}
-                    onChange={handleSizeInputChange}
-                    placeholder="XXL"
-                  />
-                </div>
-                <div className="col">
-                  <Form.Label>3XL</Form.Label>
-                  <Form.Control
-                    type="number"
-                    name="xxxl"
-                    value={sizeData.xxxl}
-                    onChange={handleSizeInputChange}
-                    placeholder="XXXL"
-                  />
-                </div>
-                <div className="col">
-                  <Form.Label>4XL</Form.Label>
-                  <Form.Control
-                    type="number"
-                    name="xxxxl"
-                    value={sizeData.xxxxl}
-                    onChange={handleSizeInputChange}
-                    placeholder="XXXXL"
-                  />
-                </div>
-                <div className="col">
-                  <Form.Label>5XL</Form.Label>
-                  <Form.Control
-                    type="number"
-                    name="xxxxxl"
-                    value={sizeData.xxxxxl}
-                    onChange={handleSizeInputChange}
-                    placeholder="XXXXXL"
-                  />
-                </div>
-              </div>
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowSizeModal(false)}>
-            Cancel
-          </Button>
-          <Button variant="primary" onClick={handleSizeFormSubmit}>
-            Submit
-          </Button>
-        </Modal.Footer>
-      </Modal>
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowSizeModal(false)}>
+              Cancel
+            </Button>
+            <Button variant="primary" onClick={handleSizeFormSubmit}>
+              Submit
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
 
     </div>
   );
