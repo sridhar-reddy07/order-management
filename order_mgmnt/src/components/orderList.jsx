@@ -157,6 +157,7 @@ const OrderList = () => {
 
   useEffect(() => {
     const fetchOrderSizes = async (orderId) => {
+      console.log(orderId)
       if (orderId) {
         try {
           const response = await axios.get(`http://137.184.75.176:5000/fetchorders/${orderId}/sizes`);
