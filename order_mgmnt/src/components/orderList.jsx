@@ -56,14 +56,14 @@ const OrderList = () => {
 
   const handleSizeFormSubmit = async () => {
     try {
-      const response = await fetch(`http://137.184.75.176:5000/getOrderId?orderNumber=${encodeURIComponent(selectedOrder)}&shippingAddress=${encodeURIComponent(address)}`);
+      const response = await fetch(`http://137.184.75.176:5000/getOrderId?orderNumber=${selectedOrder}&shippingAddress=${address}`);
       
       if (!response.ok) {
         throw new Error('Order not found');
       }
   
       const data = await response.json();
-      const orderId = data.order_id;
+      console.log(data);
   
       if (!orderId) {
         alert('Order not found');
