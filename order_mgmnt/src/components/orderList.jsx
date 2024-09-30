@@ -677,7 +677,7 @@ const OrderList = () => {
 
                 {/* Second Row: XL, XXL, XXXL, XXXXL, XXXXXL */}
                 <div className="row">
-                  <div className="col-md-2 col-sm-4 col-6 mb-2">
+                  <div className="col-md-3 col-sm-4 col-6 mb-2">
                     <Form.Label>XL</Form.Label>
                     <Form.Control
                       type="number"
@@ -688,7 +688,7 @@ const OrderList = () => {
                       min="0"
                     />
                   </div>
-                  <div className="col-md-2 col-sm-4 col-6 mb-2">
+                  <div className="col-md-3 col-sm-4 col-6 mb-2">
                     <Form.Label>2XL</Form.Label>
                     <Form.Control
                       type="number"
@@ -699,7 +699,7 @@ const OrderList = () => {
                       min="0"
                     />
                   </div>
-                  <div className="col-md-2 col-sm-4 col-6 mb-2">
+                  <div className="col-md-3 col-sm-4 col-6 mb-2">
                     <Form.Label>3XL</Form.Label>
                     <Form.Control
                       type="number"
@@ -713,7 +713,7 @@ const OrderList = () => {
                   
                 </div>
                 <div className='row'>
-                  <div className="col-md-2 col-sm-4 col-6 mb-2">
+                  <div className="col-md-3 col-sm-4 col-6 mb-2">
                       <Form.Label>4XL</Form.Label>
                       <Form.Control
                         type="number"
@@ -724,7 +724,7 @@ const OrderList = () => {
                         min="0"
                       />
                     </div>
-                    <div className="col-md-2 col-sm-4 col-6 mb-2">
+                    <div className="col-md-3 col-sm-4 col-6 mb-2">
                       <Form.Label>5XL</Form.Label>
                       <Form.Control
                         type="number"
