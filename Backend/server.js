@@ -81,28 +81,32 @@ handleDisconnect();
 
 app.get('/getOrderId', async (req, res) => {
   const { orderNumber, shippingAddress } = req.query;  // Extract orderNumber and shippingAddress from query parameters
-  console.log(orderNumber, shippingAddress);
+  console.log(`Received request: orderNumber=${orderNumber}, shippingAddress=${shippingAddress}`);
+
+  // Basic validation to ensure orderNumber and shippingAddress are provided
+  if (!orderNumber || !shippingAddress) {
+    return res.status(400).json({ message: 'Missing orderNumber or shippingAddress' });
+  }
 
   try {
     // SQL query to get the order_id from the orders table using orderNumber and shippingAddress
-    const query = 'SELECT id FROM orders WHERE orderNumber = ? AND shippingAddress = ?';
+    const queryStr = 'SELECT id FROM orders WHERE orderNumber = ? AND shippingAddress = ?';
     
-    db.query(query, [orderNumber, shippingAddress], (err, result) => {
-      if (err) {
-        console.error('Error querying MySQL:', err);
-        return res.status(500).json({ message: 'Error querying the database' });
-      } 
-      console.log(result)
-      console.log(result.length)
-      // Check if any result is returned
-      if (result.length === 0) {
-        return res.status(404).json({ message: 'Order not found' });
-      }
+    // Execute query
+    const result = await query(queryStr, [orderNumber, shippingAddress]);
 
-      // If order is found, return the order ID
-      console.log('Order ID:', result[0].id);
-      return res.status(200).json({ order_id: result[0].id });
-    });
+    console.log('Query result:', result);
+
+    // Check if any result is returned
+    if (result.length === 0) {
+      console.log('Order not found');
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    // If order is found, return the order ID
+    console.log('Order ID:', result[0].id);
+    return res.status(200).json({ order_id: result[0].id });
+    
   } catch (error) {
     console.error('Error fetching order:', error);
     return res.status(500).json({ message: 'Internal server error' });
