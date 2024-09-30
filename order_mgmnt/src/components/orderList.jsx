@@ -466,11 +466,12 @@ const OrderList = () => {
                         
 
                         <h5>Order Sizes</h5>
-                        {orderSizes[order.orderNumber] ? (
+                        {orderSizes[order.id] ? (
                           <ul>
-                            {orderSizes[order.orderNumber].map((size, idx) => (
+                            {orderSizes[order.id].map((size, idx) => (
                               <li key={idx}>
-                                {size.category}: XS({size.xs}), S({size.s}), M({size.m}),
+
+                                {size.category},{size.color}: XS({size.xs}), S({size.s}), M({size.m}),
                                 L({size.l}), XL({size.xl}), XXL({size.xxl}), 3XL({size.xxxl}),
                                 4XL({size.xxxxl}), 5XL({size.xxxxxl})
                               </li>
