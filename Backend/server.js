@@ -524,7 +524,7 @@ app.get('/karachiList', (req, res) => {
 
 
 
-  app.get('/wareHouseList', (req, res) => {
+  app.get('/bobjobs', (req, res) => {
     const search = req.query.search || '';  // Get the search query from the request
   
     const sql = `
@@ -540,7 +540,7 @@ app.get('/karachiList', (req, res) => {
         orderMethod COLLATE utf8mb4_general_ci LIKE ? OR
         orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
         team COLLATE utf8mb4_general_ci LIKE ?
-      ) And team = 'WAREHOUSE JOBS'
+      ) And team = 'BOB JOB'
       ORDER BY 
         CASE 
           WHEN orderStatus = 'HARDDATE' THEN 1

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Collapse, Modal, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 
-const DtgEmb = () => {
+const BobJobs = () => {
   const [orders, setOrders] = useState([]);
   const [openOrder, setOpenOrder] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -69,7 +69,7 @@ const DtgEmb = () => {
       }
   
       const data = await response.json();  // Correctly parse the response JSON
-      console.log(data + "kjhgfyhj");  // Log the received order ID or response
+   
   
       if (!data || !data.order_id) {  // Check if order_id exists in the response
         alert('Order not found');
@@ -128,7 +128,7 @@ const DtgEmb = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch('http://137.184.75.176:5000/dtgEmbList');
+        const response = await fetch('http://137.184.75.176:5000/bobJobs');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -145,7 +145,7 @@ const DtgEmb = () => {
   }, []);
   useEffect(() => {
     // Fetch orders with the search query
-    axios.get(`http://137.184.75.176:5000/dtgEmbList?search=${search}`)
+    axios.get(`http://137.184.75.176:5000/bobJobs?search=${search}`)
       .then((response) => {
         console.log(response)
         setOrders(response.data);
@@ -800,4 +800,4 @@ const DtgEmb = () => {
   );
 };
 
-export default DtgEmb;
+export default BobJobs;

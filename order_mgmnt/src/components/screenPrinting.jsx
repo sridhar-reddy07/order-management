@@ -9,15 +9,121 @@ const ScreenPrinting = () => {
   const [selectedOrder, setSelectedOrder] = useState(null); // To store the order for which "Add num" was clicked
   const [trackingLabel, setTrackingLabel] = useState(''); // To store the tracking label input
   const [showModal2, setShowModal2] = useState(false);
+  const [showModal3, setShowModal3] = useState('');
   const [ordernotes, setOrdernotes] = useState("");
   const [search, setSearch] = useState('')
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState('');
+  const [sortByDueDate, setSortByDueDate] = useState(false); // Add sorting toggle
+  const [updatedOrder, setUpdatedOrder] =useState(null);
+  const [field, setField] = useState('');
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [showSizeModal, setShowSizeModal] = useState(false); // State for Size Modal
+  const [orderSizes, setOrderSizes] = useState({});
+  const [orderId, setOrderId] = useState(null);
+ 
+  const [address, setAddress] = useState('')
+
+  const [sizeData, setSizeData] = useState({
+    category: 'Adult', // Default category
+    description: '',
+    color: '',
+    xs: 0,
+    s: 0,
+    m: 0,
+    l: 0,
+    xl: 0,
+    xxl: 0,
+    xxxl:0,
+    xxxxl:0,
+    xxxxxl:0,
+  });
+
+  const handleSizeInputChange = (event) => {
+    const { name, value } = event.target;
+    setSizeData((prevData) => ({
+      ...prevData,
+      [name]: name === 'xs' || name === 's' || name === 'm' || name === 'l' || name === 'xl' || name === 'xxl' || name === 'xxxl' || name === 'xxxxl' || name === 'xxxxxl'
+        ? parseInt(value) || 0  // Convert to number or default to 0 if empty
+        : value
+    }));
+    console.log(sizeData);
+  };
+
+  const handleSizeModalShow = (orderNumber,shippingAddress) => {
+    setSelectedOrder(orderNumber); // Set the selected order number
+    setAddress(shippingAddress)
+    setShowSizeModal(true);
+  };
+
+  
+  const handleSizeFormSubmit = async () => {
+    try {
+      // Fetch order ID using the selected order and address
+      const response = await fetch(
+        `http://137.184.75.176:5000/getOrderId?orderNumber=${selectedOrder}&shippingAddress=${address}`
+      );
+      
+      if (!response.ok) {
+        throw new Error('Order not found');
+      }
+  
+      const data = await response.json();  // Correctly parse the response JSON
+      console.log(data + "kjhgfyhj");  // Log the received order ID or response
+  
+      if (!data || !data.order_id) {  // Check if order_id exists in the response
+        alert('Order not found');
+        return;
+      }
+  
+      // Ensure sizeData contains valid numbers for sizes
+      const formattedSizeData = {
+        ...sizeData,
+        xs: parseInt(sizeData.xs) || 0,
+        s: parseInt(sizeData.s) || 0,
+        m: parseInt(sizeData.m) || 0,
+        l: parseInt(sizeData.l) || 0,
+        xl: parseInt(sizeData.xl) || 0,
+        xxl: parseInt(sizeData.xxl) || 0,
+        xxxl: parseInt(sizeData.xxxl) || 0,
+        xxxxl: parseInt(sizeData.xxxxl) || 0,
+        xxxxxl: parseInt(sizeData.xxxxxl) || 0,
+      };
+  
+      // POST the size data to the server using the retrieved order_id
+      const sizeResponse = await axios.post(
+        `http://137.184.75.176:5000/orders/${data.order_id}/sizes`,
+        formattedSizeData
+      );
+  
+      console.log('Size data added:', sizeResponse.data);
+      setShowSizeModal(false); // Close the modal after successful submission
+    } catch (error) {
+      console.error('Error adding size data:', error);
+      alert(error.message); // Display error to the user
+    }
+  };
+  
+  
+
+  
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    // Check if user is an admin
+    if (user && user.email === "admin@gmail.com") {
+      setIsAdmin(true);
+    } else {
+      setIsAdmin(false);
+    }
+  }, []);
+
 
   const handleImageClick = (imageUrl) => {
     setSelectedImage(imageUrl);
     setShowImageModal(true);
   };
+  
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -29,6 +135,7 @@ const ScreenPrinting = () => {
         const data = await response.json();
         console.log('Fetched Orders:', data); // Debug log
         setOrders(data);
+        console.log(orders.files);
       } catch (error) {
         console.error('Error fetching orders:', error);
       }
@@ -48,20 +155,53 @@ const ScreenPrinting = () => {
       });
   }, [search]);
 
-  const handleOrderClick = (orderNumber) => {
+
+  useEffect(() => {
+    const fetchOrderSizes = async () => {
+      console.log(orderId)
+      if (orderId) {
+        try {
+          const response = await axios.get(`http://137.184.75.176:5000/fetchorders/${orderId}/sizes`);
+          setOrderSizes((prevSizes) => ({
+            ...prevSizes,
+            [orderId]: response.data, // Store sizes for this order
+          }));
+          console.log(orderSizes)
+        } catch (error) {
+          console.error('Error fetching sizes:', error);
+        }
+      }
+    };
+
+    if (openOrder) {
+      fetchOrderSizes(); // Fetch sizes only when an order is opened
+    }
+  }, [openOrder]);
+
+  const handleOrderClick = (orderNumber,order_Id) => {
     setOpenOrder(openOrder === orderNumber ? null : orderNumber);
+    setOrderId(order_Id)
+
   };
+
+  console.log(orderSizes);
 
   const getSelectClass = (status) => {
     switch (status) {
       case 'READY':
         return 'select-ready';
-      case 'INPROGRESS':
-        return 'select-in-progress';
-      case 'ONHOLD':
-        return 'select-onhold';
-      case 'DONE':
-        return 'select-done';
+      case 'NEED PAYMENT':
+        return 'select-need-payment';
+      case 'PENDING':
+        return 'select-pending';
+      case 'PENDING ARTWORK':
+        return 'select-pending-artwork';
+      case 'APPROVED':
+        return 'select-approved';
+      case 'HARDDATE':
+        return 'select-harddate';
+      case 'PENDING APPROVAL':
+        return 'select-pending-approval';
       default:
         return '';
     }
@@ -88,87 +228,74 @@ const ScreenPrinting = () => {
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.orderNumber === orderNumber ? { ...order, orderStatus: status } : order
-        ).filter((order) => order.orderStatus !== 'DONE')
+        ).filter((order) => order.orderStatus !== 'READY')
       );
     } catch (error) {
       console.error('Error updating order status:', error);
     }
   };
 
-  const handleAddTrackingLabel = (orderNumber) => {
-    setSelectedOrder(orderNumber); // Store the selected order number
-    setShowModal(true); // Show the modal for entering tracking label
-  };
-
-  const handleSubmitTrackingLabel = async () => {
+  
+  const handleUpdateOrder = async () => {
     try {
-      const response = await fetch(`http://137.184.75.176:5000/updateTrackingLabel/${selectedOrder}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ trackingLabel }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to update tracking label');
-      }
-
-      const updatedOrder = await response.json();
-      console.log('Tracking label updated successfully:', updatedOrder);
-
-      // Update the tracking label in the order list
+      // API call to update the selected order's specific field
+      const response = await axios.put(`http://137.184.75.176:5000/updateOrder/${selectedOrder}`, { [field]: updatedOrder });
+      
+      alert('Order updated successfully');
+      
+      // Update the local state with the new order data
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
-          order.orderNumber === selectedOrder ? { ...order, trackingLabel } : order
+          order.orderNumber === selectedOrder ? { ...order, [field]: updatedOrder } : order
         )
       );
 
-      setShowModal(false); // Hide the modal after submission
-      setTrackingLabel(''); // Clear the input field
+      // Reset the modal state after update
+      setShowModal3(false);
+      setSelectedOrder('');
+      setUpdatedOrder(''); // Clear updated order value
+      
     } catch (error) {
-      console.error('Error updating tracking label:', error);
+      console.error('Error updating order:', error);
     }
   };
-  const handleaddnotes = (orderNumber) => {
-    setSelectedOrder(orderNumber); // Ensure the correct order is selected
-    setShowModal2(true); // Show the modal to edit notes
-  }
 
-const handleupdatenotes = async () => {
-  try {
-    const response = await fetch(`http://137.184.75.176:5000/updateordernotes/${selectedOrder}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ ordernotes }), // Send ordernotes instead of trackingLabel
-    });
+  // Function to show modal and set the order and field being edited
+  const handleOrder = (orderNumber, field) => {
+    setShowModal3(true);
+    setSelectedOrder(orderNumber);
+    setField(field); // Track the field being updated
+  };
 
-    if (!response.ok) {
-      throw new Error('Failed to update order notes');
+  const deleteOrder = async (orderNumber) => {
+    const confirmDelete = window.confirm('Are you sure you want to delete this order?');
+    if (confirmDelete) {
+      try {
+        const response = await axios.delete(`http://137.184.75.176:5000/deleteorder/${orderNumber}`);
+        if (response.status === 200) {
+          setOrders(orders.filter(order => order.orderNumber !== orderNumber));
+          alert('Order deleted successfully.');
+        }
+      } catch (error) {
+        console.error('Error deleting order:', error);
+        alert('Failed to delete the order.');
+      }
     }
+  };
 
-    const updatedOrder = await response.json();
-    alert('Order notes updated successfully 😘');
-
-    // Update the order notes in the order list
-    setOrders((prevOrders) =>
-      prevOrders.map((order) =>
-        order.orderNumber === selectedOrder ? { ...order, notes: ordernotes } : order
-      )
-    );
-
-    setShowModal2(false); // Hide the modal after submission
-    setOrdernotes(''); // Clear the input field
-  } catch (error) {
-    console.error('Error updating notes:', error);
-  }
-};
+  const toggleSortByDueDate = () => {
+    setSortByDueDate(!sortByDueDate);
+    const sortedOrders = [...orders].sort((a, b) => {
+      const dateA = new Date(a.dueDate);
+      const dateB = new Date(b.dueDate);
+      return sortByDueDate ? dateA - dateB : dateB - dateA;
+    });
+    setOrders(sortedOrders);
+  };
 
   return (
     <div className="container" style={{ marginLeft: 250, paddingTop: 20,marginBottom:70 }}>
-      <h2>SCREEN PRINTING</h2>
+      <h2>All Orders</h2>
       <input
         type="text"
         className="form-control"
@@ -178,16 +305,25 @@ const handleupdatenotes = async () => {
       />
       
       <table className="table table-striped table-hover">
-        <thead className="thead-dark">
+        <thead className="thead-dark table-header">
           <tr>
             <th scope="col">Order Number</th>
-            <th scope="col">Order Status</th>
-            <th scope="col">Order Method</th>
-            <th scope="col">Job Type</th>
-            <th scope="col">Due Date</th>
-            <th scope="col">Order Quantity</th>
-            <th scope="col">Client Name</th>
-            <th scope="col">Tracking Number</th>
+            <th scope="col" className="wide-col">Client Name</th>
+            <th scope="col" className="wide-col">Client Phone</th>
+            <th scope="col" className="extra-wide-col">Client Gmail</th>
+            <th scope="col" className="wide-col">Order Status</th>
+            <th scope="col" className="wide-col">Order Method</th>
+            <th scope="col" className="wide-col">Job Type</th>
+            <th scope="col" className="wide-col">
+              Due Date
+              <i
+                className={`bi bi-sort-${sortByDueDate ? 'down' : 'up'} sort-icon`}
+                onClick={toggleSortByDueDate}
+              ></i>
+            </th>
+            
+            <th scope="col" className="wide-col">Garment PO</th>
+            <th scope="col" className="extra-wide-col">Tracking Number</th>
           </tr>
         </thead>
         <tbody>
@@ -197,8 +333,35 @@ const handleupdatenotes = async () => {
               <React.Fragment key={index}>
                 <tr>
                   <td className="order-cell">
-                    <i className="bi bi-eye" onClick={() => handleOrderClick(order.orderNumber)}></i>
+                    <i className="bi bi-eye" onClick={() => handleOrderClick(order.orderNumber,order.id)}></i>
                     {order.orderNumber}
+                  </td>
+                  <td>{order.clientName}
+                    <>
+                    {isAdmin ? (<i 
+                          className="bi bi-pencil" 
+                          style={{ cursor: 'pointer', marginLeft: '5px' }} 
+                          onClick={() => handleOrder(order.orderNumber,"clientName")}
+                        ></i>) : ''}
+                    </>
+                  </td>
+                  <td>{order.clientPhone}
+                    <>
+                    {isAdmin ? (<i 
+                          className="bi bi-pencil" 
+                          style={{ cursor: 'pointer', marginLeft: '5px' }} 
+                          onClick={() => handleOrder(order.orderNumber,"clientPhone")}
+                        ></i>) : ''}
+                    </>
+                  </td>
+                  <td>{order.clientgmail}
+                    <>
+                    {isAdmin ? (<i 
+                          className="bi bi-pencil" 
+                          style={{ cursor: 'pointer', marginLeft: '5px' }} 
+                          onClick={() => handleOrder(order.orderNumber,"clientgmail")}
+                        ></i>) : ''}
+                    </>
                   </td>
                   <td>
                     <select
@@ -207,36 +370,73 @@ const handleupdatenotes = async () => {
                       onChange={(e) => updateOrderStatusInDatabase(e, order.orderNumber)}
                     >
                       <option value="READY">Ready</option>
-                      <option value="INPROGRESS">In Progress</option>
-                      <option value="ONHOLD">On Hold</option>
-                      <option value="DONE">Done</option>
+                      <option value="NEED PAYMENT">Need Payment</option>
+                      <option value="PENDING">Pending</option>
+                      <option value="PENDING ARTWORK">Pending Art Work</option>
+                      <option value="APPROVED">Approved</option>
+                      <option value="HARDDATE">HardDate</option>
+                      <option value="PENDING APPROVAL">Pending Approval</option>
                     </select>
                   </td>
 
                   <td>{order.orderMethod}</td>
                   <td>{order.jobType}</td>
-                  <td>{new Date(order.dueDate).toLocaleDateString('en-US')}</td>
-                  <td>{order.orderQty}</td>
-                  <td>{order.clientName}</td>
+                  
+                  <td>{new Date(order.dueDate).toLocaleDateString('en-US')}
+                  
+                  </td>
+                  
+                  
+
+                  <td>{order.garmentPO}
+                  <>
+                    {isAdmin ? (<i 
+                          className="bi bi-pencil" 
+                          style={{ cursor: 'pointer', marginLeft: '5px' }} 
+                          onClick={() => handleOrder(order.orderNumber,"garmentPO")}
+                        ></i>) : ''}
+                  </>
+                  </td>
+                  
+                  
                   <td>
                     {order.trackingLabel ? (
                       <>
                         {order.trackingLabel}
-                        <i 
-                          className="bi bi-pencil" 
-                          style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                          onClick={() => handleAddTrackingLabel(order.orderNumber)}
-                        ></i>
+                        <>
+                          {isAdmin ? (<i 
+                                className="bi bi-pencil" 
+                                style={{ cursor: 'pointer', marginLeft: '5px' }} 
+                                onClick={() => handleOrder(order.orderNumber,"trackingLabel")}
+                              ></i>) : ''}
+                        </>
                       </>
                     ) : (
                       <button 
                         className="btn btn-primary" 
                         style={{ cursor: 'pointer' }} 
-                        onClick={() => handleAddTrackingLabel(order.orderNumber)}
+                        onClick={() => handleOrder(order.orderNumber,"trackingLabel")}
                       > 
                         Add num
                       </button>
                     )}
+                  </td>
+
+                  <td>
+                    <Button
+                      variant="primary"
+                      onClick={() => handleSizeModalShow(order.orderNumber,order.shippingAddress)}
+                    >
+                      Add Size
+                    </Button>
+                  </td>
+
+                  <td>
+                    <i
+                      className="bi bi-trash"
+                      style={{ cursor: 'pointer', color: 'red' }}
+                      onClick={() => deleteOrder(order.orderNumber)}
+                    ></i>
                   </td>
 
                 </tr>
@@ -244,45 +444,135 @@ const handleupdatenotes = async () => {
                   <td colSpan="6">
                     <Collapse in={openOrder === order.orderNumber}>
                       <div>
-                        <p><strong>Shipping Address:</strong> {order.shippingAddress}</p>
-                        <p><strong>Garment Details:</strong> {order.garmentDetails}</p>
-                        <p><strong>Garment PO:</strong> {order.garmentPo}</p>
+                        <p><strong>Shipping Address:</strong> {order.shippingAddress}
+                        <>
+                          {isAdmin ? (<i 
+                                className="bi bi-pencil" 
+                                style={{ cursor: 'pointer', marginLeft: '5px' }} 
+                                onClick={() => handleOrder(order.orderNumber,"shippingAddress")}
+                              ></i>) : ''}
+                        </>
+                        </p>
+                        <p><strong>Garment Details:</strong> {order.garmentDetails}
+                        <>
+                          {isAdmin ? (<i 
+                                className="bi bi-pencil" 
+                                style={{ cursor: 'pointer', marginLeft: '5px' }} 
+                                onClick={() => handleOrder(order.orderNumber,"garmentDetails")}
+                              ></i>) : ''}
+                        </></p>
+                        
                         <p><strong>Team:</strong> {order.team}</p>
                         <p><strong>Notes:</strong> {order.notes}
                         <i 
                           className="bi bi-pencil" 
                           style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                          onClick={() => handleaddnotes(order.orderNumber)}
+                          onClick={() => handleOrder(order.orderNumber,"notes")}
                         ></i>
                         </p>
-                        <p><strong>Files Uploaded:</strong></p>
+                        
+
+                        <h5>Order Sizes</h5>
+                        {orderSizes[order.id] ? (
                           <ul>
-                            {order.files && order.files.length > 0 ? (
-                              order.files.map((file, idx) => (
-                                <li key={idx}>
-                                  
-                                    {file.fileUrl.match(/\.(jpeg|jpg|gif|png)$/i) ? (
-                                      <img
-                                        src={file.fileUrl}
-                                        alt={`file-${idx}`}
-                                        style={{
-                                          width: '100px',
-                                          height: '100px',
-                                          cursor: 'pointer',
-                                        }}
-                                        onClick={() => handleImageClick(file.fileUrl)} // Open the image on click
-                                      />
-                                    ) : (
-                                      <a href={file.fileUrl} download={file.fileUrl.split('/').pop()}>
-                                      <span>{file.fileUrl.split('/').pop()}</span> </a>
-                                    )}
-                                  
-                                </li>
-                              ))
-                            ) : (
-                              <li>No files uploaded.</li>
-                            )}
+                            {orderSizes[order.id].map((size, idx) => (
+                              <li key={idx}>
+
+                                <b>{size.category} - </b>,<i> {size.color} </i> : XS({size.xs}), S({size.s}), M({size.m}),
+                                L({size.l}), XL({size.xl}), XXL({size.xxl}), 3XL({size.xxxl}),
+                                4XL({size.xxxxl}), 5XL({size.xxxxxl})
+                              </li>
+                            ))}
                           </ul>
+                        ) : (
+                          <p>No sizes added for this order yet.</p>
+                        )}
+                        
+                       
+                        <p><strong>Files Uploaded:</strong></p>
+                        <ul>
+                          {order.files && order.files.length > 0 ? (
+                            order.files.map((file, idx) => (
+                              <li key={idx} style={{ marginBottom: '15px' }}>
+                                {/* Image files (Preview + Download) */}
+                                {file.fileUrl.match(/\.(jpeg|jpg|gif|png)$/i) ? (
+                                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    <img
+                                      src={file.fileUrl}
+                                      alt={`file-${idx}`}
+                                      style={{
+                                        width: '100px',
+                                        height: '100px',
+                                        cursor: 'pointer',
+                                        marginRight: '10px',
+                                      }}
+                                      onClick={() => handleImageClick(file.fileUrl)} // Open the image on click
+                                    />
+                                    <a href={file.fileUrl} download={file.fileUrl.split('/').pop()}>
+                                      <i className="bi bi-download" style={{ marginLeft: '8px' }}></i>
+                                    </a>
+                                  </div>
+                                ) : file.fileUrl.match(/\.(pdf)$/i) ? (
+                                  // PDF files (Preview + Download)
+                                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    <div
+                                      style={{
+                                        width: '100px',
+                                        height: '100px',
+                                        cursor: 'pointer',
+                                        border: '1px solid #ddd',
+                                        borderRadius: '5px',
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        marginRight: '10px',
+                                        backgroundColor: '#f8f9fa',
+                                      }}
+                                      onClick={() => window.open(`https://docs.google.com/viewer?url=${file.fileUrl}&embedded=true`, '_blank')} // Opens PDF in a new tab for full preview
+                                    >
+                                      <i className="bi bi-file-earmark-pdf" style={{ fontSize: '24px', color: '#d9534f' }}></i> {/* PDF icon */}
+                                    </div>
+                                    <a href={file.fileUrl} download={file.fileUrl.split('/').pop()} style={{ marginLeft: '10px', textDecoration: 'none', color: '#007bff' }}>
+                                      <span>{file.fileUrl.split('/').pop()}</span>
+                                      <i className="bi bi-download" style={{ marginLeft: '8px', fontSize: '16px' }}></i> {/* Download icon */}
+                                    </a>
+                                  </div>
+                                ) : (
+                                  // Other file types (Preview + Download)
+                                  <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
+                                    <a
+                                      href={file.fileUrl}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      style={{
+                                        width: '100px',
+                                        height: '100px',
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        border: '1px solid #ddd',
+                                        borderRadius: '5px',
+                                        marginRight: '10px',
+                                        textDecoration: 'none',
+                                        backgroundColor: '#f8f9fa',
+                                      }}
+                                    >
+                                      <i className="bi bi-file-earmark" style={{ fontSize: '24px' }}></i> {/* Generic file icon */}
+                                    </a>
+                                    <a href={file.fileUrl} download={file.fileUrl.split('/').pop()} style={{ marginLeft: '10px', textDecoration: 'none', color: '#007bff' }}>
+                                      <span>{file.fileUrl.split('/').pop()}</span>
+                                      <i className="bi bi-download" style={{ marginLeft: '8px', fontSize: '16px' }}></i> {/* Download icon */}
+                                    </a>
+                                  </div>
+                                )}
+                              </li>
+                            ))
+                          ) : (
+                            <li>No files uploaded.</li>
+                          )}
+                        </ul>
+
+
                       </div>
                     </Collapse>
                   </td>
@@ -293,58 +583,31 @@ const handleupdatenotes = async () => {
         </tbody>
       </table>
 
-      {/* Modal for entering tracking label */}
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
+      <Modal show={showModal3} onHide={() => setShowModal3(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Enter Tracking Label</Modal.Title>
+          <Modal.Title>Enter {field}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form.Group>
-            <Form.Label>Tracking Label</Form.Label>
+            <Form.Label>{field}</Form.Label>
             <Form.Control
               type="text"
-              value={trackingLabel}
-              onChange={(e) => setTrackingLabel(e.target.value)}
+              value={updatedOrder}
+              onChange={(e) => setUpdatedOrder(e.target.value)}
             />
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
+          <Button variant="secondary" onClick={() => setShowModal3(false)}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={handleSubmitTrackingLabel}>
+          <Button variant="primary" onClick={() => handleUpdateOrder()}>
             Submit
           </Button>
         </Modal.Footer>
       </Modal>
 
-      {/* Modal for updating notes */}
-      {/* Modal for updating notes */}
-      <Modal show={showModal2} onHide={() => setShowModal2(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Update Order Notes</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Group>
-            <Form.Label>Enter notes</Form.Label>
-            <Form.Control
-              as="textarea"  // Change to textarea
-              rows={3}       // Specify number of rows
-              value={ordernotes}
-              onChange={(e) => setOrdernotes(e.target.value)}  // Ensure state is updated on change
-            />
-          </Form.Group>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal2(false)}>
-            Cancel
-          </Button>
-          <Button variant="primary" onClick={handleupdatenotes}>
-            Submit
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
+      
       {/* Modal for displaying enlarged image */}
       <Modal show={showImageModal} onHide={() => setShowImageModal(false)} centered>
         <Modal.Header closeButton>
@@ -359,6 +622,179 @@ const handleupdatenotes = async () => {
           </Button>
         </Modal.Footer>
       </Modal>
+
+      {/* Size Entry Modal */}
+        <Modal show={showSizeModal} onHide={() => setShowSizeModal(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Add Sizes for Order #{selectedOrder}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              {/* Category Dropdown */}
+              <Form.Group controlId="formCategory">
+                <Form.Label>Category</Form.Label>
+                <Form.Control
+                  as="select"
+                  name="category"
+                  value={sizeData.category}
+                  onChange={handleSizeInputChange}
+                >
+                  <option value="Adult">Adult</option>
+                  <option value="Youth">Youth</option>
+                  <option value="Ladies">Ladies</option>
+                </Form.Control>
+              </Form.Group>
+
+              {/* Description */}
+              <Form.Group controlId="formDesc">
+                <Form.Label>Description</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="description"
+                  value={sizeData.description}
+                  onChange={handleSizeInputChange}
+                  placeholder="Enter description"
+                />
+              </Form.Group>
+
+              {/* Color */}
+              <Form.Group controlId="formColor">
+                <Form.Label>Color</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="color"
+                  value={sizeData.color}
+                  onChange={handleSizeInputChange}
+                  placeholder="Enter color"
+                />
+              </Form.Group>
+
+              {/* Size Inputs */}
+              <Form.Group controlId="formSizes">
+                <Form.Label>Sizes</Form.Label>
+
+                {/* First Row: XS, S, M, L */}
+                <div className="row mb-3">
+                  <div className="col-md-3 col-sm-4 col-6 mb-2">
+                    <Form.Label>XS</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="xs"
+                      value={sizeData.xs}
+                      onChange={handleSizeInputChange}
+                      placeholder="XS"
+                      min="0"
+                    />
+                  </div>
+                  <div className="col-md-3 col-sm-4 col-6 mb-2">
+                    <Form.Label>S</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="s"
+                      value={sizeData.s}
+                      onChange={handleSizeInputChange}
+                      placeholder="S"
+                      min="0"
+                    />
+                  </div>
+                  <div className="col-md-3 col-sm-4 col-6 mb-2">
+                    <Form.Label>M</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="m"
+                      value={sizeData.m}
+                      onChange={handleSizeInputChange}
+                      placeholder="M"
+                      min="0"
+                    />
+                  </div>
+                  <div className="col-md-3 col-sm-4 col-6 mb-2">
+                    <Form.Label>L</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="l"
+                      value={sizeData.l}
+                      onChange={handleSizeInputChange}
+                      placeholder="L"
+                      min="0"
+                    />
+                  </div>
+                </div>
+
+                {/* Second Row: XL, XXL, XXXL, XXXXL, XXXXXL */}
+                <div className="row">
+                  <div className="col-md-3 col-sm-4 col-6 mb-2">
+                    <Form.Label>XL</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="xl"
+                      value={sizeData.xl}
+                      onChange={handleSizeInputChange}
+                      placeholder="XL"
+                      min="0"
+                    />
+                  </div>
+                  <div className="col-md-3 col-sm-4 col-6 mb-2">
+                    <Form.Label>2XL</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="xxl"
+                      value={sizeData.xxl}
+                      onChange={handleSizeInputChange}
+                      placeholder="XXL"
+                      min="0"
+                    />
+                  </div>
+                  <div className="col-md-3 col-sm-4 col-6 mb-2">
+                    <Form.Label>3XL</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="xxxl"
+                      value={sizeData.xxxl}
+                      onChange={handleSizeInputChange}
+                      placeholder="XXXL"
+                      min="0"
+                    />
+                  </div>
+                  
+                </div>
+                <div className='row'>
+                  <div className="col-md-3 col-sm-4 col-6 mb-2">
+                      <Form.Label>4XL</Form.Label>
+                      <Form.Control
+                        type="number"
+                        name="xxxxl"
+                        value={sizeData.xxxxl}
+                        onChange={handleSizeInputChange}
+                        placeholder="XXXXL"
+                        min="0"
+                      />
+                    </div>
+                    <div className="col-md-3 col-sm-4 col-6 mb-2">
+                      <Form.Label>5XL</Form.Label>
+                      <Form.Control
+                        type="number"
+                        name="xxxxxl"
+                        value={sizeData.xxxxxl}
+                        onChange={handleSizeInputChange}
+                        placeholder="XXXXXL"
+                        min="0"
+                      />
+                    </div>
+                </div>
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowSizeModal(false)}>
+              Cancel
+            </Button>
+            <Button variant="primary" onClick={handleSizeFormSubmit}>
+              Submit
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
 
     </div>
   );
