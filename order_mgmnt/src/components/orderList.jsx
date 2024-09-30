@@ -54,25 +54,29 @@ const OrderList = () => {
     setShowSizeModal(true);
   };
 
+  
   const handleSizeFormSubmit = async () => {
     try {
-      const response = await fetch(`http://137.184.75.176:5000/getOrderId?orderNumber=${selectedOrder}&shippingAddress=${address}`);
+      // Fetch order ID using the selected order and address
+      const response = await fetch(
+        `http://137.184.75.176:5000/getOrderId?orderNumber=${selectedOrder}&shippingAddress=${address}`
+      );
       
       if (!response.ok) {
         throw new Error('Order not found');
       }
   
-      const data = await response.json.stringify();
-      console.log(data+"kjhgfyhj");
+      const data = await response.json();  // Correctly parse the response JSON
+      console.log(data + "kjhgfyhj");  // Log the received order ID or response
   
-      if (!data) {
+      if (!data || !data.order_id) {  // Check if order_id exists in the response
         alert('Order not found');
         return;
       }
   
-      // Make sure sizeData contains valid numbers for sizes
-      const formattedSizeData = { 
-        ...sizeData, 
+      // Ensure sizeData contains valid numbers for sizes
+      const formattedSizeData = {
+        ...sizeData,
         xs: parseInt(sizeData.xs) || 0,
         s: parseInt(sizeData.s) || 0,
         m: parseInt(sizeData.m) || 0,
@@ -84,15 +88,20 @@ const OrderList = () => {
         xxxxxl: parseInt(sizeData.xxxxxl) || 0,
       };
   
-      const sizeResponse = await axios.post(`http://137.184.75.176:5000/orders/${data}/sizes`, formattedSizeData);
+      // POST the size data to the server using the retrieved order_id
+      const sizeResponse = await axios.post(
+        `http://137.184.75.176:5000/orders/${data.order_id}/sizes`,
+        formattedSizeData
+      );
   
       console.log('Size data added:', sizeResponse.data);
-      setShowSizeModal(false);  // Close the modal after successful submission
+      setShowSizeModal(false); // Close the modal after successful submission
     } catch (error) {
       console.error('Error adding size data:', error);
       alert(error.message); // Display error to the user
     }
   };
+  
   
 
   
