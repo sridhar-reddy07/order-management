@@ -65,7 +65,7 @@ const OrderList = () => {
       const data = await response.json();
       console.log(data+"kjhgfyhj");
   
-      if (!orderId) {
+      if (!data) {
         alert('Order not found');
         return;
       }
@@ -84,7 +84,7 @@ const OrderList = () => {
         xxxxxl: parseInt(sizeData.xxxxxl) || 0,
       };
   
-      const sizeResponse = await axios.post(`http://137.184.75.176:5000/orders/${orderId}/sizes`, formattedSizeData);
+      const sizeResponse = await axios.post(`http://137.184.75.176:5000/orders/${data}/sizes`, formattedSizeData);
   
       console.log('Size data added:', sizeResponse.data);
       setShowSizeModal(false);  // Close the modal after successful submission
