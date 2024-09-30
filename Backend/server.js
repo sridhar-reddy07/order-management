@@ -79,6 +79,8 @@ handleDisconnect();
 
 
 
+const query = util.promisify(db.query).bind(db);
+
 app.get('/getOrderId', async (req, res) => {
   const { orderNumber, shippingAddress } = req.query;  // Extract orderNumber and shippingAddress from query parameters
   console.log(`Received request: orderNumber=${orderNumber}, shippingAddress=${shippingAddress}`);
@@ -92,7 +94,7 @@ app.get('/getOrderId', async (req, res) => {
     // SQL query to get the order_id from the orders table using orderNumber and shippingAddress
     const queryStr = 'SELECT id FROM orders WHERE TRIM(orderNumber) = TRIM(?) AND TRIM(shippingAddress) = TRIM(?)';
     
-    // Execute query
+    // Execute query using the promisified db.query
     const result = await query(queryStr, [orderNumber, shippingAddress]);
 
     console.log('Query result:', result);
