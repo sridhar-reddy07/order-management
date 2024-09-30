@@ -253,7 +253,7 @@ app.post('/orders/:order_id/sizes', async (req, res) => {
       sizeData.xl || 0,
       sizeData.xxl || 0,
     ];
-    co
+    
     // Execute the SQL query
     db.query(query, values, (err, result) => {
       if (err) {
