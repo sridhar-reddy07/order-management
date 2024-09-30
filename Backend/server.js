@@ -92,7 +92,8 @@ app.get('/getOrderId', async (req, res) => {
         console.error('Error querying MySQL:', err);
         return res.status(500).json({ message: 'Error querying the database' });
       } 
-      
+      console.log(result)
+      console.log(result.length)
       // Check if any result is returned
       if (result.length === 0) {
         return res.status(404).json({ message: 'Order not found' });
