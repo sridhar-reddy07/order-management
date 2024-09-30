@@ -478,7 +478,7 @@ const OrderList = () => {
                             {orderSizes[order.id].map((size, idx) => (
                               <li key={idx}>
 
-                                {size.category},{size.color}: XS({size.xs}), S({size.s}), M({size.m}),
+                                <b>{size.category} - </b>,<i> {size.color} </i> : XS({size.xs}), S({size.s}), M({size.m}),
                                 L({size.l}), XL({size.xl}), XXL({size.xxl}), 3XL({size.xxxl}),
                                 4XL({size.xxxxl}), 5XL({size.xxxxxl})
                               </li>
