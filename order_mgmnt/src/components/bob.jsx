@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Collapse, Modal, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 
-const BobJobs = () => {
+const Bob = () => {
   const [orders, setOrders] = useState([]);
   const [openOrder, setOpenOrder] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -800,4 +800,4 @@ const BobJobs = () => {
   );
 };
 
-export default BobJobs;
+export default Bob;
