@@ -22,6 +22,9 @@ const AddOrder = () => {
   const [files, setFiles] = useState([]);
 
 
+
+
+
   const navigate = useNavigate();
 
   const handleFileChange = (e) => {
@@ -30,6 +33,88 @@ const AddOrder = () => {
     // Append new files to the existing files state
     setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
   };
+
+  const [showSizeModal, setShowSizeModal] = useState(false); // State for Size Modal
+ 
+  const [address, setAddress] = useState('')
+
+  const [sizeData, setSizeData] = useState({
+    category: 'Adult', // Default category
+    description: '',
+    color: '',
+    xs: 0,
+    s: 0,
+    m: 0,
+    l: 0,
+    xl: 0,
+    xxl: 0,
+    xxxl:0,
+    xxxxl:0,
+    xxxxxl:0,
+  });
+
+  const handleSizeInputChange = (event) => {
+    const { name, value } = event.target;
+    setSizeData((prevData) => ({
+      ...prevData,
+      [name]: name === 'xs' || name === 's' || name === 'm' || name === 'l' || name === 'xl' || name === 'xxl' || name === 'xxxl' || name === 'xxxxl' || name === 'xxxxxl'
+        ? parseInt(value) || 0  // Convert to number or default to 0 if empty
+        : value
+    }));
+    console.log(sizeData);
+  };
+
+
+
+  
+  const handleSizeFormSubmit = async () => {
+    try {
+      // Fetch order ID using the selected order and address
+      const response = await fetch(
+        `http://137.184.75.176:5000/getOrderId?orderNumber=${selectedOrder}&shippingAddress=${address}`
+      );
+      
+      if (!response.ok) {
+        throw new Error('Order not found');
+      }
+  
+      const data = await response.json();  // Correctly parse the response JSON
+       // Log the received order ID or response
+  
+      if (!data || !data.order_id) {  // Check if order_id exists in the response
+        alert('Order not found');
+        return;
+      }
+  
+      // Ensure sizeData contains valid numbers for sizes
+      const formattedSizeData = {
+        ...sizeData,
+        xs: parseInt(sizeData.xs) || 0,
+        s: parseInt(sizeData.s) || 0,
+        m: parseInt(sizeData.m) || 0,
+        l: parseInt(sizeData.l) || 0,
+        xl: parseInt(sizeData.xl) || 0,
+        xxl: parseInt(sizeData.xxl) || 0,
+        xxxl: parseInt(sizeData.xxxl) || 0,
+        xxxxl: parseInt(sizeData.xxxxl) || 0,
+        xxxxxl: parseInt(sizeData.xxxxxl) || 0,
+      };
+  
+      // POST the size data to the server using the retrieved order_id
+      const sizeResponse = await axios.post(
+        `http://137.184.75.176:5000/orders/${data.order_id}/sizes`,
+        formattedSizeData
+      );
+  
+      console.log('Size data added:', sizeResponse.data);
+      setShowSizeModal(false); // Close the modal after successful submission
+    } catch (error) {
+      console.error('Error adding size data:', error);
+      alert(error.message); // Display error to the user
+    }
+  };
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -67,7 +152,9 @@ const AddOrder = () => {
 
       if (response.ok) {
         alert('Order added successfully!');
-        navigate('/orderList');
+        setSelectedOrder(orderNumber); // Set the selected order number
+        setAddress(shippingAddress)
+        setShowSizeModal(true);
       } else {
         const result = await response.json();
         alert(result.message);
@@ -306,6 +393,179 @@ const AddOrder = () => {
         {/* Submit Button */}
         <button type="submit" className="submit-button">Submit Order</button>
       </form>
+      {/* Size Entry Modal */}
+      <Modal show={showSizeModal} onHide={() => setShowSizeModal(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Add Sizes for Order #{selectedOrder}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              {/* Category Dropdown */}
+              <Form.Group controlId="formCategory">
+                <Form.Label>Category</Form.Label>
+                <Form.Control
+                  as="select"
+                  name="category"
+                  value={sizeData.category}
+                  onChange={handleSizeInputChange}
+                >
+                  <option value="Adult">Adult</option>
+                  <option value="Youth">Youth</option>
+                  <option value="Ladies">Ladies</option>
+                </Form.Control>
+              </Form.Group>
+
+              {/* Description */}
+              <Form.Group controlId="formDesc">
+                <Form.Label>Description</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="description"
+                  value={sizeData.description}
+                  onChange={handleSizeInputChange}
+                  placeholder="Enter description"
+                />
+              </Form.Group>
+
+              {/* Color */}
+              <Form.Group controlId="formColor">
+                <Form.Label>Color</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="color"
+                  value={sizeData.color}
+                  onChange={handleSizeInputChange}
+                  placeholder="Enter color"
+                />
+              </Form.Group>
+
+              {/* Size Inputs */}
+              <Form.Group controlId="formSizes">
+                <Form.Label>Sizes</Form.Label>
+
+                {/* First Row: XS, S, M, L */}
+                <div className="row mb-3">
+                  <div className="col-md-3 col-sm-4 col-6 mb-2">
+                    <Form.Label>XS</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="xs"
+                      value={sizeData.xs}
+                      onChange={handleSizeInputChange}
+                      placeholder="XS"
+                      min="0"
+                    />
+                  </div>
+                  <div className="col-md-3 col-sm-4 col-6 mb-2">
+                    <Form.Label>S</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="s"
+                      value={sizeData.s}
+                      onChange={handleSizeInputChange}
+                      placeholder="S"
+                      min="0"
+                    />
+                  </div>
+                  <div className="col-md-3 col-sm-4 col-6 mb-2">
+                    <Form.Label>M</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="m"
+                      value={sizeData.m}
+                      onChange={handleSizeInputChange}
+                      placeholder="M"
+                      min="0"
+                    />
+                  </div>
+                  <div className="col-md-3 col-sm-4 col-6 mb-2">
+                    <Form.Label>L</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="l"
+                      value={sizeData.l}
+                      onChange={handleSizeInputChange}
+                      placeholder="L"
+                      min="0"
+                    />
+                  </div>
+                </div>
+
+                {/* Second Row: XL, XXL, XXXL, XXXXL, XXXXXL */}
+                <div className="row">
+                  <div className="col-md-3 col-sm-4 col-6 mb-2">
+                    <Form.Label>XL</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="xl"
+                      value={sizeData.xl}
+                      onChange={handleSizeInputChange}
+                      placeholder="XL"
+                      min="0"
+                    />
+                  </div>
+                  <div className="col-md-3 col-sm-4 col-6 mb-2">
+                    <Form.Label>2XL</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="xxl"
+                      value={sizeData.xxl}
+                      onChange={handleSizeInputChange}
+                      placeholder="XXL"
+                      min="0"
+                    />
+                  </div>
+                  <div className="col-md-3 col-sm-4 col-6 mb-2">
+                    <Form.Label>3XL</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="xxxl"
+                      value={sizeData.xxxl}
+                      onChange={handleSizeInputChange}
+                      placeholder="XXXL"
+                      min="0"
+                    />
+                  </div>
+                  
+                </div>
+                <div className='row'>
+                  <div className="col-md-3 col-sm-4 col-6 mb-2">
+                      <Form.Label>4XL</Form.Label>
+                      <Form.Control
+                        type="number"
+                        name="xxxxl"
+                        value={sizeData.xxxxl}
+                        onChange={handleSizeInputChange}
+                        placeholder="XXXXL"
+                        min="0"
+                      />
+                    </div>
+                    <div className="col-md-3 col-sm-4 col-6 mb-2">
+                      <Form.Label>5XL</Form.Label>
+                      <Form.Control
+                        type="number"
+                        name="xxxxxl"
+                        value={sizeData.xxxxxl}
+                        onChange={handleSizeInputChange}
+                        placeholder="XXXXXL"
+                        min="0"
+                      />
+                    </div>
+                </div>
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowSizeModal(false)}>
+              Cancel
+            </Button>
+            <Button variant="primary" onClick={handleSizeFormSubmit}>
+              Submit
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+
     </div>
   );
 };
