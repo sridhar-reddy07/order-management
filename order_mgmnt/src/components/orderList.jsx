@@ -171,7 +171,7 @@ const OrderList = () => {
     };
 
     if (openOrder) {
-      fetchOrderSizes(openOrder); // Fetch sizes only when an order is opened
+      fetchOrderSizes(orders.id); // Fetch sizes only when an order is opened
     }
   }, [openOrder]);
 
