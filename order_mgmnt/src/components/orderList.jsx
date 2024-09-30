@@ -710,28 +710,31 @@ const OrderList = () => {
                       min="0"
                     />
                   </div>
+                  
+                </div>
+                <div className='row'>
                   <div className="col-md-2 col-sm-4 col-6 mb-2">
-                    <Form.Label>4XL</Form.Label>
-                    <Form.Control
-                      type="number"
-                      name="xxxxl"
-                      value={sizeData.xxxxl}
-                      onChange={handleSizeInputChange}
-                      placeholder="XXXXL"
-                      min="0"
-                    />
-                  </div>
-                  <div className="col-md-2 col-sm-4 col-6 mb-2">
-                    <Form.Label>5XL</Form.Label>
-                    <Form.Control
-                      type="number"
-                      name="xxxxxl"
-                      value={sizeData.xxxxxl}
-                      onChange={handleSizeInputChange}
-                      placeholder="XXXXXL"
-                      min="0"
-                    />
-                  </div>
+                      <Form.Label>4XL</Form.Label>
+                      <Form.Control
+                        type="number"
+                        name="xxxxl"
+                        value={sizeData.xxxxl}
+                        onChange={handleSizeInputChange}
+                        placeholder="XXXXL"
+                        min="0"
+                      />
+                    </div>
+                    <div className="col-md-2 col-sm-4 col-6 mb-2">
+                      <Form.Label>5XL</Form.Label>
+                      <Form.Control
+                        type="number"
+                        name="xxxxxl"
+                        value={sizeData.xxxxxl}
+                        onChange={handleSizeInputChange}
+                        placeholder="XXXXXL"
+                        min="0"
+                      />
+                    </div>
                 </div>
               </Form.Group>
             </Form>
