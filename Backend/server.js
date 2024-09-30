@@ -222,33 +222,55 @@ app.put('/updateOrder/:orderNumber', (req, res) => {
 
 
 app.post('/orders/:order_id/sizes', async (req, res) => {
-  console.log('uytrdfg')
   const { order_id } = req.params;
   const sizeData = req.body;
 
-  try{
+  // Log incoming data for debugging
+  console.log('Received size data:', sizeData);
 
-    // Create the size record for the order
-    const orderSize = await OrderSize.create({
-      order_id: order_id, // Associate size with this order
-      category: sizeData.category,
-      description: sizeData.description,
-      color: sizeData.color,
-      xs: sizeData.xs,
-      s: sizeData.s,
-      m: sizeData.m,
-      l: sizeData.l,
-      xl: sizeData.xl,
-      xxl: sizeData.xxl,
+  // Ensure sizeData contains all necessary fields
+  if (!sizeData.category || !sizeData.color) {
+    return res.status(400).json({ message: 'Missing required fields' });
+  }
+
+  try {
+    // SQL query to insert size data into the database
+    const query = `
+      INSERT INTO OrderSizes (order_id, category, description, color, xs, s, m, l, xl, xxl)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    // Values to insert (ensure default values for missing sizes)
+    const values = [
+      order_id,
+      sizeData.category,
+      sizeData.description || '',
+      sizeData.color,
+      sizeData.xs || 0,
+      sizeData.s || 0,
+      sizeData.m || 0,
+      sizeData.l || 0,
+      sizeData.xl || 0,
+      sizeData.xxl || 0,
+    ];
+
+    // Execute the SQL query
+    db.query(query, values, (err, result) => {
+      if (err) {
+        console.error('Error inserting size data:', err);
+        return res.status(500).json({ message: 'Internal server error' });
+      }
+
+      // Send success response
+      res.status(201).json({
+        message: 'Size data added successfully',
+        result,
+      });
     });
 
-    res.status(201).json({
-      message: 'Size data added successfully',
-      orderSize,
-    });
   } catch (error) {
-    console.error('Error adding size data:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    console.error('Error adding size data:', error.message);
+    res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 });
 
