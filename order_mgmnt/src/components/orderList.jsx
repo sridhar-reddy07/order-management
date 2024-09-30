@@ -62,7 +62,7 @@ const OrderList = () => {
         throw new Error('Order not found');
       }
   
-      const data = await response.json();
+      const data = await response.json.stringify();
       console.log(data+"kjhgfyhj");
   
       if (!data) {
