@@ -45,6 +45,7 @@ const OrderList = () => {
         ? parseInt(value) || 0  // Convert to number or default to 0 if empty
         : value
     }));
+    console.log(sizeData);
   };
 
   const handleSizeModalShow = (orderNumber,shippingAddress) => {
