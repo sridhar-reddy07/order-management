@@ -10,7 +10,7 @@ import Footer from "./components/footer";
 import Entry from "./components/entry";
 import AddOrder from "./components/addOrder";
 import OrderList from "./components/orderList";
-import WareHouseJobs from "./components/wareHouseJobs";
+
 import Riz from "./components/riz";
 import Karachi from "./components/karachi";
 import Mussa from "./components/mussa";
@@ -22,6 +22,7 @@ import Instore from "./components/instore";
 import Packing from "./components/packing";
 import Completed from "./components/completed";
 import Home from "./components/Home";
+import BobJobs from "./components/BobJobs";
 
 
 
@@ -40,8 +41,9 @@ function App() {
         <Route path='/orderList' element={<OrderList />} />
         <Route path='/riz' element={<Riz />} />
         <Route path='/karachi' element={<Karachi />} />
-        <Route path = '/wareHouseJobs' element = {<WareHouseJobs/>}/>
+        
         <Route path = '/mussa' element = {<Mussa/>}/>
+        <Route path= '/bobJobs' element = {<BobJobs/>}/>
         <Route path = '/embroidory' element = {<Embroidory/>}/>
         <Route path= '/dtg' element = {< Dtg/>}/>
         <Route path= '/screenPrinting' element = {< ScreenPrinting/>}/>

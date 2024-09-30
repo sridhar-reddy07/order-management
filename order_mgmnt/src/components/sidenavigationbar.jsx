@@ -26,7 +26,7 @@ const Sidenavigationbar = () => {
               <NavDropdown.Item href="/karachi">Karachi Team</NavDropdown.Item>
               <NavDropdown.Item href="/riz">Riz</NavDropdown.Item>
               <NavDropdown.Item href="/mussa">Mussa</NavDropdown.Item>
-              <NavDropdown.Item href="/wareHouseJobs">WareHouseJobs</NavDropdown.Item>
+              <NavDropdown.Item href="/bobJobs">Bob Jobs</NavDropdown.Item>
             </NavDropdown>
             <Nav.Link href="/Packing">Packing List</Nav.Link>
             <Nav.Link href="/instore">In Store</Nav.Link>
