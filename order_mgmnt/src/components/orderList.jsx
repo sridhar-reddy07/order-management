@@ -627,7 +627,7 @@ const OrderList = () => {
             <Form.Group controlId="formSizes">
               <Form.Label>Sizes</Form.Label>
               <div className="row">
-                <div className="col">
+                <div className="col-6">
                   <Form.Label>XS</Form.Label>
                   <Form.Control
                     type="number"
