@@ -236,7 +236,7 @@ app.post('/orders/:order_id/sizes', async (req, res) => {
   try {
     // SQL query to insert size data into the database
     const query = `
-      INSERT INTO OrderSizes (order_id, category, description, color, xs, s, m, l, xl, xxl)
+      INSERT INTO orderSizes (order_id, category, description, color, xs, s, m, l, xl, xxl)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
@@ -253,7 +253,7 @@ app.post('/orders/:order_id/sizes', async (req, res) => {
       sizeData.xl || 0,
       sizeData.xxl || 0,
     ];
-
+    co
     // Execute the SQL query
     db.query(query, values, (err, result) => {
       if (err) {
