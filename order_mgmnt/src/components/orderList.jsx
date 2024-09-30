@@ -19,6 +19,7 @@ const OrderList = () => {
   const [field, setField] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
   const [showSizeModal, setShowSizeModal] = useState(false); // State for Size Modal
+  const [orderSizes, setOrderSizes] = useState({});
  
   const [address, setAddress] = useState('')
 
@@ -152,6 +153,27 @@ const OrderList = () => {
         console.error('Error fetching orders:', error);
       });
   }, [search]);
+
+
+  useEffect(() => {
+    const fetchOrderSizes = async (orderId) => {
+      if (orderId) {
+        try {
+          const response = await axios.get(`http://137.184.75.176:5000/orders/${orderId}/sizes`);
+          setOrderSizes((prevSizes) => ({
+            ...prevSizes,
+            [orderId]: response.data, // Store sizes for this order
+          }));
+        } catch (error) {
+          console.error('Error fetching sizes:', error);
+        }
+      }
+    };
+
+    if (openOrder) {
+      fetchOrderSizes(openOrder); // Fetch sizes only when an order is opened
+    }
+  }, [openOrder]);
 
   const handleOrderClick = (orderNumber) => {
     setOpenOrder(openOrder === orderNumber ? null : orderNumber);
@@ -441,6 +463,22 @@ const OrderList = () => {
                           onClick={() => handleOrder(order.orderNumber,"notes")}
                         ></i>
                         </p>
+                        
+
+                        <h5>Order Sizes</h5>
+                        {orderSizes[order.orderNumber] ? (
+                          <ul>
+                            {orderSizes[order.orderNumber].map((size, idx) => (
+                              <li key={idx}>
+                                {size.category}: XS({size.xs}), S({size.s}), M({size.m}),
+                                L({size.l}), XL({size.xl}), XXL({size.xxl}), 3XL({size.xxxl}),
+                                4XL({size.xxxxl}), 5XL({size.xxxxxl})
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <p>No sizes added for this order yet.</p>
+                        )}
                         
                        
                         <p><strong>Files Uploaded:</strong></p>
