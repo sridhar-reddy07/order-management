@@ -164,6 +164,7 @@ const OrderList = () => {
             ...prevSizes,
             [orderId]: response.data, // Store sizes for this order
           }));
+          console.log(orderSizes)
         } catch (error) {
           console.error('Error fetching sizes:', error);
         }
