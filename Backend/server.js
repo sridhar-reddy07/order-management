@@ -80,8 +80,9 @@ handleDisconnect();
 
 
 app.get('/getOrderId', async (req, res) => {
+  console.log("poiuytresxcvbngfdsertgvb bvcxsewrtyghvbn")
   const { orderNumber, shippingAddress } = req.query;  // Extract orderNumber and shippingAddress from query parameters
-  console.log(orderNumber,shippingAddress)
+  console.log(orderNumber,shippingA+ddress)
   try {
       // SQL query to get the order_id from the orders table using orderNumber and shippingAddress
       const query = 
@@ -216,6 +217,7 @@ app.put('/updateOrder/:orderNumber', (req, res) => {
 
 
 app.post('/orders/:order_id/sizes', async (req, res) => {
+  console.log('uytrdfg')
   const { order_id } = req.params;
   const sizeData = req.body;
 
