@@ -79,8 +79,6 @@ handleDisconnect();
 
 
 
-const query = util.promisify(db.query).bind(db);
-
 app.get('/getOrderId', async (req, res) => {
   const { orderNumber, shippingAddress } = req.query;  // Extract orderNumber and shippingAddress from query parameters
   console.log(`Received request: orderNumber=${orderNumber}, shippingAddress=${shippingAddress}`);
@@ -94,20 +92,25 @@ app.get('/getOrderId', async (req, res) => {
     // SQL query to get the order_id from the orders table using orderNumber and shippingAddress
     const queryStr = 'SELECT id FROM orders WHERE TRIM(orderNumber) = TRIM(?) AND TRIM(shippingAddress) = TRIM(?)';
     
-    // Execute query using the promisified db.query
-    const result = await query(queryStr, [orderNumber, shippingAddress]);
+    // Execute query
+    const result = db.query();
+
+    db.query(queryStr, [orderNumber, shippingAddress], (err, result) => {
+      if (err) {
+        console.error('Error querying MySQL:', err);
+        res.status(500).json({ message: 'Error validating user' });
+      } else if (result.length === 0) {
+        console.log('Order not found');
+        return res.status(404).json({ message: 'Order not found' });
+      } else {
+        console.log('Order ID:', result[0].id);
+        return res.status(200).json({ order_id: result[0].id });
+      }
+    });
 
     console.log('Query result:', result);
 
-    // Check if any result is returned
-    if (result.length === 0) {
-      console.log('Order not found');
-      return res.status(404).json({ message: 'Order not found' });
-    }
-
-    // If order is found, return the order ID
-    console.log('Order ID:', result[0].id);
-    return res.status(200).json({ order_id: result[0].id });
+   
     
   } catch (error) {
     console.error('Error fetching order:', error);
