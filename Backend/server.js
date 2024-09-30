@@ -90,8 +90,10 @@ app.get('/getOrderId', async (req, res) => {
 
   try {
     // SQL query to get the order_id from the orders table using orderNumber and shippingAddress
-    const queryStr = 'SELECT id FROM orders WHERE orderNumber = ? AND shippingAddress = ?';
-    
+    const queryStr = `SELECT id FROM orders 
+                      WHERE TRIM(orderNumber) = TRIM(?) 
+                      AND TRIM(shippingAddress) = TRIM(?)`;
+
     // Execute query
     const result = await query(queryStr, [orderNumber, shippingAddress]);
 
@@ -106,7 +108,7 @@ app.get('/getOrderId', async (req, res) => {
     // If order is found, return the order ID
     console.log('Order ID:', result[0].id);
     return res.status(200).json({ order_id: result[0].id });
-    
+
   } catch (error) {
     console.error('Error fetching order:', error);
     return res.status(500).json({ message: 'Internal server error' });
