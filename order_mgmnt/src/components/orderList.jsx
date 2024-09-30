@@ -40,8 +40,10 @@ const OrderList = () => {
   const handleSizeInputChange = (event) => {
     const { name, value } = event.target;
     setSizeData((prevData) => ({
-        ...prevData,
-        [name]: value
+      ...prevData,
+      [name]: name === 'xs' || name === 's' || name === 'm' || name === 'l' || name === 'xl' || name === 'xxl' || name === 'xxxl' || name === 'xxxxl' || name === 'xxxxxl'
+        ? parseInt(value) || 0  // Convert to number or default to 0 if empty
+        : value
     }));
   };
 
@@ -53,37 +55,44 @@ const OrderList = () => {
 
   const handleSizeFormSubmit = async () => {
     try {
-        // Step 1: Fetch order_id using orderNumber and shippingAddress via URL parameters
-        const response = await fetch(`http://137.184.75.176:5000/getOrderId?orderNumber=${encodeURIComponent(selectedOrder)}&shippingAddress=${encodeURIComponent(address)}`);
-        console.log(response);
-        // Check if the response is ok
-        if (!response.ok) {
-            throw new Error('Order not found');
-        }
-
-        const data = await response.json(); // Parse the JSON response
-
-        // Extract order_id from the response
-        const orderId = data.order_id; // Ensure that the server returns { order_id: ... }
-        console.log(orderId)
-
-        if (!orderId) {
-            alert('Order not found');
-            return;
-        }
-
-        // Step 2: Once the order_id is found, submit the size data
-        const sizeResponse = await axios.post(`http://137.184.75.176:5000/orders/${orderId}/sizes`, sizeData);
-
-        console.log('Size data added:', sizeResponse.data);
-
-        // Close the modal after submission
-        setShowSizeModal(false);
+      const response = await fetch(`http://137.184.75.176:5000/getOrderId?orderNumber=${encodeURIComponent(selectedOrder)}&shippingAddress=${encodeURIComponent(address)}`);
+      
+      if (!response.ok) {
+        throw new Error('Order not found');
+      }
+  
+      const data = await response.json();
+      const orderId = data.order_id;
+  
+      if (!orderId) {
+        alert('Order not found');
+        return;
+      }
+  
+      // Make sure sizeData contains valid numbers for sizes
+      const formattedSizeData = { 
+        ...sizeData, 
+        xs: parseInt(sizeData.xs) || 0,
+        s: parseInt(sizeData.s) || 0,
+        m: parseInt(sizeData.m) || 0,
+        l: parseInt(sizeData.l) || 0,
+        xl: parseInt(sizeData.xl) || 0,
+        xxl: parseInt(sizeData.xxl) || 0,
+        xxxl: parseInt(sizeData.xxxl) || 0,
+        xxxxl: parseInt(sizeData.xxxxl) || 0,
+        xxxxxl: parseInt(sizeData.xxxxxl) || 0,
+      };
+  
+      const sizeResponse = await axios.post(`http://137.184.75.176:5000/orders/${orderId}/sizes`, formattedSizeData);
+  
+      console.log('Size data added:', sizeResponse.data);
+      setShowSizeModal(false);  // Close the modal after successful submission
     } catch (error) {
-        console.error('Error adding size data:', error);
-        alert(error.message); // Show alert for any errors
+      console.error('Error adding size data:', error);
+      alert(error.message); // Display error to the user
     }
-};
+  };
+  
 
   
 
