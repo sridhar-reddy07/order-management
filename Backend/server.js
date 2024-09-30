@@ -80,29 +80,31 @@ handleDisconnect();
 
 
 app.get('/getOrderId', async (req, res) => {
-  console.log("poiuytresxcvbngfdsertgvb bvcxsewrtyghvbn")
   const { orderNumber, shippingAddress } = req.query;  // Extract orderNumber and shippingAddress from query parameters
-  console.log(orderNumber,shippingA+ddress)
+  console.log(orderNumber, shippingAddress);
+
   try {
-      // SQL query to get the order_id from the orders table using orderNumber and shippingAddress
-      const query = 
-          'SELECT id FROM orders WHERE orderNumber = ? AND shippingAddress = ?';
-          
+    // SQL query to get the order_id from the orders table using orderNumber and shippingAddress
+    const query = 'SELECT id FROM orders WHERE orderNumber = ? AND shippingAddress = ?';
+    
+    db.query(query, [orderNumber, shippingAddress], (err, result) => {
+      if (err) {
+        console.error('Error querying MySQL:', err);
+        return res.status(500).json({ message: 'Error querying the database' });
+      } 
       
-      db.query(query,[orderNumber, shippingAddress], (err, result) => {
-        console.log(result[0].id)
-        if (err) {
-          console.error('Error querying MySQL:', err);
-          res.status(500).json({ message: 'Error ' });
-        } else  {
-          // User exists and password matches
-        
-        return result[0].id;
-        } 
-      });
+      // Check if any result is returned
+      if (result.length === 0) {
+        return res.status(404).json({ message: 'Order not found' });
+      }
+
+      // If order is found, return the order ID
+      console.log('Order ID:', result[0].id);
+      return res.status(200).json({ order_id: result[0].id });
+    });
   } catch (error) {
-      console.error('Error fetching order:', error);
-      return res.status(500).json({ message: 'Internal server error' });  // Handle server errors
+    console.error('Error fetching order:', error);
+    return res.status(500).json({ message: 'Internal server error' });
   }
 });
 
