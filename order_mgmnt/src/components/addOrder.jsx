@@ -108,9 +108,25 @@ const AddOrder = () => {
         `http://137.184.75.176:5000/orders/${data.order_id}/sizes`,
         formattedSizeData
       );
-  
+      
       console.log('Size data added:', sizeResponse.data);
-      setShowSizeModal(false); // Close the modal after successful submission
+
+      setSizeData({
+        category: 'Adult',
+        description: '',
+        color: '',
+        xs: 0,
+        s: 0,
+        m: 0,
+        l: 0,
+        xl: 0,
+        xxl: 0,
+        xxxl: 0,
+        xxxxl: 0,
+        xxxxxl: 0,
+      });
+
+      
     } catch (error) {
       console.error('Error adding size data:', error);
       alert(error.message); // Display error to the user
@@ -158,6 +174,24 @@ const AddOrder = () => {
         setSelectedOrder(orderNumber); // Set the selected order number
         setAddress(shippingAddress)
         setShowSizeModal(true);
+        //Reset all form fields after successful submission
+        setOrderNumber('');
+        setOrderStatus('');
+        setOrderMethod('ONLINE');
+        setJobType('');
+        setClientName('');
+        setClientPhone('');
+        setClientGmail('');
+        setShippingAddress('');
+        setTrackingLabel('');
+        setGarmentDetails('');
+        setGarmentPo('');
+        setTeam('');
+        setDueDate('');
+        setInvoice('');
+        setNotes('');
+        setFiles([]);
+
       } else {
         const result = await response.json();
         alert(result.message);
@@ -560,7 +594,7 @@ const AddOrder = () => {
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={() => setShowSizeModal(false)}>
-              Cancel
+              Finish
             </Button>
             <Button variant="primary" onClick={handleSizeFormSubmit}>
               Submit
