@@ -179,6 +179,8 @@ const OrderList = () => {
     setOpenOrder(openOrder === orderNumber ? null : orderNumber);
   };
 
+  console.log(orderSizes);
+
   const getSelectClass = (status) => {
     switch (status) {
       case 'READY':
