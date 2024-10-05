@@ -141,6 +141,89 @@ const Completed = () => {
                       ) : (
                         <p>No sizes added for this order yet.</p>
                       )}
+                      <p><strong>Files Uploaded:</strong></p>
+                        <ul>
+                          {order.files && order.files.length > 0 ? (
+                            order.files.map((file, idx) => (
+                              <li key={idx} style={{ marginBottom: '15px' }}>
+                                {/* Image files (Preview + Download) */}
+                                {file.fileUrl.match(/\.(jpeg|jpg|gif|png)$/i) ? (
+                                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    <img
+                                      src={file.fileUrl}
+                                      alt={`file-${idx}`}
+                                      style={{
+                                        width: '100px',
+                                        height: '100px',
+                                        cursor: 'pointer',
+                                        marginRight: '10px',
+                                      }}
+                                      onClick={() => handleImageClick(file.fileUrl)} // Open the image on click
+                                    />
+                                    <a href={file.fileUrl} download={file.fileUrl.split('/').pop()}>
+                                      <i className="bi bi-download" style={{ marginLeft: '8px' }}></i>
+                                    </a>
+                                  </div>
+                                ) : file.fileUrl.match(/\.(pdf)$/i) ? (
+                                  // PDF files (Preview + Download)
+                                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    <div
+                                      style={{
+                                        width: '100px',
+                                        height: '100px',
+                                        cursor: 'pointer',
+                                        border: '1px solid #ddd',
+                                        borderRadius: '5px',
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        marginRight: '10px',
+                                        backgroundColor: '#f8f9fa',
+                                      }}
+                                      onClick={() => window.open(`https://docs.google.com/viewer?url=${file.fileUrl}&embedded=true`, '_blank')} // Opens PDF in a new tab for full preview
+                                    >
+                                      <i className="bi bi-file-earmark-pdf" style={{ fontSize: '24px', color: '#d9534f' }}></i> {/* PDF icon */}
+                                    </div>
+                                    <a href={file.fileUrl} download={file.fileUrl.split('/').pop()} style={{ marginLeft: '10px', textDecoration: 'none', color: '#007bff' }}>
+                                      <span>{file.fileUrl.split('/').pop()}</span>
+                                      <i className="bi bi-download" style={{ marginLeft: '8px', fontSize: '16px' }}></i> {/* Download icon */}
+                                    </a>
+                                  </div>
+                                ) : (
+                                  // Other file types (Preview + Download)
+                                  <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
+                                    <a
+                                      href={file.fileUrl}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      style={{
+                                        width: '100px',
+                                        height: '100px',
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        border: '1px solid #ddd',
+                                        borderRadius: '5px',
+                                        marginRight: '10px',
+                                        textDecoration: 'none',
+                                        backgroundColor: '#f8f9fa',
+                                      }}
+                                    >
+                                      <i className="bi bi-file-earmark" style={{ fontSize: '24px' }}></i> {/* Generic file icon */}
+                                    </a>
+                                    <a href={file.fileUrl} download={file.fileUrl.split('/').pop()} style={{ marginLeft: '10px', textDecoration: 'none', color: '#007bff' }}>
+                                      <span>{file.fileUrl.split('/').pop()}</span>
+                                      <i className="bi bi-download" style={{ marginLeft: '8px', fontSize: '16px' }}></i> {/* Download icon */}
+                                    </a>
+                                  </div>
+                                )}
+                              </li>
+                            ))
+                          ) : (
+                            <li>No files uploaded.</li>
+                          )}
+                        </ul>
+
                     </div>
                   </Collapse>
                 </td>
