@@ -14,6 +14,12 @@ const Completed = () => {
   const [selectedImage, setSelectedImage] = useState('');      // For selected image
   
 
+
+  const handleImageClick = (imageUrl) => {
+    setSelectedImage(imageUrl);
+    setShowImageModal(true);
+  };
+
   // Fetch orders with date range (default: today's date)
   useEffect(() => {
     const fetchOrders = async () => {
