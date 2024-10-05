@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Collapse, Modal, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 import moment from 'moment'; // To handle date formatting
+import * as XLSX from 'xlsx'; // Import xlsx for Excel file generation
 
 const Completed = () => {
   const [orders, setOrders] = useState([]);
@@ -54,6 +55,41 @@ const Completed = () => {
     }
   };
 
+  const downloadExcel = () => {
+    // Prepare data in the format you want to download
+    const worksheetData = orders.map((order) => ({
+      'ID': order.id, // Adding the order ID
+      'Order Number': order.orderNumber,
+      'Client Name': order.clientName,
+      'Client Phone': order.clientPhone,
+      'Client Gmail': order.clientgmail,
+      'Order Status': order.orderStatus,
+      'Order Method': order.orderMethod,
+      'Job Type': order.jobType,
+      'Due Date': new Date(order.dueDate).toLocaleDateString('en-US'),
+      'Garment PO': order.garmentPO,
+      'Tracking Number': order.trackingLabel,
+      'Shipping Address': order.shippingAddress,
+      'Garment Details': order.garmentDetails,
+      'Team': order.team,
+      'Notes': order.notes,
+      'Created At': new Date(order.createdAt).toLocaleDateString('en-US'), // Adding the createdAt date
+      'Files': order.files && order.files.length > 0 
+        ? order.files.map(file => file.fileUrl).join(', ') 
+        : 'No files uploaded',
+    }));
+
+    // Create a worksheet
+    const worksheet = XLSX.utils.json_to_sheet(worksheetData);
+
+    // Create a new workbook and append the worksheet
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Completed Orders');
+
+    // Export to Excel file
+    XLSX.writeFile(workbook, `completed_orders_${moment().format('YYYY-MM-DD')}.xlsx`);
+  };
+
   return (
     <div className="container" style={{ marginLeft: 250, paddingTop: 20, marginBottom: 70 }}>
       <h2>Completed Jobs</h2>
@@ -80,7 +116,9 @@ const Completed = () => {
             onChange={handleDateChange}
           />
         </div>
-        <div className="col-md-6">
+        {/* Download Button */}
+      
+        <div className="col-md-4">
           <label>Search Orders:</label>
           <input
             type="text"
@@ -90,6 +128,13 @@ const Completed = () => {
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
+        
+        <div className="col-md-2">
+          <Button variant="primary" onClick={downloadExcel}>
+            Download 
+          </Button>
+        </div>
+      
       </div>
 
       <table className="table table-striped table-hover">
