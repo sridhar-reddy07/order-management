@@ -34,7 +34,7 @@ const Completed = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch('http://137.184.75.176:5000/InstoreList');
+        const response = await fetch('http://137.184.75.176:5000/completedList');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -51,7 +51,7 @@ const Completed = () => {
   }, []);
   useEffect(() => {
     // Fetch orders with the search query
-    axios.get(`http://137.184.75.176:5000/InstoreList?search=${search}`)
+    axios.get(`http://137.184.75.176:5000/completedList?search=${search}`)
       .then((response) => {
         console.log(response)
         setOrders(response.data);

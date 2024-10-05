@@ -219,7 +219,7 @@ const Instore = () => {
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.orderNumber === orderNumber ? { ...order, orderStatus: status } : order
-        ).filter((order) => order.orderStatus !== 'READY')
+        ).filter((order) => order.orderStatus !== 'DONE')
       );
     } catch (error) {
       console.error('Error updating order status:', error);
