@@ -196,6 +196,8 @@ const ScreenPrinting = () => {
         return 'select-in-progress';
       case 'HARDDATE':
         return 'select-harddate';
+      case 'DONE':
+        return 'select-done';
       default:
         return '';
     }
@@ -222,7 +224,7 @@ const ScreenPrinting = () => {
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.orderNumber === orderNumber ? { ...order, orderStatus: status } : order
-        ).filter((order) => order.orderStatus !== 'READY')
+        ).filter((order) => order.orderStatus !== 'DONE')
       );
     } catch (error) {
       console.error('Error updating order status:', error);
@@ -366,7 +368,8 @@ const ScreenPrinting = () => {
                       <option value="READY">Ready</option>
                       <option value="ONHOLD">On Hold</option>
                       <option value="INPROGRESS">In Progress</option>
-                      <option value="HARDDATE">Hard Date</option>  
+                      <option value="HARDDATE">Hard Date</option>
+                      <option value="DONE">Done</option>  
                     </select>
                   </td>
 
