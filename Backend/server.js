@@ -310,7 +310,7 @@ app.get('/ordersList', (req, res) => {
   const sql = `
     SELECT *
     FROM orders
-    WHERE (orderStatus IN ('PENDING', 'NEED PAYMENT', 'PENDING ARTWORK', 'APPROVED', 'HARDDATE', 'PENDING APPROVAL'))
+    WHERE (orderStatus IN ('PENDING', 'NEED PAYMENT', 'PENDING ARTWORK', 'APPROVED',  'PENDING APPROVAL'))
     AND (
       orderNumber COLLATE utf8mb4_general_ci LIKE ? OR 
       clientName COLLATE utf8mb4_general_ci LIKE ? OR 
@@ -321,12 +321,7 @@ app.get('/ordersList', (req, res) => {
       orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
       team COLLATE utf8mb4_general_ci LIKE ?
     )
-    ORDER BY 
-      CASE 
-        WHEN orderStatus = 'HARDDATE' THEN 1
-        ELSE 2
-      END,
-      orderNumber`; // Secondary sorting by orderNumber
+    `; // Secondary sorting by orderNumber
 
   const searchQuery = '%' + search + '%';
 
@@ -364,7 +359,7 @@ app.get('/rizList', (req, res) => {
   const sql = `
     SELECT *
     FROM orders
-    WHERE (orderStatus IN ('PENDING', 'NEED PAYMENT', 'PENDING ARTWORK', 'APPROVED', 'HARDDATE', 'PENDING APPROVAL'))
+    WHERE (orderStatus IN ('PENDING', 'NEED PAYMENT', 'PENDING ARTWORK', 'APPROVED', 'PENDING APPROVAL'))
     AND (
       orderNumber COLLATE utf8mb4_general_ci LIKE ? OR 
       clientName COLLATE utf8mb4_general_ci LIKE ? OR 
@@ -375,12 +370,7 @@ app.get('/rizList', (req, res) => {
       orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
       team COLLATE utf8mb4_general_ci LIKE ?
     ) And team = 'RIZ'
-    ORDER BY 
-      CASE 
-        WHEN orderStatus = 'HARDDATE' THEN 1
-        ELSE 2
-      END,
-      orderNumber`; // Secondary sorting by orderNumber
+    `; // Secondary sorting by orderNumber
 
   const searchQuery = '%' + search + '%';
 
@@ -420,7 +410,7 @@ app.get('/mussaList', (req, res) => {
   const sql = `
     SELECT *
     FROM orders
-    WHERE (orderStatus IN ('PENDING', 'NEED PAYMENT', 'PENDING ARTWORK', 'APPROVED', 'HARDDATE', 'PENDING APPROVAL'))
+    WHERE (orderStatus IN ('PENDING', 'NEED PAYMENT', 'PENDING ARTWORK', 'APPROVED', 'PENDING APPROVAL'))
     AND (
       orderNumber COLLATE utf8mb4_general_ci LIKE ? OR 
       clientName COLLATE utf8mb4_general_ci LIKE ? OR 
@@ -431,12 +421,7 @@ app.get('/mussaList', (req, res) => {
       orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
       team COLLATE utf8mb4_general_ci LIKE ?
     ) And team = 'Mussa'
-    ORDER BY 
-      CASE 
-        WHEN orderStatus = 'HARDDATE' THEN 1
-        ELSE 2
-      END,
-      orderNumber`; // Secondary sorting by orderNumber
+   `; // Secondary sorting by orderNumber
 
   const searchQuery = '%' + search + '%';
 
@@ -473,7 +458,7 @@ app.get('/karachiList', (req, res) => {
   const sql = `
     SELECT *
     FROM orders
-    WHERE (orderStatus IN ('PENDING', 'NEED PAYMENT', 'PENDING ARTWORK', 'APPROVED', 'HARDDATE', 'PENDING APPROVAL'))
+    WHERE (orderStatus IN ('PENDING', 'NEED PAYMENT', 'PENDING ARTWORK', 'APPROVED',  'PENDING APPROVAL'))
     AND (
       orderNumber COLLATE utf8mb4_general_ci LIKE ? OR 
       clientName COLLATE utf8mb4_general_ci LIKE ? OR 
@@ -484,12 +469,7 @@ app.get('/karachiList', (req, res) => {
       orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
       team COLLATE utf8mb4_general_ci LIKE ?
     ) And team = 'KARACHI TEAM'
-    ORDER BY 
-      CASE 
-        WHEN orderStatus = 'HARDDATE' THEN 1
-        ELSE 2
-      END,
-      orderNumber`; // Secondary sorting by orderNumber
+    `; // Secondary sorting by orderNumber
 
   const searchQuery = '%' + search + '%';
 
@@ -530,7 +510,7 @@ app.get('/karachiList', (req, res) => {
     const sql = `
       SELECT *
       FROM orders
-      WHERE (orderStatus IN ('PENDING', 'NEED PAYMENT', 'PENDING ARTWORK', 'APPROVED', 'HARDDATE', 'PENDING APPROVAL'))
+      WHERE (orderStatus IN ('PENDING', 'NEED PAYMENT', 'PENDING ARTWORK', 'APPROVED', 'PENDING APPROVAL'))
       AND (
         orderNumber COLLATE utf8mb4_general_ci LIKE ? OR 
         clientName COLLATE utf8mb4_general_ci LIKE ? OR 
@@ -541,12 +521,7 @@ app.get('/karachiList', (req, res) => {
         orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
         team COLLATE utf8mb4_general_ci LIKE ?
       ) And team = 'BOB JOB'
-      ORDER BY 
-        CASE 
-          WHEN orderStatus = 'HARDDATE' THEN 1
-          ELSE 2
-        END,
-        orderNumber`; // Secondary sorting by orderNumber
+      `; // Secondary sorting by orderNumber
   
     const searchQuery = '%' + search + '%';
   
@@ -582,7 +557,7 @@ app.get('/karachiList', (req, res) => {
     const sql = `
       SELECT * 
       FROM orders
-      WHERE ((orderStatus IN ('READY','INPROGRESS','ONHOLD')
+      WHERE ((orderStatus IN ('READY','INPROGRESS','ONHOLD','HARDDATE')
       AND jobType = 'EMBROIDERY') OR (orderStatus = 'DTGEMD' and jobType = 'DTG+EMB') )AND(
         orderNumber COLLATE utf8mb4_general_ci LIKE ? OR 
         clientName COLLATE utf8mb4_general_ci LIKE ? OR 
@@ -593,7 +568,12 @@ app.get('/karachiList', (req, res) => {
         orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
         team COLLATE utf8mb4_general_ci LIKE ?
       ) 
-      `;// Secondary sorting by orderNumber
+      ORDER BY 
+      CASE 
+        WHEN orderStatus = 'HARDDATE' THEN 1
+        ELSE 2
+      END,
+      orderNumber`;// Secondary sorting by orderNumber
   
     const searchQuery = '%' + search + '%';
   
@@ -630,7 +610,7 @@ app.get('/karachiList', (req, res) => {
     const sql = `
       SELECT * 
       FROM orders
-      WHERE ((orderStatus IN ('READY','INPROGRESS','ONHOLD')
+      WHERE ((orderStatus IN ('READY','INPROGRESS','ONHOLD','HARDDATE')
       AND jobType = 'DTG') )AND(
         orderNumber COLLATE utf8mb4_general_ci LIKE ? OR 
         clientName COLLATE utf8mb4_general_ci LIKE ? OR 
@@ -641,7 +621,12 @@ app.get('/karachiList', (req, res) => {
         orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
         team COLLATE utf8mb4_general_ci LIKE ?
       ) 
-      `;// Secondary sorting by orderNumber
+      ORDER BY 
+      CASE 
+        WHEN orderStatus = 'HARDDATE' THEN 1
+        ELSE 2
+      END,
+      orderNumber`;// Secondary sorting by orderNumber
   
     const searchQuery = '%' + search + '%';
   
@@ -677,7 +662,7 @@ app.get('/karachiList', (req, res) => {
     const sql = `
       SELECT * 
       FROM orders
-      WHERE ((orderStatus IN ('READY','INPROGRESS','ONHOLD')
+      WHERE ((orderStatus IN ('READY','INPROGRESS','ONHOLD','HARDDATE')
       AND jobType = 'SCREEN PRINTING') )AND(
         orderNumber COLLATE utf8mb4_general_ci LIKE ? OR 
         clientName COLLATE utf8mb4_general_ci LIKE ? OR 
@@ -688,7 +673,12 @@ app.get('/karachiList', (req, res) => {
         orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
         team COLLATE utf8mb4_general_ci LIKE ?
       ) 
-      `;// Secondary sorting by orderNumber
+      ORDER BY 
+      CASE 
+        WHEN orderStatus = 'HARDDATE' THEN 1
+        ELSE 2
+      END,
+      orderNumber`;// Secondary sorting by orderNumber
   
     const searchQuery = '%' + search + '%';
   
@@ -726,7 +716,7 @@ app.get('/karachiList', (req, res) => {
     const sql = `
       SELECT * 
       FROM orders
-      WHERE ((orderStatus IN ('READY','INPROGRESS','ONHOLD')
+      WHERE ((orderStatus IN ('READY','INPROGRESS','ONHOLD','HARDDATE')
       AND jobType = 'DTG+EMB') )AND(
         orderNumber COLLATE utf8mb4_general_ci LIKE ? OR 
         clientName COLLATE utf8mb4_general_ci LIKE ? OR 
@@ -737,7 +727,12 @@ app.get('/karachiList', (req, res) => {
         orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
         team COLLATE utf8mb4_general_ci LIKE ?
       ) 
-      `;// Secondary sorting by orderNumber
+      ORDER BY 
+      CASE 
+        WHEN orderStatus = 'HARDDATE' THEN 1
+        ELSE 2
+      END,
+      orderNumber`;// Secondary sorting by orderNumber
   
     const searchQuery = '%' + search + '%';
   
