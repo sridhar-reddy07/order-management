@@ -295,7 +295,7 @@ const Riz = () => {
 
   return (
     <div className="container" style={{ marginLeft: 250, paddingTop: 20,marginBottom:70 }}>
-      <h2>All Orders</h2>
+      <h2>Riz</h2>
       <input
         type="text"
         className="form-control"
