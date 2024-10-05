@@ -142,7 +142,7 @@ const Dtg = () => {
     };
 
     fetchOrders();
-  }, []);
+  }, [orders.orderStatus]);
   useEffect(() => {
     // Fetch orders with the search query
     axios.get(`http://137.184.75.176:5000/dtgList?search=${search}`)
@@ -226,7 +226,7 @@ const Dtg = () => {
           order.orderNumber === orderNumber ? { ...order, orderStatus: status } : order
         ).filter((order) => order.orderStatus !== 'DONE')
       );
-      fetchOrders();
+     
     } catch (error) {
       console.error('Error updating order status:', error);
     }
