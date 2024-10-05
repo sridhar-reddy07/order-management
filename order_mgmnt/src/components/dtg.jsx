@@ -226,6 +226,7 @@ const Dtg = () => {
           order.orderNumber === orderNumber ? { ...order, orderStatus: status } : order
         ).filter((order) => order.orderStatus !== 'DONE')
       );
+      fetchOrders();
     } catch (error) {
       console.error('Error updating order status:', error);
     }
