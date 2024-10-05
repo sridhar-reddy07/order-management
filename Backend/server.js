@@ -819,7 +819,7 @@ app.get('/karachiList', (req, res) => {
       SELECT * 
       FROM orders
       WHERE orderStatus IN ('DONE')
-      AND orderMethod = 'OFFLINE' AND(
+      AND orderMethod = 'WAREHOUSE JOBS' AND(
         orderNumber COLLATE utf8mb4_general_ci LIKE ? OR 
         clientName COLLATE utf8mb4_general_ci LIKE ? OR 
         shippingAddress COLLATE utf8mb4_general_ci LIKE ? OR 
