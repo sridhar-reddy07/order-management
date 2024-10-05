@@ -330,29 +330,7 @@ const Completed = () => {
         </tbody>
       </table>
 
-      <Modal show={showModal3} onHide={() => setShowModal3(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Enter {field}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Group>
-            <Form.Label>{field}</Form.Label>
-            <Form.Control
-              type="text"
-              value={updatedOrder}
-              onChange={(e) => setUpdatedOrder(e.target.value)}
-            />
-          </Form.Group>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal3(false)}>
-            Cancel
-          </Button>
-          <Button variant="primary" onClick={() => handleUpdateOrder()}>
-            Submit
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      
 
       
       {/* Modal for displaying enlarged image */}
