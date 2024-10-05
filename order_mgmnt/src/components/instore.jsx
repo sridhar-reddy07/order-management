@@ -188,20 +188,11 @@ const Instore = () => {
 
   const getSelectClass = (status) => {
     switch (status) {
-      case 'READY':
-        return 'select-ready';
-      case 'NEED PAYMENT':
-        return 'select-need-payment';
-      case 'PENDING':
-        return 'select-pending';
-      case 'PENDING ARTWORK':
-        return 'select-pending-artwork';
-      case 'APPROVED':
-        return 'select-approved';
-      case 'HARDDATE':
-        return 'select-harddate';
-      case 'PENDING APPROVAL':
-        return 'select-pending-approval';
+      case 'DONE':
+        return 'select-done';
+      case 'COMPLETED':
+        return 'select-completed';
+      
       default:
         return '';
     }
@@ -369,13 +360,9 @@ const Instore = () => {
                       value={order.orderStatus || ""}
                       onChange={(e) => updateOrderStatusInDatabase(e, order.orderNumber)}
                     >
-                      <option value="READY">Ready</option>
-                      <option value="NEED PAYMENT">Need Payment</option>
-                      <option value="PENDING">Pending</option>
-                      <option value="PENDING ARTWORK">Pending Art Work</option>
-                      <option value="APPROVED">Approved</option>
-                      <option value="HARDDATE">HardDate</option>
-                      <option value="PENDING APPROVAL">Pending Approval</option>
+                      <option value="DONE">Done</option>
+                      <option value="COMPLETED">Completed</option>
+                      
                     </select>
                   </td>
 
