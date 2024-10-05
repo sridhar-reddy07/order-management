@@ -3,6 +3,8 @@ import { Collapse, Modal, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 import moment from 'moment'; // To handle date formatting
 import * as XLSX from 'xlsx'; // Import xlsx for Excel file generation
+import { Button } from 'react-bootstrap';
+import { BsDownload } from 'react-icons/bs';
 
 const Completed = () => {
   const [orders, setOrders] = useState([]);
@@ -129,11 +131,10 @@ const Completed = () => {
           />
         </div>
         
-        <div className="col-md-2">
-          <Button variant="primary" onClick={downloadExcel}>
-            Download 
-          </Button>
-        </div>
+        <Button variant="primary" onClick={downloadExcel}>
+          <BsDownload style={{ marginRight: '5px' }} /> {/* Add download icon */}
+          Download
+        </Button>
       
       </div>
 
