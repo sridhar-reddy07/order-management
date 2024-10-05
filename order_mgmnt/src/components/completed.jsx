@@ -6,10 +6,13 @@ import moment from 'moment'; // To handle date formatting
 const Completed = () => {
   const [orders, setOrders] = useState([]);
   const [openOrder, setOpenOrder] = useState(null);
-  const [showModal, setShowModal] = useState(false);
   const [search, setSearch] = useState('');
   const [fromDate, setFromDate] = useState(moment().format('YYYY-MM-DD')); // Default to today
-  const [toDate, setToDate] = useState(moment().format('YYYY-MM-DD')); // Default to today
+  const [toDate, setToDate] = useState(moment().format('YYYY-MM-DD'));     // Default to today
+  const [orderId, setOrderId] = useState(null); // Initialize orderId state
+  const [showImageModal, setShowImageModal] = useState(false); // For controlling image modal
+  const [selectedImage, setSelectedImage] = useState('');      // For selected image
+  
 
   // Fetch orders with date range (default: today's date)
   useEffect(() => {
