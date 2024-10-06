@@ -74,7 +74,7 @@ const Invoice = () => {
   
   const generatePDF = (order) => {
     const doc = new jsPDF();
-    console.log(order)
+    
     // Adding the title
     doc.setFontSize(20);
     doc.text('Invoice', 10, 10);
@@ -322,7 +322,7 @@ const Invoice = () => {
 
   return (
     <div className="container" style={{ marginLeft: 250, paddingTop: 20,marginBottom:70 }}>
-      <h2>Add Invoice to Bob jobs</h2>
+      <h2>Add Invoice to Bob JOb</h2>
       <div className="row mb-4">
         <div className="col-md-3">
           <input
@@ -458,12 +458,12 @@ const Invoice = () => {
                   </td>
 
                   <td>
-                  <Button variant="primary" onClick={()=>handleAddInvoice(order)}>
+                  <Button variant="primary" onClick={()=>handleAddInvoice(order.orderNumber,order.shippingAddress)}>
                     Add Invoice
                   </Button>
                   </td>
                   <td>
-                  <Button onClick={() => generatePDF(order.orderNumber,order.shippingAddress)} className="ml-2">Download Invoice PDF</Button>
+                  <Button onClick={() => generatePDF(order)} className="ml-2">Download Invoice PDF</Button>
                   </td>
 
                   <td>
