@@ -95,7 +95,7 @@ const Invoice = () => {
       { title: 'Garment Details:', value: order.garmentDetails },
       { title: 'Team:', value: order.team },
       { title: 'Notes:', value: order.notes },
-      { title: 'Invoice Amount:', value: order.invoiceAmount || 'N/A' }
+      { title: 'Invoice Amount:', value: order.invoice || 'N/A' }
     ];
 
     // Displaying each key-value pair
