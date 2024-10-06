@@ -130,24 +130,7 @@ const Invoice = () => {
   };
   
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await fetch('http://137.184.75.176:5000/invoiceList');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        console.log('Fetched Orders:', data); // Debug log
-        setOrders(data);
-        console.log(orders.files);
-      } catch (error) {
-        console.error('Error fetching orders:', error);
-      }
-    };
-
-    fetchOrders();
-  }, []);
+  
   useEffect(() => {
     // Fetch orders with the search query
     axios.get(`http://137.184.75.176:5000/invoiceList?search=${search}`)
@@ -326,7 +309,7 @@ const Invoice = () => {
 
   return (
     <div className="container" style={{ marginLeft: 250, paddingTop: 20,marginBottom:70 }}>
-      <h2>Add Invoice to Bob JOb</h2>
+      <h2>payment Pending Bob Jobs</h2>
       <div className="row mb-4">
         <div className="col-md-3">
           <input
@@ -406,7 +389,10 @@ const Invoice = () => {
                     </>
                   </td>
                   <td>
-                    <select
+                    <>
+                    {
+                        isAdmin ?
+                        <select
                       className={getSelectClass(order.orderStatus)}
                       value={order.orderStatus || ""}
                       onChange={(e) => updateOrderStatusInDatabase(e, order.orderNumber)}
@@ -414,7 +400,10 @@ const Invoice = () => {
                       <option value="DONE">Done</option>
                       <option value="COMPLETED">Completed</option>
                       
-                    </select>
+                    </select> : ''
+                    }
+                    </>
+                    
                   </td>
 
 
@@ -462,9 +451,16 @@ const Invoice = () => {
                   </td>
 
                   <td>
-                  <Button variant="primary" onClick={()=>handleAddInvoice(order.orderNumber,order.shippingAddress)}>
-                    Add Invoice
-                  </Button>
+                    <>
+                    {order.invoice}?${order.invoice}{isAdmin ? (<i 
+                                className="bi bi-pencil" 
+                                style={{ cursor: 'pointer', marginLeft: '5px' }} 
+                                onClick={() => handleOrder(order.orderNumber,"shippingAddress")}
+                              ></i>) : ''} : <Button variant="primary" onClick={()=>handleAddInvoice(order.orderNumber,order.shippingAddress)}>
+                              Add Invoice
+                            </Button>
+                    </>
+                  
                   </td>
                   <td>
                   <Button onClick={() => generatePDF(order)} className="ml-2">Download Invoice PDF</Button>
