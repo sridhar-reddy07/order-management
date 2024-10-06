@@ -284,7 +284,7 @@ const CompletedInvoice = () => {
 
   return (
     <div className="container" style={{ marginLeft: 250, paddingTop: 20,marginBottom:70 }}>
-      <h2>Add Invoice to Bob JOb</h2>
+      <h2>Payment Done Bob Jobs</h2>
       <div className="row mb-4">
         <div className="col-md-3">
           <input

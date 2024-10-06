@@ -960,7 +960,7 @@ app.get('/karachiList', (req, res) => {
     });
   });
 
-  app.get('/CompletdInvoiceList', (req, res) => {
+  app.get('/completdInvoiceList', (req, res) => {
     const search = req.query.search || '';  // Get the search query from the request
   
     const sql = `
