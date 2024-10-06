@@ -4,8 +4,11 @@ import axios from 'axios';
 import moment from 'moment'; // To handle date formatting
 import * as XLSX from 'xlsx'; // Import xlsx for Excel file generation
 import { BsDownload } from 'react-icons/bs';
+import moment from 'moment';
+import jsPDF from 'jspdf'; // Import jsPDF
+import 'jspdf-autotable'; // Import autoTable plugin
 
-const Bob = () => {
+const Invoice = () => {
   const [orders, setOrders] = useState([]);
   const [openOrder, setOpenOrder] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -27,89 +30,84 @@ const Bob = () => {
  
   const [address, setAddress] = useState('')
 
-  const [sizeData, setSizeData] = useState({
-    category: 'Adult', // Default category
-    description: '',
-    color: '',
-    xs: 0,
-    s: 0,
-    m: 0,
-    l: 0,
-    xl: 0,
-    xxl: 0,
-    xxxl:0,
-    xxxxl:0,
-    xxxxxl:0,
-  });
+  const [showInvoiceModal, setShowInvoiceModal] = useState(false);
+  const [invoiceOrder, setInvoiceOrder] = useState(null);
+  const [invoiceAmount, setInvoiceAmount] = useState('');
 
-  const handleSizeInputChange = (event) => {
-    const { name, value } = event.target;
-    setSizeData((prevData) => ({
-      ...prevData,
-      [name]: name === 'xs' || name === 's' || name === 'm' || name === 'l' || name === 'xl' || name === 'xxl' || name === 'xxxl' || name === 'xxxxl' || name === 'xxxxxl'
-        ? parseInt(value) || 0  // Convert to number or default to 0 if empty
-        : value
-    }));
-    console.log(sizeData);
-  };
+  
+  // Fetch orders
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get('http://137.184.75.176:5000/invoiceList');
+        setOrders(response.data);
+      } catch (error) {
+        console.error('Error fetching invoices:', error);
+      }
+    };
+    fetchOrders();
+  }, []);
 
-  const handleSizeModalShow = (orderNumber,shippingAddress) => {
-    setSelectedOrder(orderNumber); // Set the selected order number
+  // Handle adding invoice
+  const handleAddInvoice = (orderNumber,shippingAddress) => {
+    setInvoiceOrder(orderNumber);
+    setShowInvoiceModal(true);
     setAddress(shippingAddress)
-    setShowSizeModal(true);
   };
 
-  
-  const handleSizeFormSubmit = async () => {
+  // Submit invoice details to backend
+  const handleInvoiceSubmit = async () => {
     try {
-      // Fetch order ID using the selected order and address
-      const response = await fetch(
-        `http://137.184.75.176:5000/getOrderId?orderNumber=${selectedOrder}&shippingAddress=${address}`
-      );
-      
-      if (!response.ok) {
-        throw new Error('Order not found');
-      }
-  
-      const data = await response.json();  // Correctly parse the response JSON
-   
-  
-      if (!data || !data.order_id) {  // Check if order_id exists in the response
-        alert('Order not found');
-        return;
-      }
-  
-      // Ensure sizeData contains valid numbers for sizes
-      const formattedSizeData = {
-        ...sizeData,
-        xs: parseInt(sizeData.xs) || 0,
-        s: parseInt(sizeData.s) || 0,
-        m: parseInt(sizeData.m) || 0,
-        l: parseInt(sizeData.l) || 0,
-        xl: parseInt(sizeData.xl) || 0,
-        xxl: parseInt(sizeData.xxl) || 0,
-        xxxl: parseInt(sizeData.xxxl) || 0,
-        xxxxl: parseInt(sizeData.xxxxl) || 0,
-        xxxxxl: parseInt(sizeData.xxxxxl) || 0,
-      };
-  
-      // POST the size data to the server using the retrieved order_id
-      const sizeResponse = await axios.post(
-        `http://137.184.75.176:5000/orders/${data.order_id}/sizes`,
-        formattedSizeData
-      );
-  
-      console.log('Size data added:', sizeResponse.data);
-      setShowSizeModal(false); // Close the modal after successful submission
+      await axios.post('http://137.184.75.176:5000/addInvoice', {
+        orderNumber: invoiceOrder,
+        invoice: invoiceAmount,
+        shippingAddress:address
+        
+      });
+      setShowInvoiceModal(false);
+      setInvoiceAmount('');
+      alert('Invoice added successfully');
     } catch (error) {
-      console.error('Error adding size data:', error);
-      alert(error.message); // Display error to the user
+      console.error('Error adding invoice:', error);
     }
   };
   
-  
+  const generatePDF = (order) => {
+    const doc = new jsPDF();
+    
+    // Adding the title
+    doc.setFontSize(20);
+    doc.text('Invoice', 10, 10);
 
-  
+    // Adding order details
+    const orderDetails = [
+      { title: 'Order Number:', value: order.orderNumber },
+      { title: 'Client Name:', value: order.clientName },
+      { title: 'Client Phone:', value: order.clientPhone },
+      { title: 'Client Email:', value: order.clientgmail },
+      { title: 'Order Status:', value: order.orderStatus },
+      { title: 'Order Method:', value: order.orderMethod },
+      { title: 'Job Type:', value: order.jobType },
+      { title: 'Due Date:', value: moment(order.dueDate).format('YYYY-MM-DD') },
+      { title: 'Garment PO:', value: order.garmentPO },
+      { title: 'Tracking Number:', value: order.trackingLabel },
+      { title: 'Shipping Address:', value: order.shippingAddress },
+      { title: 'Garment Details:', value: order.garmentDetails },
+      { title: 'Team:', value: order.team },
+      { title: 'Notes:', value: order.notes },
+      { title: 'Invoice Amount:', value: order.invoiceAmount || 'N/A' }
+    ];
+
+    // Displaying each key-value pair
+    orderDetails.forEach((detail, index) => {
+      doc.setFontSize(12);
+      doc.text(`${detail.title} ${detail.value}`, 10, 20 + (index * 10));
+    });
+
+    // Saving the PDF file
+    doc.save(`invoice_${order.orderNumber}.pdf`);
+  };
+
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -131,7 +129,7 @@ const Bob = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch('http://137.184.75.176:5000/bobJobs');
+        const response = await fetch('http://137.184.75.176:5000/packingList');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -148,7 +146,7 @@ const Bob = () => {
   }, []);
   useEffect(() => {
     // Fetch orders with the search query
-    axios.get(`http://137.184.75.176:5000/bobJobs?search=${search}`)
+    axios.get(`http://137.184.75.176:5000/packingList?search=${search}`)
       .then((response) => {
         console.log(response)
         setOrders(response.data);
@@ -191,25 +189,15 @@ const Bob = () => {
 
   const getSelectClass = (status) => {
     switch (status) {
-      case 'READY':
-        return 'select-ready';
-      case 'NEED PAYMENT':
-        return 'select-need-payment';
-      case 'PENDING':
-        return 'select-pending';
-      case 'PENDING ARTWORK':
-        return 'select-pending-artwork';
-      case 'APPROVED':
-        return 'select-approved';
-      case 'HARDDATE':
-        return 'select-harddate';
-      case 'PENDING APPROVAL':
-        return 'select-pending-approval';
+      case 'DONE':
+        return 'select-done';
+      case 'COMPLETED':
+        return 'select-completed';
+      
       default:
         return '';
     }
   };
-
   const updateOrderStatusInDatabase = async (e, orderNumber) => {
     const status = e.target.value;
     try {
@@ -231,7 +219,7 @@ const Bob = () => {
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.orderNumber === orderNumber ? { ...order, orderStatus: status } : order
-        ).filter((order) => order.orderStatus !== 'READY')
+        ).filter((order) => order.orderStatus !== 'DONE')
       );
     } catch (error) {
       console.error('Error updating order status:', error);
@@ -334,7 +322,7 @@ const Bob = () => {
 
   return (
     <div className="container" style={{ marginLeft: 250, paddingTop: 20,marginBottom:70 }}>
-      <h2>Bob Jobs</h2>
+      <h2>Packing List</h2>
       <div className="row mb-4">
         <div className="col-md-3">
           <input
@@ -351,16 +339,7 @@ const Bob = () => {
               Download
             </Button>
             </div>
-            <div className="col-md-2">
-            <Button variant="primary" href="/Invoice">
-              Add Invoice
-            </Button>
-            </div>
-            <div className="col-md-2">
-            <Button variant="primary" href="/completedInvoice">
-              Completed Invoice
-            </Button>
-            </div>
+            
       </div>
       
       <table className="table table-striped table-hover">
@@ -428,15 +407,12 @@ const Bob = () => {
                       value={order.orderStatus || ""}
                       onChange={(e) => updateOrderStatusInDatabase(e, order.orderNumber)}
                     >
-                      <option value="READY">Ready</option>
-                      <option value="NEED PAYMENT">Need Payment</option>
-                      <option value="PENDING">Pending</option>
-                      <option value="PENDING ARTWORK">Pending Art Work</option>
-                      <option value="APPROVED">Approved</option>
-                      <option value="HARDDATE">HardDate</option>
-                      <option value="PENDING APPROVAL">Pending Approval</option>
+                      <option value="DONE">Done</option>
+                      <option value="COMPLETED">Completed</option>
+                      
                     </select>
                   </td>
+
 
                   <td>{order.orderMethod}</td>
                   <td>{order.jobType}</td>
@@ -482,12 +458,12 @@ const Bob = () => {
                   </td>
 
                   <td>
-                    <Button
-                      variant="primary"
-                      onClick={() => handleSizeModalShow(order.orderNumber,order.shippingAddress)}
-                    >
-                      Add Size
-                    </Button>
+                  <Button variant="primary" onClick={()=>handleAddInvoice(orders)}>
+                    Add Invoice
+                  </Button>
+                  </td>
+                  <td>
+                  <Button onClick={() => generatePDF(orders.orderNumber,orders.shippingAddress)} className="ml-2">Download Invoice PDF</Button>
                   </td>
 
                   <td>
@@ -682,181 +658,39 @@ const Bob = () => {
         </Modal.Footer>
       </Modal>
 
-      {/* Size Entry Modal */}
-        <Modal show={showSizeModal} onHide={() => setShowSizeModal(false)}>
-          <Modal.Header closeButton>
-            <Modal.Title>Add Sizes for Order #{selectedOrder}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form>
-              {/* Category Dropdown */}
-              <Form.Group controlId="formCategory">
-                <Form.Label>Category</Form.Label>
-                <Form.Control
-                  as="select"
-                  name="category"
-                  value={sizeData.category}
-                  onChange={handleSizeInputChange}
-                >
-                  <option value="Adult">Adult</option>
-                  <option value="Youth">Youth</option>
-                  <option value="Ladies">Ladies</option>
-                </Form.Control>
-              </Form.Group>
+      
 
-              {/* Description */}
-              <Form.Group controlId="formDesc">
-                <Form.Label>Description</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="description"
-                  value={sizeData.description}
-                  onChange={handleSizeInputChange}
-                  placeholder="Enter description"
-                />
-              </Form.Group>
 
-              {/* Color */}
-              <Form.Group controlId="formColor">
-                <Form.Label>Color</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="color"
-                  value={sizeData.color}
-                  onChange={handleSizeInputChange}
-                  placeholder="Enter color"
-                />
-              </Form.Group>
 
-              {/* Size Inputs */}
-              <Form.Group controlId="formSizes">
-                <Form.Label>Sizes</Form.Label>
-
-                {/* First Row: XS, S, M, L */}
-                <div className="row mb-3">
-                  <div className="col-md-3 col-sm-4 col-6 mb-2">
-                    <Form.Label>XS</Form.Label>
-                    <Form.Control
-                      type="number"
-                      name="xs"
-                      value={sizeData.xs}
-                      onChange={handleSizeInputChange}
-                      placeholder="XS"
-                      min="0"
-                    />
-                  </div>
-                  <div className="col-md-3 col-sm-4 col-6 mb-2">
-                    <Form.Label>S</Form.Label>
-                    <Form.Control
-                      type="number"
-                      name="s"
-                      value={sizeData.s}
-                      onChange={handleSizeInputChange}
-                      placeholder="S"
-                      min="0"
-                    />
-                  </div>
-                  <div className="col-md-3 col-sm-4 col-6 mb-2">
-                    <Form.Label>M</Form.Label>
-                    <Form.Control
-                      type="number"
-                      name="m"
-                      value={sizeData.m}
-                      onChange={handleSizeInputChange}
-                      placeholder="M"
-                      min="0"
-                    />
-                  </div>
-                  <div className="col-md-3 col-sm-4 col-6 mb-2">
-                    <Form.Label>L</Form.Label>
-                    <Form.Control
-                      type="number"
-                      name="l"
-                      value={sizeData.l}
-                      onChange={handleSizeInputChange}
-                      placeholder="L"
-                      min="0"
-                    />
-                  </div>
-                </div>
-
-                {/* Second Row: XL, XXL, XXXL, XXXXL, XXXXXL */}
-                <div className="row">
-                  <div className="col-md-3 col-sm-4 col-6 mb-2">
-                    <Form.Label>XL</Form.Label>
-                    <Form.Control
-                      type="number"
-                      name="xl"
-                      value={sizeData.xl}
-                      onChange={handleSizeInputChange}
-                      placeholder="XL"
-                      min="0"
-                    />
-                  </div>
-                  <div className="col-md-3 col-sm-4 col-6 mb-2">
-                    <Form.Label>2XL</Form.Label>
-                    <Form.Control
-                      type="number"
-                      name="xxl"
-                      value={sizeData.xxl}
-                      onChange={handleSizeInputChange}
-                      placeholder="XXL"
-                      min="0"
-                    />
-                  </div>
-                  <div className="col-md-3 col-sm-4 col-6 mb-2">
-                    <Form.Label>3XL</Form.Label>
-                    <Form.Control
-                      type="number"
-                      name="xxxl"
-                      value={sizeData.xxxl}
-                      onChange={handleSizeInputChange}
-                      placeholder="XXXL"
-                      min="0"
-                    />
-                  </div>
-                  
-                </div>
-                <div className='row'>
-                  <div className="col-md-3 col-sm-4 col-6 mb-2">
-                      <Form.Label>4XL</Form.Label>
-                      <Form.Control
-                        type="number"
-                        name="xxxxl"
-                        value={sizeData.xxxxl}
-                        onChange={handleSizeInputChange}
-                        placeholder="XXXXL"
-                        min="0"
-                      />
-                    </div>
-                    <div className="col-md-3 col-sm-4 col-6 mb-2">
-                      <Form.Label>5XL</Form.Label>
-                      <Form.Control
-                        type="number"
-                        name="xxxxxl"
-                        value={sizeData.xxxxxl}
-                        onChange={handleSizeInputChange}
-                        placeholder="XXXXXL"
-                        min="0"
-                      />
-                    </div>
-                </div>
-              </Form.Group>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowSizeModal(false)}>
-              Cancel
-            </Button>
-            <Button variant="primary" onClick={handleSizeFormSubmit}>
-              Submit
-            </Button>
-          </Modal.Footer>
-        </Modal>
+        <Modal show={showInvoiceModal} onHide={() => setShowInvoiceModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Add Invoice for Order #{invoiceOrder}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group>
+              <Form.Label>Total Amount</Form.Label>
+              <Form.Control
+                type="number"
+                value={invoiceAmount}
+                onChange={(e) => setInvoiceAmount(e.target.value)}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowInvoiceModal(false)}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleInvoiceSubmit}>
+            Submit Invoice
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
 
     </div>
   );
 };
 
-export default Bob;
+export default Invoice;

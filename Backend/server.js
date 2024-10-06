@@ -1013,22 +1013,28 @@ app.get('/karachiList', (req, res) => {
   });
 
 
-  //update order notes
-  app.put('/updateordernotes/:orderNumber', (req, res) => {
-    const { orderNumber } = req.params;
-    const { ordernotes } = req.body;
-    
-    const sql = 'UPDATE orders SET notes = ? WHERE orderNumber = ?';
-    
-    db.query(sql, [ordernotes, orderNumber], (err, result) => {
-      if (err) {
-        console.error('Error updating notes:', err);
-        res.status(500).json({ message: 'Error updating notes' });
-      } else {
-        res.status(200).json({ message: 'Notes updated successfully !! 😘' });
-      }
+  app.post('/addInvoice', (req, res) => {
+    const { orderNumber, totalAmount ,shippingAddress} = req.body;
+
+    // SQL query to update the order with the invoice details
+    const sql = `
+        UPDATE orders 
+        SET invoice = ?
+        WHERE orderNumber = ? AND shippingAddress=?
+    `;
+
+    db.query(sql, [totalAmount, orderNumber,shippingAddress], (err, result) => {
+        if (err) {
+            console.error('Error updating invoice:', err);
+            res.status(500).json({ message: 'Error adding invoice' });
+        } else {
+            res.status(200).json({ message: 'Invoice added successfully' });
+        }
     });
-  });
+});
+
+
+
 
 
   

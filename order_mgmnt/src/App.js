@@ -23,6 +23,7 @@ import Packing from "./components/packing";
 import Completed from "./components/completed";
 import Home from "./components/Home";
 import Bob from "./components/bob";
+import Invoice from "./components/invoice";
 
 
 
@@ -51,6 +52,7 @@ function App() {
         <Route path = '/instore' element = {<Instore/>}/>
         <Route path = '/packing' element = {<Packing/>}/>
         <Route path = '/completed' element = {<Completed/>}/>
+        <Route path = '/invoice' element = {<Invoice/>}/>
       </Routes>
       <Footer />
     </div>
