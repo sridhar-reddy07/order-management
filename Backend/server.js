@@ -1068,6 +1068,7 @@ app.get('/karachiList', (req, res) => {
 
   app.post('/addInvoice', (req, res) => {
     const { orderNumber, totalAmount ,shippingAddress} = req.body;
+    console.log(req.body);
 
     // SQL query to update the order with the invoice details
     const sql = `
