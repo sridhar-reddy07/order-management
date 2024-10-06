@@ -130,10 +130,10 @@ const Completed = () => {
           />
         </div>
         <div className="col-md-2">
-        <label>Download Orders : </label>
+        <Button variant="primary" onClick={downloadExcel}>
           <BsDownload style={{ marginRight: '5px' }} /> {/* Add download icon */}
-         
-       
+          Download
+        </Button>
         </div>
       </div>
 
