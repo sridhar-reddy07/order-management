@@ -74,7 +74,7 @@ const Invoice = () => {
   
   const generatePDF = (order) => {
     const doc = new jsPDF();
-    
+    console.log(order)
     // Adding the title
     doc.setFontSize(20);
     doc.text('Invoice', 10, 10);
