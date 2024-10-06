@@ -1073,7 +1073,7 @@ app.get('/karachiList', (req, res) => {
     const sql = `
         UPDATE orders 
         SET invoice = ?
-        WHERE orderNumber = ? AND shippingAddress=?
+        WHERE TRIM(orderNumber) = TRIM(?) AND TRIM(shippingAddress) = TRIM(?)
     `;
 
     db.query(sql, [totalAmount, orderNumber,shippingAddress], (err, result) => {
