@@ -129,11 +129,11 @@ const Completed = () => {
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <div className="col-md-4">
-        <Button variant="primary" onClick={downloadExcel}>
+        <div className="col-md-2">
+        
           <BsDownload style={{ marginRight: '5px' }} /> {/* Add download icon */}
-          Download
-        </Button>
+         
+       
         </div>
       </div>
 
