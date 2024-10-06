@@ -458,12 +458,12 @@ const Invoice = () => {
                   </td>
 
                   <td>
-                  <Button variant="primary" onClick={()=>handleAddInvoice(orders)}>
+                  <Button variant="primary" onClick={()=>handleAddInvoice(order)}>
                     Add Invoice
                   </Button>
                   </td>
                   <td>
-                  <Button onClick={() => generatePDF(orders.orderNumber,orders.shippingAddress)} className="ml-2">Download Invoice PDF</Button>
+                  <Button onClick={() => generatePDF(order.orderNumber,order.shippingAddress)} className="ml-2">Download Invoice PDF</Button>
                   </td>
 
                   <td>
