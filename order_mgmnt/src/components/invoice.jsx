@@ -129,7 +129,7 @@ const Invoice = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch('http://137.184.75.176:5000/packingList');
+        const response = await fetch('http://137.184.75.176:5000/invoiceList');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -146,7 +146,7 @@ const Invoice = () => {
   }, []);
   useEffect(() => {
     // Fetch orders with the search query
-    axios.get(`http://137.184.75.176:5000/packingList?search=${search}`)
+    axios.get(`http://137.184.75.176:5000/invoiceList?search=${search}`)
       .then((response) => {
         console.log(response)
         setOrders(response.data);
@@ -322,7 +322,7 @@ const Invoice = () => {
 
   return (
     <div className="container" style={{ marginLeft: 250, paddingTop: 20,marginBottom:70 }}>
-      <h2>Packing List</h2>
+      <h2>Add Invoice to Bob jobs</h2>
       <div className="row mb-4">
         <div className="col-md-3">
           <input
