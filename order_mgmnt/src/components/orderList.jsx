@@ -293,6 +293,12 @@ const OrderList = () => {
     setOrders(sortedOrders);
   };
 
+  <div className="col-md-2">
+        <Button variant="primary" onClick={downloadExcel}>
+          <BsDownload style={{ marginRight: '5px' }} /> {/* Add download icon */}
+          Download
+        </Button>
+        </div>
   return (
     <div className="container" style={{ marginLeft: 250, paddingTop: 20,marginBottom:70 }}>
       <h2>All Orders</h2>
@@ -303,6 +309,12 @@ const OrderList = () => {
         placeholder="Search orders... 🔍"
         onChange={(e) => setSearch(e.target.value)}
       />
+      <div className="col-md-2">
+        <Button variant="primary" onClick={downloadExcel}>
+          <BsDownload style={{ marginRight: '5px' }} /> {/* Add download icon */}
+          Download
+        </Button>
+        </div>
       
       <table className="table table-striped table-hover">
         <thead className="thead-dark table-header">
