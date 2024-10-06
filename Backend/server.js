@@ -1070,7 +1070,7 @@ app.get('/karachiList', (req, res) => {
     const { orderNumber, invoice ,shippingAddress} = req.body;
     console.log(req.body);
 
-    if (isNaN(totalAmount)) {
+    if (isNaN(invoice)) {
       return res.status(400).json({ message: 'Invalid invoice amount' });
   }
 
