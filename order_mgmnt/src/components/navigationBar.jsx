@@ -38,6 +38,9 @@ const NavigationBar = () => {
                 <Nav.Link href="/dtgEmd">
                   DTG+EMB
                 </Nav.Link>
+                <Nav.Link href="/spEmd">
+                  SP+EMB
+                </Nav.Link>
                 <Nav.Link href="/screenprinting">
                   Screen Printing
                 </Nav.Link>

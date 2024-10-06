@@ -5,7 +5,7 @@ import moment from 'moment'; // To handle date formatting
 import * as XLSX from 'xlsx'; // Import xlsx for Excel file generation
 import { BsDownload } from 'react-icons/bs';
 
-const DtgEmd = () => {
+const SpEmd = () => {
   const [orders, setOrders] = useState([]);
   const [openOrder, setOpenOrder] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -131,7 +131,7 @@ const DtgEmd = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch('http://137.184.75.176:5000/dtgEmdList');
+        const response = await fetch('http://137.184.75.176:5000/spEmdList');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -148,7 +148,7 @@ const DtgEmd = () => {
   }, []);
   useEffect(() => {
     // Fetch orders with the search query
-    axios.get(`http://137.184.75.176:5000/dtgEmdList?search=${search}`)
+    axios.get(`http://137.184.75.176:5000/spEmdList?search=${search}`)
       .then((response) => {
         console.log(response)
         setOrders(response.data);
@@ -332,7 +332,7 @@ const DtgEmd = () => {
 
   return (
     <div className="container" style={{ marginLeft: 250, paddingTop: 20,marginBottom:70 }}>
-      <h2>DTG + EMB</h2>
+      <h2>Screen Printing + EMB</h2>
       <div className="row mb-4">
         <div className="col-md-3">
           <input
@@ -420,7 +420,7 @@ const DtgEmd = () => {
                       <option value="ONHOLD">On Hold</option>
                       <option value="INPROGRESS">In Progress</option>
                       <option value="HARDDATE">Hard Date</option>
-                      <option value="DTGEMD">DTG Done</option>  
+                      <option value="DTGEMD">Screen Printing Done</option>  
                     </select>
                   </td>
                   <td>{order.orderMethod}</td>
@@ -844,4 +844,4 @@ const DtgEmd = () => {
   );
 };
 
-export default DtgEmd;
+export default SpEmd;

@@ -558,7 +558,7 @@ app.get('/karachiList', (req, res) => {
       SELECT * 
       FROM orders
       WHERE ((orderStatus IN ('READY','INPROGRESS','ONHOLD','HARDDATE')
-      AND jobType = 'EMBROIDERY') OR (orderStatus = 'DTGEMD' and jobType = 'DTG+EMB') )AND(
+      AND jobType = 'EMBROIDERY') OR (orderStatus = 'DTGEMD' and jobType = 'DTG+EMB') OR (orderStatus = 'DTGEMD' and jobType = 'SP+EMB') )AND(
         orderNumber COLLATE utf8mb4_general_ci LIKE ? OR 
         clientName COLLATE utf8mb4_general_ci LIKE ? OR 
         shippingAddress COLLATE utf8mb4_general_ci LIKE ? OR 
@@ -718,6 +718,59 @@ app.get('/karachiList', (req, res) => {
       FROM orders
       WHERE ((orderStatus IN ('READY','INPROGRESS','ONHOLD','HARDDATE')
       AND jobType = 'DTG+EMB') )AND(
+        orderNumber COLLATE utf8mb4_general_ci LIKE ? OR 
+        clientName COLLATE utf8mb4_general_ci LIKE ? OR 
+        shippingAddress COLLATE utf8mb4_general_ci LIKE ? OR 
+        trackingLabel COLLATE utf8mb4_general_ci LIKE ? OR
+        jobType COLLATE utf8mb4_general_ci LIKE ? OR
+        orderMethod COLLATE utf8mb4_general_ci LIKE ? OR
+        orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
+        team COLLATE utf8mb4_general_ci LIKE ?
+      ) 
+      ORDER BY 
+      CASE 
+        WHEN orderStatus = 'HARDDATE' THEN 1
+        ELSE 2
+      END,
+      orderNumber`;// Secondary sorting by orderNumber
+  
+    const searchQuery = '%' + search + '%';
+  
+    db.query(sql, [searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
+      if (err) {
+        console.error('Error retrieving orders:', err);
+        res.status(500).json({ message: 'Error retrieving orders' });
+      } else {
+        const ordersWithFileLinks = result.map(order => {
+          const files = order.files;
+  
+          // Check if files is a string, if not, initialize as empty string
+          const fileLinks = (typeof files === 'string' && files) ? 
+            files.split(',').map(fileUrl => ({
+              fileUrl,
+              downloadLink: fileUrl // Direct link to the file in S3
+            })) : [];
+  
+          return {
+            ...order,
+            files: fileLinks
+          };
+        });
+  
+        res.status(200).json(ordersWithFileLinks);
+      }
+    });
+  });
+
+
+  app.get('/spEmdList', (req, res) => {
+    const search = req.query.search || '';  // Get the search query from the request
+  
+    const sql = `
+      SELECT * 
+      FROM orders
+      WHERE ((orderStatus IN ('READY','INPROGRESS','ONHOLD','HARDDATE')
+      AND jobType = 'SP+EMB') )AND(
         orderNumber COLLATE utf8mb4_general_ci LIKE ? OR 
         clientName COLLATE utf8mb4_general_ci LIKE ? OR 
         shippingAddress COLLATE utf8mb4_general_ci LIKE ? OR 

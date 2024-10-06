@@ -24,6 +24,7 @@ import Completed from "./components/completed";
 import Home from "./components/Home";
 import Bob from "./components/bob";
 import Invoice from "./components/invoice";
+import SpEmd from "./components/spEmb";
 
 
 
@@ -49,6 +50,7 @@ function App() {
         <Route path= '/dtg' element = {< Dtg/>}/>
         <Route path= '/screenPrinting' element = {< ScreenPrinting/>}/>
         <Route path= '/dtgEmd' element = {<DtgEmd/>}/>
+        <Route path= '/spEmd' element = {<SpEmd/>}/>
         <Route path = '/instore' element = {<Instore/>}/>
         <Route path = '/packing' element = {<Packing/>}/>
         <Route path = '/completed' element = {<Completed/>}/>
