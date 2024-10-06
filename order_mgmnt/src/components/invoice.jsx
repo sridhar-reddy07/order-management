@@ -673,7 +673,7 @@ const Invoice = () => {
               <Form.Control
                 type="number"
                 value={invoiceAmount}
-                onChange={(e) => setInvoiceAmount(e.target.value)}
+                onChange={(e) => setInvoiceAmount(parseInt(e.target.value)) }
               />
             </Form.Group>
           </Form>
