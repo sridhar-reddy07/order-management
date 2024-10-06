@@ -36,18 +36,20 @@ const Invoice = () => {
 
   
   // Fetch orders
+  // Function to fetch orders
+  const fetchOrders = async () => {
+    try {
+      const response = await axios.get('http://137.184.75.176:5000/invoiceList');
+      setOrders(response.data);
+    } catch (error) {
+      console.error('Error fetching invoices:', error);
+    }
+  };
+
+  // Fetch orders initially
   useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await axios.get('http://137.184.75.176:5000/invoiceList');
-        setOrders(response.data);
-      } catch (error) {
-        console.error('Error fetching invoices:', error);
-      }
-    };
     fetchOrders();
   }, []);
-
   // Handle adding invoice
   const handleAddInvoice = (orderNumber,shippingAddress) => {
     setInvoiceOrder(orderNumber);
@@ -67,6 +69,8 @@ const Invoice = () => {
       setShowInvoiceModal(false);
       setInvoiceAmount('');
       alert('Invoice added successfully');
+
+      fetchOrders();
     } catch (error) {
       console.error('Error adding invoice:', error);
     }
