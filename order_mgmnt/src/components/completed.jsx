@@ -130,7 +130,7 @@ const Completed = () => {
           />
         </div>
         <div className="col-md-2">
-        
+        <label>Download Orders : </label>
           <BsDownload style={{ marginRight: '5px' }} /> {/* Add download icon */}
          
        
