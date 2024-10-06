@@ -34,6 +34,16 @@ const Invoice = () => {
   const [invoiceOrder, setInvoiceOrder] = useState(null);
   const [invoiceAmount, setInvoiceAmount] = useState('');
 
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    // Check if user is an admin
+    if (user && user.email === "admin@gmail.com") {
+      setIsAdmin(true);
+    } else {
+      setIsAdmin(false);
+    }
+  }, []);
+
   
   // Fetch orders
   // Function to fetch orders
@@ -452,16 +462,28 @@ const Invoice = () => {
 
                   <td>
                     <>
-                    {order.invoice}?${order.invoice}{isAdmin ? (<i 
-                                className="bi bi-pencil" 
-                                style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                                onClick={() => handleOrder(order.orderNumber,"shippingAddress")}
-                              ></i>) : ''} : <Button variant="primary" onClick={()=>handleAddInvoice(order.orderNumber,order.shippingAddress)}>
-                              Add Invoice
-                            </Button>
+                        {order.invoice ? (
+                        <>
+                            ${order.invoice} {/* Display the invoice amount */}
+                            {isAdmin ? (
+                            <i
+                                className="bi bi-pencil"
+                                style={{ cursor: 'pointer', marginLeft: '5px' }}
+                                onClick={() => handleAddInvoice(order.orderNumber, order.shippingAddress)} // Admin can edit the invoice
+                            ></i>
+                            ) : null}
+                        </>
+                        ) : (
+                        <Button
+                            variant="primary"
+                            onClick={() => handleAddInvoice(order.orderNumber, order.shippingAddress)} // Display Add Invoice button if no invoice
+                        >
+                            Add Invoice
+                        </Button>
+                        )}
                     </>
-                  
-                  </td>
+                    </td>
+
                   <td>
                   <Button onClick={() => generatePDF(order)} className="ml-2">Download Invoice PDF</Button>
                   </td>
