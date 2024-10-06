@@ -1067,8 +1067,12 @@ app.get('/karachiList', (req, res) => {
 
 
   app.post('/addInvoice', (req, res) => {
-    const { orderNumber, totalAmount ,shippingAddress} = req.body;
+    const { orderNumber, invoice ,shippingAddress} = req.body;
     console.log(req.body);
+
+    if (isNaN(totalAmount)) {
+      return res.status(400).json({ message: 'Invalid invoice amount' });
+  }
 
     // SQL query to update the order with the invoice details
     const sql = `
@@ -1077,7 +1081,7 @@ app.get('/karachiList', (req, res) => {
         WHERE TRIM(orderNumber) = TRIM(?) AND TRIM(shippingAddress) = TRIM(?)
     `;
 
-    db.query(sql, [totalAmount, orderNumber,shippingAddress], (err, result) => {
+    db.query(sql, [invoice, orderNumber,shippingAddress], (err, result) => {
         if (err) {
             console.error('Error updating invoice:', err);
             res.status(500).json({ message: 'Error adding invoice' });
