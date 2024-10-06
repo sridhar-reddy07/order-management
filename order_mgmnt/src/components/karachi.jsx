@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Collapse, Modal, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
+import moment from 'moment'; // To handle date formatting
+import * as XLSX from 'xlsx'; // Import xlsx for Excel file generation
 import { BsDownload } from 'react-icons/bs';
 
 const Karachi = () => {
@@ -332,20 +334,23 @@ const Karachi = () => {
   return (
     <div className="container" style={{ marginLeft: 250, paddingTop: 20,marginBottom:70 }}>
       <h2>Karachi Team</h2>
-      <input
-        type="text"
-        className="form-control"
-        style={{ width: '300px' }} 
-        placeholder="Search orders... 🔍"
-        onChange={(e) => setSearch(e.target.value)}
-      />
-
-      <div className="col-md-2">
-        <Button variant="primary" onClick={downloadExcel}>
-          <BsDownload style={{ marginRight: '5px' }} /> {/* Add download icon */}
-          Download
-        </Button>
-        </div>
+      <div className="row mb-4">
+        <div className="col-md-3">
+          <input
+            type="text"
+            className="form-control"
+            style={{ width: '300px' }} 
+            placeholder="Search orders... 🔍"
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          </div>
+          <div className="col-md-2">
+            <Button variant="primary" onClick={downloadExcel}>
+              <BsDownload style={{ marginRight: '5px' }} /> {/* Add download icon */}
+              Download
+            </Button>
+            </div>
+      </div>
       
       <table className="table table-striped table-hover">
         <thead className="thead-dark table-header">

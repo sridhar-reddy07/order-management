@@ -351,8 +351,6 @@ const OrderList = () => {
               Download
             </Button>
             </div>
-      
-
       </div>
       
       <table className="table table-striped table-hover">
