@@ -77,6 +77,54 @@ function handleDisconnect() {
 handleDisconnect();
 
 
+const bcrypt = require('bcrypt'); // Import bcrypt for password hashing
+
+// POST route for user registration
+app.post('/register', async (req, res) => {
+  const { email, password, name } = req.body;
+
+  // Check if all fields are provided
+  if (!email || !password || !name) {
+    return res.status(400).json({ message: 'Please provide all required fields (name, email, password)' });
+  }
+
+  try {
+    // Check if the user already exists in the database
+    const queryCheckUser = 'SELECT * FROM users WHERE email = ?';
+    db.query(queryCheckUser, [email], async (err, result) => {
+      if (err) {
+        console.error('Error querying the database:', err);
+        return res.status(500).json({ message: 'Database error' });
+      }
+
+      if (result.length > 0) {
+        // User already exists
+        return res.status(400).json({ message: 'User already exists with this email' });
+      }
+
+      // Hash the password using bcrypt
+      const salt = await bcrypt.genSalt(10); // Generates salt for hashing
+      const hashedPassword = await bcrypt.hash(password, salt);
+
+      // Insert the new user into the database
+      const queryInsertUser = 'INSERT INTO users (email, name, password) VALUES (?, ?, ?)';
+      db.query(queryInsertUser, [email, name, hashedPassword], (err, result) => {
+        if (err) {
+          console.error('Error inserting the user into the database:', err);
+          return res.status(500).json({ message: 'Database error' });
+        }
+
+        // Registration successful
+        res.status(201).json({ message: 'Registration successful' });
+      });
+    });
+  } catch (error) {
+    console.error('Error during registration:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
 
 app.get('/getOrderId', async (req, res) => {
   const { orderNumber, shippingAddress } = req.query;  // Extract orderNumber and shippingAddress from query parameters
