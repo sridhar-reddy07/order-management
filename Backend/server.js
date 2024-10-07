@@ -436,7 +436,7 @@ app.get('/rizList', (req, res) => {
       orderMethod COLLATE utf8mb4_general_ci LIKE ? OR
       orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
       team COLLATE utf8mb4_general_ci LIKE ?
-    ) And team = 'RIZ' And team = 'BOB JOB'
+    ) And team = 'RIZ' OR team = 'BOB JOB'
     `; // Secondary sorting by orderNumber
 
   const searchQuery = '%' + search + '%';
@@ -487,7 +487,7 @@ app.get('/mussaList', (req, res) => {
       orderMethod COLLATE utf8mb4_general_ci LIKE ? OR
       orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
       team COLLATE utf8mb4_general_ci LIKE ?
-    ) And team = 'Mussa'
+    ) And team = 'MUSSA'
    `; // Secondary sorting by orderNumber
 
   const searchQuery = '%' + search + '%';
