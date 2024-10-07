@@ -5,7 +5,7 @@ import { Modal, Button } from 'react-bootstrap'; // You can use a different moda
 
 const Entry = () => {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [password_hash, setPassword_hash] = useState('');
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [registerEmail, setRegisterEmail] = useState('');
   const [registerPassword, setRegisterPassword] = useState('');
@@ -14,7 +14,7 @@ const Entry = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const userData = { email, password };
+    const userData = { email, password_hash };
 
     try {
       const response = await fetch('http://137.184.75.176:5000/login', {
@@ -92,7 +92,7 @@ const Entry = () => {
             <input
               type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => setPassword_hash(e.target.value)}
               required
               placeholder="Enter your password"
               className="input-field"
