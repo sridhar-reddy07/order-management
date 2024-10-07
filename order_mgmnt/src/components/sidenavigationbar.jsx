@@ -43,7 +43,7 @@ const Sidenavigationbar = () => {
             {user.name === "Mussa"? (<>
               
               
-              <NavDropdown.Item href="/mussa">Mussa</NavDropdown.Item>
+              <Nav.Link href="/mussa">Mussa</Nav.Link>
               
           
             </>):(
@@ -52,7 +52,7 @@ const Sidenavigationbar = () => {
             )}
             {user.name === "Karachi" ? (<>
              
-              <NavDropdown.Item href="/karachi">Karachi Team</NavDropdown.Item>
+              <Nav.Link href="/karachi">Karachi Team</Nav.Link>
               
           
             </>):(
@@ -61,7 +61,7 @@ const Sidenavigationbar = () => {
             )}
             {user.name === "Bob"? (<>
               
-              <NavDropdown.Item href="/bob">Bob Jobs</NavDropdown.Item>
+              <Nav.Link href="/bob">Bob Jobs</Nav.Link>
          
             </>):(
               <>
