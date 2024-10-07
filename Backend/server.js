@@ -163,27 +163,46 @@ app.get('/getOrderId', async (req, res) => {
 
 
 
+
 // POST route for login validation
 app.post('/login', (req, res) => {
-  const { email, password } = req.body;
-  
+  const { email, password_hash } = req.body;
 
   // Query to check if the user exists in the "users" table
-  const query = 'SELECT * FROM users WHERE email = ? AND password = ?';
+  const query = 'SELECT * FROM users WHERE email =?';
 
-  db.query(query, [email, password], (err, result) => {
+  db.query(query, [email], (err, result) => {
     if (err) {
       console.error('Error querying MySQL:', err);
-      res.status(500).json({ message: 'Error validating user' });
-    } else if (result.length > 0) {
-      // User exists and password matches
-      res.status(200).json({ message: 'Login successful' });
-    } else {
-      // Invalid credentials
-      res.status(401).json({ message: 'Invalid email or password' });
+      return res.status(500).json({ message: 'Error validating user' });
     }
+
+    if (result.length === 0) {
+      // User with provided email does not exist
+      return res.status(401).json({ message: 'Invalid email or password' });
+    }
+
+    // Get the user record
+    const user = result[0];
+
+    // Compare the provided password with the hashed password in the database
+    bcrypt.compare(password_hash, user.password_hash, (err, isMatch) => {
+      if (err) {
+        console.error('Error comparing passwords:', err);
+        return res.status(500).json({ message: 'Internal server error' });
+      }
+
+      if (isMatch) {
+        // Passwords match, login successful
+        return res.status(200).json({ message: 'Login successful' });
+      } else {
+        // Password does not match
+        return res.status(401).json({ message: 'Invalid email or password' });
+      }
+    });
   });
 });
+
 
 app.delete('/deleteorder/:orderNumber', (req, res) => {
   const { orderNumber } = req.params;
