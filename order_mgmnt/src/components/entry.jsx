@@ -41,7 +41,7 @@ const Entry = () => {
     e.preventDefault();
     const registerData = {
       email: registerEmail,
-      password: registerPassword,
+      password_hash: registerPassword,
       name: registerName,
     };
 

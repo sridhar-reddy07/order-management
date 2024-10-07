@@ -81,10 +81,10 @@ const bcrypt = require('bcrypt'); // Import bcrypt for password hashing
 
 // POST route for user registration
 app.post('/register', async (req, res) => {
-  const { email, password, name } = req.body;
+  const { email, password_hash, name } = req.body;
 
   // Check if all fields are provided
-  if (!email || !password || !name) {
+  if (!email || !password_hash || !name) {
     return res.status(400).json({ message: 'Please provide all required fields (name, email, password)' });
   }
 
@@ -104,10 +104,10 @@ app.post('/register', async (req, res) => {
 
       // Hash the password using bcrypt
       const salt = await bcrypt.genSalt(10); // Generates salt for hashing
-      const hashedPassword = await bcrypt.hash(password, salt);
+      const hashedPassword = await bcrypt.hash(password_hash, salt);
 
       // Insert the new user into the database
-      const queryInsertUser = 'INSERT INTO users (email, name, password) VALUES (?, ?, ?)';
+      const queryInsertUser = 'INSERT INTO users (email, name, password_hash) VALUES (?, ?, ?)';
       db.query(queryInsertUser, [email, name, hashedPassword], (err, result) => {
         if (err) {
           console.error('Error inserting the user into the database:', err);
