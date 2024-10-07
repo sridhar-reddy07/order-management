@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Modal, Button } from 'react-bootstrap'; // You can use a different modal if preferred
-import './LoginPage.css';  // Import the custom CSS file
+
 
 const Entry = () => {
   const [email, setEmail] = useState('');
