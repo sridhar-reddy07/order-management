@@ -48,139 +48,141 @@
     background-size: cover;
   }
    */
- 
+   body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  
+  
+  
+  
+  .form-section {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    text-align: center;
+  }
+  
+  .form-section h2 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+    text-align: left;
+  }
+  
+  .form-group label {
+    font-size: 0.9rem;
+    color: #555;
+  }
+  
+  .input-field {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 5px;
+  }
+  
+  .submit-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .submit-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .register-section {
+    margin-top: 20px;
+  }
+  
+  .register-link {
+    background: none;
+    border: none;
+    color: #007bff;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 0;
+  }
+  
+  .register-link:hover {
+    color: #0056b3;
+  }
+  
+  /* Modal Styling */
+  .modal-body .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .modal-body .form-group label {
+    font-size: 0.9rem;
+    color: #555;
+  }
+  
+  .modal-body .input-field {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 5px;
+  }
+  
+  .modal-footer {
+    justify-content: center;
+  }
+  
+  .modal-footer .submit-button {
+    width: 100%;
+  }
   
 /* Apply full-screen height only to the login page */
-body {
-  font-family: 'Arial', sans-serif;
-  background-color: #f4f4f9;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 .login-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-}
-
-.offer-section {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.offer-section h1 {
-  font-size: 2.5rem;
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.offer-section h2 {
-  font-size: 1.5rem;
-  color: #555;
-  margin-bottom: 5px;
-}
-
-.offer-section h3 {
-  font-size: 1.2rem;
-  color: #888;
-}
-
-.form-section {
-  background-color: #fff;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  width: 350px;
-  text-align: center;
-}
-
-.form-section h2 {
-  margin-bottom: 20px;
-  color: #333;
-}
-
-.form-group {
-  margin-bottom: 15px;
-  text-align: left;
-}
-
-.form-group label {
-  font-size: 0.9rem;
-  color: #555;
-}
-
-.input-field {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-top: 5px;
-}
-
-.submit-button {
-  width: 100%;
-  padding: 10px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  cursor: pointer;
-  margin-top: 10px;
-  transition: background-color 0.3s ease;
-}
-
-.submit-button:hover {
-  background-color: #0056b3;
-}
-
-.register-section {
-  margin-top: 20px;
-}
-
-.register-link {
-  background: none;
-  border: none;
-  color: #007bff;
-  text-decoration: underline;
-  cursor: pointer;
-  font-size: 0.9rem;
-  padding: 0;
-}
-
-.register-link:hover {
-  color: #0056b3;
-}
-
-/* Modal Styling */
-.modal-body .form-group {
-  margin-bottom: 15px;
-}
-
-.modal-body .form-group label {
-  font-size: 0.9rem;
-  color: #555;
-}
-
-.modal-body .input-field {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-top: 5px;
-}
-
-.modal-footer {
-  justify-content: center;
-}
-
-.modal-footer .submit-button {
-  width: 100%;
-}
+    flex-grow: 1    ;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: beige;
+    padding: 0 70px;
+    background-size: cover;
+    min-height: 80vh; /* Ensures full height without affecting other elements */
+  }
+  
+  .offer-section {
+    flex: 1;
+    color: rgb(2, 2, 94);
+    padding-left: 50px;
+    text-align: left;
+  }
+  
+  .offer-section h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+  }
+  
+  .offer-section p {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+  }
+  
+ 
 
   .order-form {
     max-width: 600px;
