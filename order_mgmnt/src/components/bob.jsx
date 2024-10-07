@@ -27,6 +27,8 @@ const Bob = () => {
  
   const [address, setAddress] = useState('')
 
+  const user = JSON.parse(localStorage.getItem('user'));
+
   const [sizeData, setSizeData] = useState({
     category: 'Adult', // Default category
     description: '',
@@ -189,54 +191,7 @@ const Bob = () => {
 
   console.log(orderSizes);
 
-  const getSelectClass = (status) => {
-    switch (status) {
-      case 'READY':
-        return 'select-ready';
-      case 'NEED PAYMENT':
-        return 'select-need-payment';
-      case 'PENDING':
-        return 'select-pending';
-      case 'PENDING ARTWORK':
-        return 'select-pending-artwork';
-      case 'APPROVED':
-        return 'select-approved';
-      case 'HARDDATE':
-        return 'select-harddate';
-      case 'PENDING APPROVAL':
-        return 'select-pending-approval';
-      default:
-        return '';
-    }
-  };
-
-  const updateOrderStatusInDatabase = async (e, orderNumber) => {
-    const status = e.target.value;
-    try {
-      const response = await fetch(`http://137.184.75.176:5000/updateOrderStatus/${orderNumber}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ status }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to update order status');
-      }
-
-      const updatedOrder = await response.json();
-      console.log('Order status updated successfully:', updatedOrder);
-
-      setOrders((prevOrders) =>
-        prevOrders.map((order) =>
-          order.orderNumber === orderNumber ? { ...order, orderStatus: status } : order
-        ).filter((order) => order.orderStatus !== 'READY' && order.orderStatus !== 'HARDDATE')
-      );
-    } catch (error) {
-      console.error('Error updating order status:', error);
-    }
-  };
+ 
 
   
   const handleUpdateOrder = async () => {
@@ -408,19 +363,7 @@ const Bob = () => {
                     </>
                   </td>
                   <td>
-                    <select
-                      className={getSelectClass(order.orderStatus)}
-                      value={order.orderStatus || ""}
-                      onChange={(e) => updateOrderStatusInDatabase(e, order.orderNumber)}
-                    >
-                      <option value="READY">Ready</option>
-                      <option value="NEED PAYMENT">Need Payment</option>
-                      <option value="PENDING">Pending</option>
-                      <option value="PENDING ARTWORK">Pending Art Work</option>
-                      <option value="APPROVED">Approved</option>
-                      <option value="HARDDATE">HardDate</option>
-                      <option value="PENDING APPROVAL">Pending Approval</option>
-                    </select>
+                    {order.orderStatus}
                   </td>
 
                   <td>{order.orderMethod}</td>
