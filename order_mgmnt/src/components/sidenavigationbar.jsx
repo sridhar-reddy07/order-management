@@ -29,13 +29,40 @@ const Sidenavigationbar = () => {
             )}
             
             {/* <Nav.Link href="/orderList">Reorder List</Nav.Link> */}
-            {user.name === "Riz" ||"Mussa"||"Karachi" ? (<>
+            {user.name === "Riz"  ? (<>
               <NavDropdown title="Profiles" id="profiles-dropdown">
-              <NavDropdown.Item href="/karachi">Karachi Team</NavDropdown.Item>
+              
               <NavDropdown.Item href="/riz">Riz</NavDropdown.Item>
-              <NavDropdown.Item href="/mussa">Mussa</NavDropdown.Item>
+              
               <NavDropdown.Item href="/bob">Bob Jobs</NavDropdown.Item>
             </NavDropdown>
+            </>):(
+              <>
+              </>
+            )}
+            {user.name === "Mussa"? (<>
+              
+              
+              <NavDropdown.Item href="/mussa">Mussa</NavDropdown.Item>
+              
+          
+            </>):(
+              <>
+              </>
+            )}
+            {user.name === "Karachi" ? (<>
+             
+              <NavDropdown.Item href="/karachi">Karachi Team</NavDropdown.Item>
+              
+          
+            </>):(
+              <>
+              </>
+            )}
+            {user.name === "Bob"? (<>
+              
+              <NavDropdown.Item href="/bob">Bob Jobs</NavDropdown.Item>
+         
             </>):(
               <>
               </>
