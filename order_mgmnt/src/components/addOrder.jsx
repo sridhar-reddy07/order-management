@@ -137,8 +137,26 @@ const AddOrder = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-
+  
+    // Get today's date and the minimum allowed due date (3 days from today)
+    const today = new Date();
+    const minDueDate = new Date();
+    minDueDate.setDate(today.getDate() + 3); // Add 3 days to today's date
+  
+    // Validate team "BOB JOB" restrictions
+    if (team === "BOB JOB") {
+      if (orderMethod !== "WAREHOUSE JOBS") {
+        alert('For "BOB JOB", the order method must be "Warehouse Jobs".');
+        return; // Stop submission
+      }
+  
+      const dueDateObj = new Date(dueDate);
+      if (dueDateObj < minDueDate) {
+        alert('For "BOB JOB", the due date must be at least 3 days from today.');
+        return; // Stop submission
+      }
+    }
+  
     const formData = new FormData();
     formData.append('orderNumber', orderNumber);
     formData.append('orderStatus', orderStatus);
@@ -156,25 +174,25 @@ const AddOrder = () => {
     
     formData.append('invoice', invoice);
     formData.append('notes', notes);
-    
+  
     if (files) {
       for (let i = 0; i < files.length; i++) {
         formData.append('files', files[i]);
       }
     }
-
+  
     try {
       const response = await fetch('http://137.184.75.176:5000/addOrder', {
         method: 'POST',
         body: formData,
       });
-
+  
       if (response.ok) {
         alert('Order added successfully!');
         setSelectedOrder(orderNumber); // Set the selected order number
         setAddress(shippingAddress)
         setShowSizeModal(true);
-        //Reset all form fields after successful submission
+        // Reset all form fields after successful submission
         setOrderNumber('');
         setOrderStatus('');
         setOrderMethod('ONLINE');
@@ -191,7 +209,6 @@ const AddOrder = () => {
         setInvoice('');
         setNotes('');
         setFiles([]);
-
       } else {
         const result = await response.json();
         alert(result.message);
@@ -201,6 +218,7 @@ const AddOrder = () => {
       alert('An error occurred while adding the order.');
     }
   };
+  
 
   return (
     <div style={{ marginLeft: 250, paddingTop: 20, marginBottom: 70 }}>
