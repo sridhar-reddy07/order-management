@@ -294,25 +294,10 @@ const Embroidory = () => {
   const downloadExcel = () => {
     // Prepare data in the format you want to download
     const worksheetData = orders.map((order) => ({
-      'ID': order.id, // Adding the order ID
-      'Order Number': order.orderNumber,
       'Client Name': order.clientName,
-      'Client Phone': order.clientPhone,
-      'Client Gmail': order.clientgmail,
-      'Order Status': order.orderStatus,
-      'Order Method': order.orderMethod,
-      'Job Type': order.jobType,
-      'Due Date': new Date(order.dueDate).toLocaleDateString('en-US'),
-      'Garment PO': order.garmentPO,
-      'Tracking Number': order.trackingLabel,
-      'Shipping Address': order.shippingAddress,
+      'Order Number': order.orderNumber,
       'Garment Details': order.garmentDetails,
-      'Team': order.team,
-      'Notes': order.notes,
-      'Created At': new Date(order.createdAt).toLocaleDateString('en-US'), // Adding the createdAt date
-      'Files': order.files && order.files.length > 0 
-        ? order.files.map(file => file.fileUrl).join(', ') 
-        : 'No files uploaded',
+      'Garment PO': order.garmentPO,
     }));
 
     // Create a worksheet
