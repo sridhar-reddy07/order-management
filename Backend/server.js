@@ -436,7 +436,7 @@ app.get('/rizList', (req, res) => {
       orderMethod COLLATE utf8mb4_general_ci LIKE ? OR
       orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
       team COLLATE utf8mb4_general_ci LIKE ?
-    ) And team = 'RIZ'
+    ) And team = 'RIZ' And team = 'BOB JOB'
     `; // Secondary sorting by orderNumber
 
   const searchQuery = '%' + search + '%';

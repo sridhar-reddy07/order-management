@@ -13,7 +13,7 @@ const Sidenavigationbar = () => {
             
             {user.name === "Riz" ||"Mussa"||"Karachi" ? (<>
               <Nav.Link href="/home">Home</Nav.Link>
-              <Nav.Link href="/addOrder">Add Order</Nav.Link>
+              
               <Nav.Link href="/orderList">All Orders</Nav.Link>
             </>):(
               <>
