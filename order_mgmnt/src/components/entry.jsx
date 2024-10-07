@@ -91,7 +91,7 @@ const Entry = () => {
             <label>Password</label>
             <input
               type="password"
-              value={password}
+              value={password_hash}
               onChange={(e) => setPassword_hash(e.target.value)}
               required
               placeholder="Enter your password"
