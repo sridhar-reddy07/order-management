@@ -11,7 +11,7 @@ const Sidenavigationbar = () => {
           
           <Nav className="flex-column">
             
-            {user.email === "admin@gmail.com" ? (<>
+            {user.name === "Riz" ||"Mussa"||"Karachi" ? (<>
               <Nav.Link href="/home">Home</Nav.Link>
               <Nav.Link href="/addOrder">Add Order</Nav.Link>
               <Nav.Link href="/orderList">All Orders</Nav.Link>
@@ -19,15 +19,28 @@ const Sidenavigationbar = () => {
               <>
               </>
             )}
+            {user.name === "Riz" ||"Mussa"||"Karachi"||"Bob" ? (<>
+              
+              <Nav.Link href="/addOrder">Add Order</Nav.Link>
+              
+            </>):(
+              <>
+              </>
+            )}
             
             {/* <Nav.Link href="/orderList">Reorder List</Nav.Link> */}
-            
-            <NavDropdown title="Profiles" id="profiles-dropdown">
+            {user.name === "Riz" ||"Mussa"||"Karachi" ? (<>
+              <NavDropdown title="Profiles" id="profiles-dropdown">
               <NavDropdown.Item href="/karachi">Karachi Team</NavDropdown.Item>
               <NavDropdown.Item href="/riz">Riz</NavDropdown.Item>
               <NavDropdown.Item href="/mussa">Mussa</NavDropdown.Item>
               <NavDropdown.Item href="/bob">Bob Jobs</NavDropdown.Item>
             </NavDropdown>
+            </>):(
+              <>
+              </>
+            )}
+            
             <Nav.Link href="/Packing">Packing List</Nav.Link>
             <Nav.Link href="/instore">In Store</Nav.Link>
             <Nav.Link href="/completed">Completed Orders</Nav.Link>
