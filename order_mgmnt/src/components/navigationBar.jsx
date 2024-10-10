@@ -37,7 +37,7 @@ const NavigationBar = () => {
                 {/* Conditional rendering for specific user */}
                 {user.email.toLowerCase() !== "bob@tssprinting.com" && (
                   <>
-                    <Nav.Link href="/embroidery">Embroidery</Nav.Link>
+                    <Nav.Link href="/embroidory">Embroidery</Nav.Link>
                     <Nav.Link href="/dtg">DTG</Nav.Link>
                     <Nav.Link href="/dtgEmd">DTG+EMB</Nav.Link>
                     <Nav.Link href="/spEmd">SP+EMB</Nav.Link>
