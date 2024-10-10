@@ -66,29 +66,17 @@ const Pullsheet = () => {
       order.id, // Adding the order ID
       order.orderNumber,
       order.clientName,
-      order.clientPhone,
-      order.clientgmail,
-      order.orderStatus,
-      order.orderMethod,
-      order.jobType,
-      new Date(order.dueDate).toLocaleDateString('en-US'),
+      
       order.garmentPO,
-      order.trackingLabel,
-      order.shippingAddress,
+      
       order.garmentDetails,
-      order.team,
-      order.notes,
-      new Date(order.createdAt).toLocaleDateString('en-US'), // Adding the createdAt date
-      order.files && order.files.length > 0 
-        ? order.files.map(file => file.fileUrl).join(', ') 
-        : 'No files uploaded'
+      
+      
     ]);
   
     // Define table columns (headers)
     const tableColumns = [
-      'ID', 'Order Number', 'Client Name', 'Client Phone', 'Client Gmail', 'Order Status', 
-      'Order Method', 'Job Type', 'Due Date', 'Garment PO', 'Tracking Number', 
-      'Shipping Address', 'Garment Details', 'Team', 'Notes', 'Created At', 'Files'
+      'ID', 'Order Number', 'Client Name',  'Garment PO', 'Garment Details'
     ];
   
     // Initialize jsPDF instance
