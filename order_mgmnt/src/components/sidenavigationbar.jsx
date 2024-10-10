@@ -4,7 +4,7 @@ import { Navbar, Nav, NavDropdown, Container } from 'react-bootstrap';
 
 const Sidenavigationbar = () => {
   const user = JSON.parse(localStorage.getItem('user')); // Fetching user data from localStorage
-  console.log(user.name);
+  console.log(user);
 
   return (
     <div className="sidebar">
