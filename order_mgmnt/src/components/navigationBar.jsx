@@ -1,5 +1,6 @@
 import React from 'react';
-import { Container, Navbar, Nav } from 'react-bootstrap';
+import { Container, Navbar, Nav, Dropdown, Image } from 'react-bootstrap';
+import { FaUserCircle } from 'react-icons/fa'; // Profile Icon
 import logo from '../Images/logo.png';
 
 const NavigationBar = () => {
@@ -10,10 +11,14 @@ const NavigationBar = () => {
     window.location.href = '/'; // Redirect to login page or home
   };
 
+  const handleChangePassword = () => {
+    window.location.href = '/change-password'; // Redirect to change password page
+  };
+
   return (
     <Container fluid>
       <Navbar className='header fixed-top' bg="light" expand="lg">
-        <Navbar.Brand href={user ? "/home" : "#"}className="mx-3">
+        <Navbar.Brand href={user ? "/home" : "#"} className="mx-3">
           <img
             src={logo}
             width="70"
@@ -23,42 +28,46 @@ const NavigationBar = () => {
           />
         </Navbar.Brand>
 
-        {/* Conditional Rendering */}
         {user ? (
           <>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="ms-auto">
-                {user.email.toLowerCase() !== "bob@tssprinting.com" &&
-                <>
-                    <Nav.Link href="/embroidory">
-                      Embroidery
-                    </Nav.Link>
-                    <Nav.Link href="/dtg">
-                      DTG
-                    </Nav.Link>
-                    <Nav.Link href="/dtgEmd">
-                      DTG+EMB
-                    </Nav.Link>
-                    <Nav.Link href="/spEmd">
-                      SP+EMB
-                    </Nav.Link>
-                    <Nav.Link href="/screenprinting">
-                      Screen Printing
-                    </Nav.Link>`
-                </>
 
-                }
-                
-                <Nav.Link href="#" onClick={handleLogout}>
-                  Logout
-                </Nav.Link>
+                {/* Conditional rendering for specific user */}
+                {user.email.toLowerCase() !== "bob@tssprinting.com" && (
+                  <>
+                    <Nav.Link href="/embroidery">Embroidery</Nav.Link>
+                    <Nav.Link href="/dtg">DTG</Nav.Link>
+                    <Nav.Link href="/dtgEmd">DTG+EMB</Nav.Link>
+                    <Nav.Link href="/spEmd">SP+EMB</Nav.Link>
+                    <Nav.Link href="/screenprinting">Screen Printing</Nav.Link>
+                  </>
+                )}
+
+                {/* Profile Dropdown */}
+                <Dropdown align="end" className="mx-3">
+                  <Dropdown.Toggle variant="light" id="dropdown-profile">
+                    <FaUserCircle size={30} /> {/* Profile Icon */}
+                  </Dropdown.Toggle>
+
+                  <Dropdown.Menu>
+                    <Dropdown.Item onClick={handleChangePassword}>
+                      Change Password
+                    </Dropdown.Item>
+                    <Dropdown.Divider />
+                    <Dropdown.Item onClick={handleLogout}>
+                      Logout
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+
               </Nav>
             </Navbar.Collapse>
           </>
         ) : (
           <>
-            {/* Add any additional content for non-logged-in users here if needed */}
+            {/* Optional content for non-logged-in users */}
           </>
         )}
       </Navbar>
