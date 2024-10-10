@@ -154,7 +154,7 @@ const Pullsheet = () => {
           />
         </div>
         <div className="col-md-2">
-        <Button variant="primary" onClick={downloadExcel}>
+        <Button variant="primary" onClick={downloadPDF}>
           <BsDownload style={{ marginRight: '5px' }} /> {/* Add download icon */}
           Download
         </Button>
