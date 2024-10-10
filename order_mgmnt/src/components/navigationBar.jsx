@@ -45,10 +45,15 @@ const NavigationBar = () => {
                   </>
                 )}
 
-                {/* Profile Dropdown */}
+                {/* Profile Dropdown with Name */}
                 <Dropdown align="end" className="mx-3">
-                  <Dropdown.Toggle variant="light" id="dropdown-profile">
-                    <FaUserCircle size={30} /> {/* Profile Icon */}
+                  <Dropdown.Toggle variant="light" id="dropdown-profile" className="d-flex align-items-center">
+                    {/* Profile Icon */}
+                    <FaUserCircle size={35} className="me-2" /> 
+                    <div className="d-flex flex-column align-items-start">
+                      <strong>{user.name}</strong> {/* Display user name */}
+                      <small>{user.email}</small> {/* Display user email below */}
+                    </div>
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu>

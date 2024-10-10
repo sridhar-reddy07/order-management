@@ -26,7 +26,7 @@ const Entry = () => {
       });
       const result = await response.json();
       if (response.ok) {
-        const user = { email: email, token: "yourToken" };
+        const user = { email: email, name : result.name,token: "yourToken" };
         localStorage.setItem('user', JSON.stringify(user));
         user.email === "admin@gmail.com" ? navigate('/Home') : navigate("/addOrder");
       } else {
