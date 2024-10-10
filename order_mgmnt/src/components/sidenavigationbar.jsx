@@ -15,20 +15,20 @@ const Sidenavigationbar = () => {
             <Nav.Link href="/home">Home</Nav.Link>
 
             {/* Conditionally render based on the user's role */}
-            {(user.name === "Riz" || user.name === "Mussa" || user.name === "Karachi") && (
+            {(user.email === "riz@tssprinting.com" || user.email === "mussa@tssprinting.com" || user.email === "karachi@tssprinting.com") && (
               <>
                 <Nav.Link href="/orderList">All Orders</Nav.Link>
               </>
             )}
 
-            {(user.name === "Riz" || user.name === "Mussa" || user.name === "Karachi" || user.name === "Bob") && (
+            {(user.email === "riz@tssprinting.com" || user.email === "mussa@tssprinting.com" || user.email === "karachi@tssprinting.com" || user.email === "bob@tssprinting.con") && (
               <>
                 <Nav.Link href="/addOrder">Add Order</Nav.Link>
               </>
             )}
 
             {/* Specific links for user roles */}
-            {user.name === "Riz" && (
+            {user.email === "riz@tssprinting.com" && (
               <>
                 <NavDropdown title="Profiles" id="profiles-dropdown">
                   <NavDropdown.Item href="/riz">Riz</NavDropdown.Item>
@@ -37,19 +37,19 @@ const Sidenavigationbar = () => {
               </>
             )}
 
-            {user.name === "Mussa" && (
+            {user.email === "mussa@tssprinting.com" && (
               <>
                 <Nav.Link href="/mussa">Mussa</Nav.Link>
               </>
             )}
 
-            {user.name === "Karachi" && (
+            {user.email === "karachi@tssprinting.com" && (
               <>
                 <Nav.Link href="/karachi">Karachi Team</Nav.Link>
               </>
             )}
 
-            {user.name === "Bob" && (
+            {user.email === "bob@tssprinting.com" && (
               <>
                 <Nav.Link href="/bob">Bob Jobs</Nav.Link>
               </>
