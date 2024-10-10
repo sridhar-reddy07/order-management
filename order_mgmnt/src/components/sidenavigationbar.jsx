@@ -33,7 +33,7 @@ const Sidenavigationbar = () => {
               </>
             )}
 
-            /* Specific links for user roles */
+
             {user.email.toLowerCase() === "riz@tssprinting.com" && (
               <>
                 <NavDropdown title="Profiles" id="profiles-dropdown">
@@ -61,7 +61,7 @@ const Sidenavigationbar = () => {
               </>
             )}
 
-            /* Common Links */
+            
             <Nav.Link href="/Packing">Packing List</Nav.Link>
             <Nav.Link href="/instore">In Store</Nav.Link>
             <Nav.Link href="/completed">Completed Orders</Nav.Link>

@@ -29,7 +29,7 @@ const NavigationBar = () => {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="ms-auto">
-                {user.email.toLowerCase() === "bob@tssprinting.com" &&
+                {user.email.toLowerCase() !== "bob@tssprinting.com" &&
                 <>
                     <Nav.Link href="/embroidory">
                       Embroidery
