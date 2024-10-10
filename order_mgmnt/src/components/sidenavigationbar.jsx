@@ -39,6 +39,9 @@ const Sidenavigationbar = () => {
                 <NavDropdown title="Profiles" id="profiles-dropdown">
                   <NavDropdown.Item href="/riz">Riz</NavDropdown.Item>
                   <NavDropdown.Item href="/bob">Bob Jobs</NavDropdown.Item>
+                  <Nav.Link href="/mussa">Mussa</Nav.Link>
+                  <Nav.Link href="/karachi">Karachi Team</Nav.Link>
+
                 </NavDropdown>
               </>
             )}

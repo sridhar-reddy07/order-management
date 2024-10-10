@@ -312,7 +312,7 @@ const AddOrder = () => {
             id="clientPhone"
             value={clientPhone}
             onChange={(e) => setClientPhone(e.target.value)}
-            required
+            
             className="form-input"
           />
         </div>
@@ -325,7 +325,7 @@ const AddOrder = () => {
             id="clientgmail"
             value={clientgmail}
             onChange={(e) => setClientGmail(e.target.value)}
-            required
+            
             className="form-input"
           />
         </div>
@@ -338,7 +338,7 @@ const AddOrder = () => {
             id="shippingAddress"
             value={shippingAddress}
             onChange={(e) => setShippingAddress(e.target.value)}
-            required
+            
             className="form-input"
           />
         </div>
@@ -430,6 +430,7 @@ const AddOrder = () => {
             id="files"
             onChange={handleFileChange}
             className="form-input"
+            required
             multiple // Allows multiple file selection
           />
         </div>
