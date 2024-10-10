@@ -29,21 +29,27 @@ const NavigationBar = () => {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="ms-auto">
-                <Nav.Link href="/embroidory">
-                  Embroidery
-                </Nav.Link>
-                <Nav.Link href="/dtg">
-                  DTG
-                </Nav.Link>
-                <Nav.Link href="/dtgEmd">
-                  DTG+EMB
-                </Nav.Link>
-                <Nav.Link href="/spEmd">
-                  SP+EMB
-                </Nav.Link>
-                <Nav.Link href="/screenprinting">
-                  Screen Printing
-                </Nav.Link>
+                {user.email.toLowerCase() === "bob@tssprinting.com" &&
+                <>
+                    <Nav.Link href="/embroidory">
+                      Embroidery
+                    </Nav.Link>
+                    <Nav.Link href="/dtg">
+                      DTG
+                    </Nav.Link>
+                    <Nav.Link href="/dtgEmd">
+                      DTG+EMB
+                    </Nav.Link>
+                    <Nav.Link href="/spEmd">
+                      SP+EMB
+                    </Nav.Link>
+                    <Nav.Link href="/screenprinting">
+                      Screen Printing
+                    </Nav.Link>`
+                </>
+
+                }
+                
                 <Nav.Link href="#" onClick={handleLogout}>
                   Logout
                 </Nav.Link>

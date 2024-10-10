@@ -14,9 +14,9 @@ const Sidenavigationbar = () => {
             {/* Common Links */}
             
 
-            {/* Conditionally render based on the user's role */}
-            {(user.email === "riz@tssprinting.com" || user.email === "mussa@tssprinting.com" || user.email === "karachi@tssprinting.com") && (
-
+            {(user.email.toLowerCase() === "riz@tssprinting.com" || 
+              user.email.toLowerCase() === "mussa@tssprinting.com" || 
+              user.email.toLowerCase() === "karachi@tssprinting.com") && (
               <>
                 <Nav.Link href="/home">Home</Nav.Link>
                 <Nav.Link href="/orderList">All Orders</Nav.Link>
@@ -24,14 +24,17 @@ const Sidenavigationbar = () => {
               </>
             )}
 
-            {(user.email === "riz@tssprinting.com" || user.email === "mussa@tssprinting.com" || user.email === "karachi@tssprinting.com" || user.email === "bob@tssprinting.con") && (
+            {(user.email.toLowerCase() === "riz@tssprinting.com" || 
+              user.email.toLowerCase() === "mussa@tssprinting.com" || 
+              user.email.toLowerCase() === "karachi@tssprinting.com" || 
+              user.email.toLowerCase() === "bob@tssprinting.com") && (
               <>
                 <Nav.Link href="/addOrder">Add Order</Nav.Link>
               </>
             )}
 
-            {/* Specific links for user roles */}
-            {user.email === "riz@tssprinting.com" && (
+            /* Specific links for user roles */
+            {user.email.toLowerCase() === "riz@tssprinting.com" && (
               <>
                 <NavDropdown title="Profiles" id="profiles-dropdown">
                   <NavDropdown.Item href="/riz">Riz</NavDropdown.Item>
@@ -40,25 +43,25 @@ const Sidenavigationbar = () => {
               </>
             )}
 
-            {user.email === "mussa@tssprinting.com" && (
+            {user.email.toLowerCase() === "mussa@tssprinting.com" && (
               <>
                 <Nav.Link href="/mussa">Mussa</Nav.Link>
               </>
             )}
 
-            {user.email === "karachi@tssprinting.com" && (
+            {user.email.toLowerCase() === "karachi@tssprinting.com" && (
               <>
                 <Nav.Link href="/karachi">Karachi Team</Nav.Link>
               </>
             )}
 
-            {user.email === "bob@tssprinting.com" && (
+            {user.email.toLowerCase() === "bob@tssprinting.com" && (
               <>
                 <Nav.Link href="/bob">Bob Jobs</Nav.Link>
               </>
             )}
 
-            {/* Common Links */}
+            /* Common Links */
             <Nav.Link href="/Packing">Packing List</Nav.Link>
             <Nav.Link href="/instore">In Store</Nav.Link>
             <Nav.Link href="/completed">Completed Orders</Nav.Link>
