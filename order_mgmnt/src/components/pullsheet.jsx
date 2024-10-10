@@ -4,6 +4,9 @@ import axios from 'axios';
 import moment from 'moment'; // To handle date formatting
 import * as XLSX from 'xlsx'; // Import xlsx for Excel file generation
 import { BsDownload } from 'react-icons/bs';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+
 
 const Pullsheet = () => {
   const [orders, setOrders] = useState([]);
@@ -57,41 +60,61 @@ const Pullsheet = () => {
     }
   };
 
-  const downloadExcel = () => {
-    // Prepare data in the format you want to download
-    const worksheetData = orders.map((order) => ({
-      'ID': order.id, // Adding the order ID
-      'Order Number': order.orderNumber,
-      'Client Name': order.clientName,
-      'Client Phone': order.clientPhone,
-      'Client Gmail': order.clientgmail,
-      'Order Status': order.orderStatus,
-      'Order Method': order.orderMethod,
-      'Job Type': order.jobType,
-      'Due Date': new Date(order.dueDate).toLocaleDateString('en-US'),
-      'Garment PO': order.garmentPO,
-      'Tracking Number': order.trackingLabel,
-      'Shipping Address': order.shippingAddress,
-      'Garment Details': order.garmentDetails,
-      'Team': order.team,
-      'Notes': order.notes,
-      'Created At': new Date(order.createdAt).toLocaleDateString('en-US'), // Adding the createdAt date
-      'Files': order.files && order.files.length > 0 
+  const downloadPDF = () => {
+    // Prepare data in the format for the table
+    const tableData = orders.map((order) => [
+      order.id, // Adding the order ID
+      order.orderNumber,
+      order.clientName,
+      order.clientPhone,
+      order.clientgmail,
+      order.orderStatus,
+      order.orderMethod,
+      order.jobType,
+      new Date(order.dueDate).toLocaleDateString('en-US'),
+      order.garmentPO,
+      order.trackingLabel,
+      order.shippingAddress,
+      order.garmentDetails,
+      order.team,
+      order.notes,
+      new Date(order.createdAt).toLocaleDateString('en-US'), // Adding the createdAt date
+      order.files && order.files.length > 0 
         ? order.files.map(file => file.fileUrl).join(', ') 
-        : 'No files uploaded',
-    }));
-
-    // Create a worksheet
-    const worksheet = XLSX.utils.json_to_sheet(worksheetData);
-
-    // Create a new workbook and append the worksheet
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Pullsheet');
-
-    // Export to Excel file
-    XLSX.writeFile(workbook, `Pullsheet_orders_${moment().format('YYYY-MM-DD')}.xlsx`);
+        : 'No files uploaded'
+    ]);
+  
+    // Define table columns (headers)
+    const tableColumns = [
+      'ID', 'Order Number', 'Client Name', 'Client Phone', 'Client Gmail', 'Order Status', 
+      'Order Method', 'Job Type', 'Due Date', 'Garment PO', 'Tracking Number', 
+      'Shipping Address', 'Garment Details', 'Team', 'Notes', 'Created At', 'Files'
+    ];
+  
+    // Initialize jsPDF instance
+    const doc = new jsPDF('landscape'); // Use 'landscape' for wide tables
+  
+    // Set title for the document
+    doc.text('Pullsheet Orders', 14, 22);
+  
+    // Add table with autoTable plugin
+    doc.autoTable({
+      head: [tableColumns], // Table headers
+      body: tableData,      // Table rows (order data)
+      startY: 30,           // Position of the table
+      theme: 'grid',        // You can also use 'striped', 'plain', etc.
+      styles: {
+        fontSize: 8,        // Adjust font size to fit more content
+      },
+      headStyles: {
+        fillColor: [22, 160, 133], // Customize header background color
+        textColor: 255,           // White text in headers
+      }
+    });
+  
+    // Save the PDF with a dynamic filename
+    doc.save(`Pullsheet_orders_${moment().format('YYYY-MM-DD')}.pdf`);
   };
-
   return (
     <div className="container" style={{ marginLeft: 250, paddingTop: 20, marginBottom: 70 }}>
       <h2>Pullsheet</h2>

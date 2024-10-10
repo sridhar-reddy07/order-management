@@ -1082,7 +1082,7 @@ app.get('/karachiList', (req, res) => {
     const search = req.query.search || '';  // Get the search query from the request
     const fromDate = req.query.fromDate || '1970-01-01';  // Default start date if not provided
     const toDate = req.query.toDate || new Date().toISOString().slice(0, 10);  // Default to today if not provided
-  
+    const adjustedToDate = `${toDate} 23:59:59`;
     const sql = `
       SELECT * 
       FROM orders
@@ -1103,7 +1103,7 @@ app.get('/karachiList', (req, res) => {
     const searchQuery = '%' + search + '%';
   
     // Execute the query with the fromDate, toDate, and search filters
-    db.query(sql, [fromDate, toDate, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
+    db.query(sql, [fromDate, adjustedToDate, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
       if (err) {
         console.error('Error retrieving orders:', err);
         return res.status(500).json({ message: 'Error retrieving orders' });
