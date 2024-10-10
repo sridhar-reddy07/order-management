@@ -25,6 +25,8 @@ const Entry = () => {
         body: JSON.stringify(userData),
       });
       const result = await response.json();
+      console.log(response)
+      console.log(result)
       if (response.ok) {
         const user = { email: email, name : result.name ,token: "yourToken" };
         console.log(user)
