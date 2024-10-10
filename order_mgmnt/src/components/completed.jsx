@@ -39,7 +39,7 @@ const Completed = () => {
     };
 
     fetchOrders();
-  }, [fromDate, toDate],[search]); // Trigger fetching when dates change
+  }, [fromDate, toDate,search]); // Trigger fetching when dates change
   
 
   // Handle order collapse
