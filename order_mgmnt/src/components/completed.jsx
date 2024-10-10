@@ -26,7 +26,7 @@ const Completed = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get(`http://137.184.75.176:5000/completedList`, {
+        const response = await axios.get(`http://137.184.75.176:5000/completedList?search=${search}`, {
           params: {
             fromDate: fromDate,  // Pass the selected date range
             toDate: toDate,
@@ -39,18 +39,8 @@ const Completed = () => {
     };
 
     fetchOrders();
-  }, [fromDate, toDate]); // Trigger fetching when dates change
-  useEffect(() => {
-    // Fetch orders with the search query
-    axios.get(`http://137.184.75.176:5000/completedList?search=${search}`)
-      .then((response) => {
-        console.log(response)
-        setOrders(response.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching orders:', error);
-      });
-  }, [search]);
+  }, [fromDate, toDate],[search]); // Trigger fetching when dates change
+  
 
   // Handle order collapse
   const handleOrderClick = (orderNumber, order_Id) => {
