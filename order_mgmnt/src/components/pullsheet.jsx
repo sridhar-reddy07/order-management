@@ -70,13 +70,13 @@ const Pullsheet = () => {
       order.garmentPO,
       
       order.garmentDetails,
-      
+      order.jobType
       
     ]);
   
     // Define table columns (headers)
     const tableColumns = [
-      'ID', 'Order Number', 'Client Name',  'Garment PO', 'Garment Details'
+      'ID', 'Order Number', 'Client Name',  'Garment PO', 'Garment Details','JobType'
     ];
   
     // Initialize jsPDF instance
