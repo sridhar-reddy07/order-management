@@ -20,6 +20,7 @@ const Sidenavigationbar = () => {
               <>
                 <Nav.Link href="/home">Home</Nav.Link>
                 <Nav.Link href="/orderList">All Orders</Nav.Link>
+                <Nav.Link href="/Pullsheet">Pullsheet</Nav.Link>
               </>
             )}
 

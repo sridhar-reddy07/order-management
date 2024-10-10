@@ -1129,7 +1129,60 @@ app.get('/karachiList', (req, res) => {
       res.status(200).json(ordersWithFileLinks);
     });
   });
+
+
+
+  app.get('/Pullsheet', (req, res) => {
+    const search = req.query.search || '';  // Get the search query from the request
+    const fromDate = req.query.fromDate || '1970-01-01';  // Default start date if not provided
+    const toDate = req.query.toDate || new Date().toISOString().slice(0, 10);  // Default to today if not provided
   
+    const sql = `
+      SELECT * 
+      FROM orders
+      WHERE orderStatus = 'READY'
+      AND createdAt BETWEEN ? AND ?
+      AND (
+        orderNumber COLLATE utf8mb4_general_ci LIKE ? OR 
+        clientName COLLATE utf8mb4_general_ci LIKE ? OR 
+        shippingAddress COLLATE utf8mb4_general_ci LIKE ? OR 
+        trackingLabel COLLATE utf8mb4_general_ci LIKE ? OR
+        jobType COLLATE utf8mb4_general_ci LIKE ? OR
+        orderMethod COLLATE utf8mb4_general_ci LIKE ? OR
+        orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
+        team COLLATE utf8mb4_general_ci LIKE ?
+      )
+      ORDER BY createdAt DESC`; // Sorting by the order creation/completion date
+  
+    const searchQuery = '%' + search + '%';
+  
+    // Execute the query with the fromDate, toDate, and search filters
+    db.query(sql, [fromDate, toDate, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
+      if (err) {
+        console.error('Error retrieving orders:', err);
+        return res.status(500).json({ message: 'Error retrieving orders' });
+      }
+  
+      // Map over the result to process file links
+      const ordersWithFileLinks = result.map(order => {
+        const files = order.files;
+  
+        // Check if files is a string, if not, initialize as empty string
+        const fileLinks = (typeof files === 'string' && files) ? 
+          files.split(',').map(fileUrl => ({
+            fileUrl,
+            downloadLink: fileUrl // Direct link to the file in S3
+          })) : [];
+  
+        return {
+          ...order,
+          files: fileLinks
+        };
+      });
+  
+      res.status(200).json(ordersWithFileLinks);
+    });
+  });
 
 
   app.get('/pieorders', (req, res) => {

@@ -26,6 +26,8 @@ import Bob from "./components/bob";
 import Invoice from "./components/invoice";
 import SpEmd from "./components/spEmb";
 import CompletedInvoice from "./components/completedInvoice";
+import Pullsheet from "./components/pullsheet";
+
 
 
 
@@ -57,6 +59,7 @@ function App() {
         <Route path = '/completed' element = {<Completed/>}/>
         <Route path = '/invoice' element = {<Invoice/>}/>
         <Route path = '/completedInvoice' element = {<CompletedInvoice/>}/>
+        <Route path = '/pullsheet' element = {<Pullsheet/>}/>
       </Routes>
       <Footer />
     </div>
