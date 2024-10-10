@@ -12,11 +12,13 @@ const Sidenavigationbar = () => {
         <Container fluid>
           <Nav className="flex-column">
             {/* Common Links */}
-            <Nav.Link href="/home">Home</Nav.Link>
+            
 
             {/* Conditionally render based on the user's role */}
             {(user.email === "riz@tssprinting.com" || user.email === "mussa@tssprinting.com" || user.email === "karachi@tssprinting.com") && (
+
               <>
+                <Nav.Link href="/home">Home</Nav.Link>
                 <Nav.Link href="/orderList">All Orders</Nav.Link>
               </>
             )}
