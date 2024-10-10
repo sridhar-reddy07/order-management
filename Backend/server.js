@@ -1132,7 +1132,7 @@ app.get('/karachiList', (req, res) => {
 
 
 
-  app.get('/Pullsheet', (req, res) => {
+  app.get('/pullsheet', (req, res) => {
     const search = req.query.search || '';  // Get the search query from the request
     const fromDate = req.query.fromDate || '1970-01-01';  // Default start date if not provided
     const toDate = req.query.toDate || new Date().toISOString().slice(0, 10);  // Default to today if not provided
