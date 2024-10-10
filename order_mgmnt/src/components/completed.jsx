@@ -40,6 +40,17 @@ const Completed = () => {
 
     fetchOrders();
   }, [fromDate, toDate]); // Trigger fetching when dates change
+  useEffect(() => {
+    // Fetch orders with the search query
+    axios.get(`http://137.184.75.176:5000/completedList?search=${search}`)
+      .then((response) => {
+        console.log(response)
+        setOrders(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching orders:', error);
+      });
+  }, [search]);
 
   // Handle order collapse
   const handleOrderClick = (orderNumber, order_Id) => {
