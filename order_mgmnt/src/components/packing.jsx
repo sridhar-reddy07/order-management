@@ -4,6 +4,8 @@ import axios from 'axios';
 import moment from 'moment'; // To handle date formatting
 import * as XLSX from 'xlsx'; // Import xlsx for Excel file generation
 import { BsDownload } from 'react-icons/bs';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 const Packing = () => {
   const [orders, setOrders] = useState([]);
