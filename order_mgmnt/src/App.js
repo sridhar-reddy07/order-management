@@ -4,6 +4,9 @@ import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+
 import NavigationBar from "./components/navigationBar";
 import Sidenavigationbar from "./components/sidenavigationbar";
 import Footer from "./components/footer";

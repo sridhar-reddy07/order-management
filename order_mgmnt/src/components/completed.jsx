@@ -4,6 +4,8 @@ import axios from 'axios';
 import moment from 'moment'; // To handle date formatting
 import * as XLSX from 'xlsx'; // Import xlsx for Excel file generation
 import { BsDownload } from 'react-icons/bs';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 const Completed = () => {
   const [orders, setOrders] = useState([]);
@@ -57,40 +59,76 @@ const Completed = () => {
     }
   };
 
-  const downloadExcel = () => {
-    // Prepare data in the format you want to download
-    const worksheetData = orders.map((order) => ({
-      'ID': order.id, // Adding the order ID
-      'Order Number': order.orderNumber,
-      'Client Name': order.clientName,
-      'Client Phone': order.clientPhone,
-      'Client Gmail': order.clientgmail,
-      'Order Status': order.orderStatus,
-      'Order Method': order.orderMethod,
-      'Job Type': order.jobType,
-      'Due Date': new Date(order.dueDate).toLocaleDateString('en-US'),
-      'Garment PO': order.garmentPO,
-      'Tracking Number': order.trackingLabel,
-      'Shipping Address': order.shippingAddress,
-      'Garment Details': order.garmentDetails,
-      'Team': order.team,
-      'Notes': order.notes,
-      'Created At': new Date(order.createdAt).toLocaleDateString('en-US'), // Adding the createdAt date
-      'Files': order.files && order.files.length > 0 
-        ? order.files.map(file => file.fileUrl).join(', ') 
+  const downloadPDF = () => {
+    // Initialize jsPDF
+    const doc = new jsPDF();
+  
+    // Define the title of the PDF
+    doc.setFontSize(18);
+    doc.text('Completed Orders', 14, 22);
+  
+    // Define the column headers
+    const headers = [
+      'ID',
+      'Order Number',
+      'Client Name',
+      'Client Phone',
+      'Client Gmail',
+      'Order Status',
+      'Order Method',
+      'Job Type',
+      'Due Date',
+      'Garment PO',
+      'Tracking Number',
+      'Shipping Address',
+      'Garment Details',
+      'Team',
+      'Notes',
+      'Created At',
+      'Files',
+    ];
+  
+    // Prepare the data rows
+    const data = orders.map((order) => [
+      order.id,
+      order.orderNumber,
+      order.clientName,
+      order.clientPhone,
+      order.clientgmail,
+      order.orderStatus,
+      order.orderMethod,
+      order.jobType,
+      moment(order.dueDate).format('MM/DD/YYYY'),
+      order.garmentPO,
+      order.trackingLabel,
+      order.shippingAddress,
+      order.garmentDetails,
+      order.team,
+      order.notes,
+      moment(order.createdAt).format('MM/DD/YYYY'),
+      order.files && order.files.length > 0
+        ? order.files.map((file) => file.fileUrl).join(', ')
         : 'No files uploaded',
-    }));
-
-    // Create a worksheet
-    const worksheet = XLSX.utils.json_to_sheet(worksheetData);
-
-    // Create a new workbook and append the worksheet
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Completed Orders');
-
-    // Export to Excel file
-    XLSX.writeFile(workbook, `completed_orders_${moment().format('YYYY-MM-DD')}.xlsx`);
+    ]);
+  
+    // Add AutoTable to the PDF
+    doc.autoTable({
+      head: [headers],
+      body: data,
+      startY: 30, // Starting Y position on the PDF
+      styles: { fontSize: 8 }, // Adjust font size as needed
+      headStyles: { fillColor: [22, 160, 133] }, // Header background color
+      theme: 'striped', // Table theme
+      // Add any additional customization here
+    });
+  
+    // Define the file name with the current date
+    const fileName = `completed_orders_${moment().format('YYYY-MM-DD')}.pdf`;
+  
+    // Save the PDF
+    doc.save(fileName);
   };
+  
 
   return (
     <div className="container" style={{ marginLeft: 250, paddingTop: 20, marginBottom: 70 }}>

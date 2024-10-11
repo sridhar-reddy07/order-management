@@ -251,26 +251,49 @@ const Bob = () => {
     setOrders(sortedOrders);
   };
 
-  const downloadExcel = () => {
-    // Prepare data in the format you want to download
-    const worksheetData = orders.map((order) => ({
-      'Client Name': order.clientName,
-      'Order Number': order.orderNumber,
-      'Garment Details': order.garmentDetails,
-      'Garment PO': order.garmentPO,
-    }));
-
-    // Create a worksheet
-    const worksheet = XLSX.utils.json_to_sheet(worksheetData);
-
-    // Create a new workbook and append the worksheet
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Completed Orders');
-
-    // Export to Excel file
-    XLSX.writeFile(workbook, `completed_orders_${moment().format('YYYY-MM-DD')}.xlsx`);
+  const downloadPDF = () => {
+    // Prepare data in the format for the table
+    const tableData = orders.map((order) => [
+      order.id, // Adding the order ID
+      order.orderNumber,
+      order.clientName,
+      
+      order.garmentPO,
+      
+      order.garmentDetails,
+      order.jobType
+      
+    ]);
+  
+    // Define table columns (headers)
+    const tableColumns = [
+      'ID', 'Order Number', 'Client Name',  'Garment PO', 'Garment Details','JobType'
+    ];
+  
+    // Initialize jsPDF instance
+    const doc = new jsPDF('landscape'); // Use 'landscape' for wide tables
+  
+    // Set title for the document
+    doc.text('Pullsheet Orders', 14, 22);
+  
+    // Add table with autoTable plugin
+    doc.autoTable({
+      head: [tableColumns], // Table headers
+      body: tableData,      // Table rows (order data)
+      startY: 30,           // Position of the table
+      theme: 'grid',        // You can also use 'striped', 'plain', etc.
+      styles: {
+        fontSize: 8,        // Adjust font size to fit more content
+      },
+      headStyles: {
+        fillColor: [22, 160, 133], // Customize header background color
+        textColor: 255,           // White text in headers
+      }
+    });
+  
+    // Save the PDF with a dynamic filename
+    doc.save(`Bob_orders_${moment().format('YYYY-MM-DD')}.pdf`);
   };
-
 
   return (
     <div className="container" style={{ marginLeft: 250, paddingTop: 20,marginBottom:70 }}>
@@ -286,7 +309,7 @@ const Bob = () => {
           />
           </div>
           <div className="col-md-2">
-            <Button variant="primary" onClick={downloadExcel}>
+            <Button variant="primary" onClick={downloadPDF}>
               <BsDownload style={{ marginRight: '5px' }} /> {/* Add download icon */}
               Download
             </Button>

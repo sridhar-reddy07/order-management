@@ -246,39 +246,48 @@ const CompletedInvoice = () => {
     setOrders(sortedOrders);
   };
 
-  const downloadExcel = () => {
-    // Prepare data in the format you want to download
-    const worksheetData = orders.map((order) => ({
-      'ID': order.id, // Adding the order ID
-      'Order Number': order.orderNumber,
-      'Client Name': order.clientName,
-      'Client Phone': order.clientPhone,
-      'Client Gmail': order.clientgmail,
-      'Order Status': order.orderStatus,
-      'Order Method': order.orderMethod,
-      'Job Type': order.jobType,
-      'Due Date': new Date(order.dueDate).toLocaleDateString('en-US'),
-      'Garment PO': order.garmentPO,
-      'Tracking Number': order.trackingLabel,
-      'Shipping Address': order.shippingAddress,
-      'Garment Details': order.garmentDetails,
-      'Team': order.team,
-      'Notes': order.notes,
-      'Created At': new Date(order.createdAt).toLocaleDateString('en-US'), // Adding the createdAt date
-      'Files': order.files && order.files.length > 0 
-        ? order.files.map(file => file.fileUrl).join(', ') 
-        : 'No files uploaded',
-    }));
-
-    // Create a worksheet
-    const worksheet = XLSX.utils.json_to_sheet(worksheetData);
-
-    // Create a new workbook and append the worksheet
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Completed Orders');
-
-    // Export to Excel file
-    XLSX.writeFile(workbook, `completed_orders_${moment().format('YYYY-MM-DD')}.xlsx`);
+  const downloadPDF = () => {
+    // Prepare data in the format for the table
+    const tableData = orders.map((order) => [
+      order.id, // Adding the order ID
+      order.orderNumber,
+      order.clientName,
+      
+      order.garmentPO,
+      
+      order.garmentDetails,
+      order.jobType
+      
+    ]);
+  
+    // Define table columns (headers)
+    const tableColumns = [
+      'ID', 'Order Number', 'Client Name',  'Garment PO', 'Garment Details','JobType'
+    ];
+  
+    // Initialize jsPDF instance
+    const doc = new jsPDF('landscape'); // Use 'landscape' for wide tables
+  
+    // Set title for the document
+    doc.text('Bob completed Invoice Orders', 14, 22);
+  
+    // Add table with autoTable plugin
+    doc.autoTable({
+      head: [tableColumns], // Table headers
+      body: tableData,      // Table rows (order data)
+      startY: 30,           // Position of the table
+      theme: 'grid',        // You can also use 'striped', 'plain', etc.
+      styles: {
+        fontSize: 8,        // Adjust font size to fit more content
+      },
+      headStyles: {
+        fillColor: [22, 160, 133], // Customize header background color
+        textColor: 255,           // White text in headers
+      }
+    });
+  
+    // Save the PDF with a dynamic filename
+    doc.save(`Bob Completed Invoice_orders_${moment().format('YYYY-MM-DD')}.pdf`);
   };
 
 
@@ -296,7 +305,7 @@ const CompletedInvoice = () => {
           />
           </div>
           <div className="col-md-2">
-            <Button variant="primary" onClick={downloadExcel}>
+            <Button variant="primary" onClick={downloadPDF}>
               <BsDownload style={{ marginRight: '5px' }} /> {/* Add download icon */}
               Download
             </Button>
