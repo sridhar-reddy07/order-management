@@ -14,7 +14,7 @@ const AddOrder = () => {
   const [shippingAddress, setShippingAddress] = useState('');
   const [trackingLabel, setTrackingLabel] = useState('');
   const [garmentDetails, setGarmentDetails] = useState('');
-  const [garmentPo, setGarmentPo] = useState('');
+  const [garmentPO, setGarmentPO] = useState('');
   const [team, setTeam] = useState('');
   const [dueDate, setDueDate] = useState('');
   
@@ -163,7 +163,7 @@ const AddOrder = () => {
     formData.append('shippingAddress', shippingAddress);
     formData.append('trackingLabel', trackingLabel);
     formData.append('garmentDetails', garmentDetails);
-    formData.append('garmentPo', garmentPo);
+    formData.append('garmentPO', garmentPO);
     formData.append('team', team);
     formData.append('dueDate', dueDate);
     
@@ -198,7 +198,7 @@ const AddOrder = () => {
         setShippingAddress('');
         setTrackingLabel('');
         setGarmentDetails('');
-        setGarmentPo('');
+        setGarmentPO('');
         setTeam('');
         setDueDate('');
         setInvoice('');
@@ -357,12 +357,12 @@ const AddOrder = () => {
 
         {/* Garment PO */}
         <div className="form-group">
-          <label htmlFor="garmentPo">Garment PO:</label>
+          <label htmlFor="garmentPO">Garment PO:</label>
           <input
             type="text"
-            id="garmentPo"
-            value={garmentPo}
-            onChange={(e) => setGarmentPo(e.target.value)}
+            id="garmentPO"
+            value={garmentPO}
+            onChange={(e) => setGarmentPO(e.target.value)}
             required
             className="form-input"
           />
