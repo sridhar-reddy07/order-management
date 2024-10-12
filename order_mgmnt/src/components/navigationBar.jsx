@@ -36,7 +36,7 @@ const NavigationBar = () => {
     
     try {
       // Make an API request to change the password
-      const response = await axios.post('/api/change-password', {
+      const response = await axios.post('http://137.184.75.176:5000/change-password', {
         email: user.email,
         newPassword: newPassword
       });
