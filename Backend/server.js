@@ -127,7 +127,7 @@ app.post('/register', async (req, res) => {
 
 
 
-app.post('/api/change-password', (req, res) => {
+app.post('/change-password', (req, res) => {
   const { email, newPassword } = req.body;
   console.log(req.body)
 
