@@ -28,6 +28,7 @@ const NavigationBar = () => {
 
   // Handle change password submission
   const handleSubmitChangePassword = async () => {
+    
     if (newPassword !== confirmPassword) {
       setError("Passwords do not match.");
       return;
@@ -39,6 +40,7 @@ const NavigationBar = () => {
         email: user.email,
         newPassword: newPassword
       });
+      console.log(response)
 
       if (response.data.success) {
         alert('Password changed successfully.');
