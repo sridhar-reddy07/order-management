@@ -129,13 +129,14 @@ app.post('/register', async (req, res) => {
 
 app.post('/api/change-password', (req, res) => {
   const { email, newPassword } = req.body;
+  console.log(req.body)
 
   // You should hash the new password before storing it in the database
   // For example, using bcrypt
   const bcrypt = require('bcrypt');
   const saltRounds = 10;
 
-  bcrypt.hash(newPassword, saltRounds, (err, hashedPassword) => {
+  bcrypt.hash(newPassword, saltRounds, (err, password_hash) => {
     if (err) {
       return res.status(500).json({ success: false, message: 'Error hashing password.' });
     }
@@ -144,7 +145,7 @@ app.post('/api/change-password', (req, res) => {
     const sql = 'UPDATE users SET password_hash = ? WHERE email = ?';
 
     // Execute the query with the hashed password and email
-    db.query(sql, [hashedPassword, email], (err, result) => {
+    db.query(sql, [password_hash, email], (err, result) => {
       if (err) {
         console.error('Error updating password:', err);
         return res.status(500).json({ success: false, message: 'Password update failed.' });
