@@ -1,18 +1,55 @@
-import React from 'react';
-import { Container, Navbar, Nav, Dropdown, Image } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Container, Navbar, Nav, Dropdown, Modal, Button, Form } from 'react-bootstrap';
 import { FaUserCircle } from 'react-icons/fa'; // Profile Icon
 import logo from '../Images/logo.png';
+import axios from 'axios'; // You can use axios or fetch for API requests
 
 const NavigationBar = () => {
   const user = JSON.parse(localStorage.getItem('user')); // Get user from localStorage
+  const [showChangePassword, setShowChangePassword] = useState(false); // Modal state
+  const [newPassword, setNewPassword] = useState(""); // State to hold new password
+  const [confirmPassword, setConfirmPassword] = useState(""); // State to confirm password
+  const [error, setError] = useState(""); // State for errors
 
+  // Handle logout
   const handleLogout = () => {
     localStorage.removeItem('user'); // Clear user data
     window.location.href = '/'; // Redirect to login page or home
   };
 
-  const handleChangePassword = () => {
-    window.location.href = '/change-password'; // Redirect to change password page
+  // Handle change password modal
+  const handleShowChangePassword = () => setShowChangePassword(true);
+  const handleCloseChangePassword = () => {
+    setNewPassword("");
+    setConfirmPassword("");
+    setError("");
+    setShowChangePassword(false);
+  };
+
+  // Handle change password submission
+  const handleSubmitChangePassword = async () => {
+    if (newPassword !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+    
+    try {
+      // Make an API request to change the password
+      const response = await axios.post('/api/change-password', {
+        email: user.email,
+        newPassword: newPassword
+      });
+
+      if (response.data.success) {
+        alert('Password changed successfully.');
+        handleCloseChangePassword(); // Close modal on success
+      } else {
+        setError('Failed to change password.');
+      }
+    } catch (err) {
+      console.error(err);
+      setError('An error occurred.');
+    }
   };
 
   return (
@@ -57,7 +94,7 @@ const NavigationBar = () => {
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu>
-                    <Dropdown.Item onClick={handleChangePassword}>
+                    <Dropdown.Item onClick={handleShowChangePassword}>
                       Change Password
                     </Dropdown.Item>
                     <Dropdown.Divider />
@@ -75,6 +112,47 @@ const NavigationBar = () => {
             {/* Optional content for non-logged-in users */}
           </>
         )}
+
+        {/* Modal for Changing Password */}
+        <Modal show={showChangePassword} onHide={handleCloseChangePassword}>
+          <Modal.Header closeButton>
+            <Modal.Title>Change Password</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group controlId="formNewPassword">
+                <Form.Label>New Password</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Enter new password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+              </Form.Group>
+
+              <Form.Group controlId="formConfirmPassword" className="mt-3">
+                <Form.Label>Confirm Password</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Confirm new password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+              </Form.Group>
+
+              {error && <p className="text-danger mt-3">{error}</p>}
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseChangePassword}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={handleSubmitChangePassword}>
+              Change Password
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
       </Navbar>
     </Container>
   );

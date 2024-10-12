@@ -126,6 +126,44 @@ app.post('/register', async (req, res) => {
 
 
 
+
+app.post('/api/change-password', (req, res) => {
+  const { email, newPassword } = req.body;
+
+  // You should hash the new password before storing it in the database
+  // For example, using bcrypt
+  const bcrypt = require('bcrypt');
+  const saltRounds = 10;
+
+  bcrypt.hash(newPassword, saltRounds, (err, hashedPassword) => {
+    if (err) {
+      return res.status(500).json({ success: false, message: 'Error hashing password.' });
+    }
+
+    // SQL query to update the password in the database
+    const sql = 'UPDATE users SET password_hash = ? WHERE email = ?';
+
+    // Execute the query with the hashed password and email
+    db.query(sql, [hashedPassword, email], (err, result) => {
+      if (err) {
+        console.error('Error updating password:', err);
+        return res.status(500).json({ success: false, message: 'Password update failed.' });
+      }
+
+      if (result.affectedRows === 0) {
+        // No user with that email was found
+        return res.status(404).json({ success: false, message: 'User not found.' });
+      }
+
+      // Password updated successfully
+      return res.json({ success: true, message: 'Password updated successfully.' });
+    });
+  });
+});
+
+
+
+
 app.get('/getOrderId', async (req, res) => {
   const { orderNumber, shippingAddress } = req.query;  // Extract orderNumber and shippingAddress from query parameters
   console.log(`Received request: orderNumber=${orderNumber}, shippingAddress=${shippingAddress}`);
