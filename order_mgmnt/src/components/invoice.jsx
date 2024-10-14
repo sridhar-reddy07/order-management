@@ -478,14 +478,7 @@ const Invoice = () => {
                     <td>
                   <Button onClick={() => generatePDF(order)} className="ml-2">Download Invoice PDF</Button>
                   </td>
-                  <td>
-                    <Button
-                      variant="primary"
-                      onClick={() => handleSizeModalShow(order.orderNumber,order.shippingAddress)}
-                    >
-                      Add Size
-                    </Button>
-                  </td>
+                  
 
                   <td>
                     <i

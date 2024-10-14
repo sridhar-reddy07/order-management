@@ -419,14 +419,7 @@ const CompletedInvoice = () => {
                     )}
                   </td>
 
-                  <td>
-                    <Button
-                      variant="primary"
-                      onClick={() => handleSizeModalShow(order.orderNumber,order.shippingAddress)}
-                    >
-                      Add Size
-                    </Button>
-                  </td>
+                  
 
                   <td>
                     <i
