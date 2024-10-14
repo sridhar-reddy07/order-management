@@ -421,7 +421,17 @@ const ScreenPrinting = () => {
                     </>
                   </td>
                   <td>
-                    {order.orderStatus}
+                    <select
+                      value={order.orderStatus}
+                      className={getSelectClass(order.orderStatus)}
+                      onChange={(e) => updateOrderStatusInDatabase(e, order.orderNumber)}
+                    >
+                      <option value="READY">READY</option>
+                      <option value="ONHOLD">ONHOLD</option>
+                      <option value="INPROGRESS">INPROGRESS</option>
+                      <option value="HARDDATE">HARDDATE</option>
+                      <option value="DONE">DONE</option>
+                    </select>
                   </td>
 
                   <td>{order.orderMethod}</td>

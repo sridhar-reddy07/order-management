@@ -413,8 +413,17 @@ const Instore = () => {
                     </>
                   </td>
                   <td>
-                    {order.orderStatus}
+                    <select
+                      value={order.orderStatus}
+                      className={getSelectClass(order.orderStatus)}
+                      onChange={(e) => updateOrderStatusInDatabase(e, order.orderNumber)}
+                    >
+                      
+                      <option value="DONE">Done</option>
+                      <option value="COMPLETED">Completed</option>
+                    </select>
                   </td>
+
 
                   <td>{order.orderMethod}</td>
                   <td>{order.jobType}</td>

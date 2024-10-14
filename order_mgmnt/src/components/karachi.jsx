@@ -422,7 +422,20 @@ const Karachi = () => {
                     </>
                   </td>
                   <td>
-                    {order.orderStatus}
+                    <select
+                      value={order.orderStatus}
+                      onChange={(e) => updateOrderStatusInDatabase(e, order.orderNumber)}
+                      className={getSelectClass(order.orderStatus)}
+                    >
+                      <option value="READY">READY</option>
+                      <option value="NEED PAYMENT">NEED PAYMENT</option>
+                      <option value="PENDING">PENDING</option>
+                      <option value="PENDING ARTWORK">PENDING ARTWORK</option>
+                      <option value="APPROVED">APPROVED</option>
+                      <option value="HARDDATE">HARDDATE</option>
+                      <option value="PENDING APPROVAL">PENDING APPROVAL</option>
+                      <option value="DONE">DONE</option>
+                    </select>
                   </td>
 
                   <td>{order.orderMethod}</td>
