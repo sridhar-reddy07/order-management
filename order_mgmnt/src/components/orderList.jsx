@@ -346,7 +346,7 @@ const OrderList = () => {
     <div className="container" style={{ marginLeft: 250, paddingTop: 20,marginBottom:70 }}>
 
       <h2>All Orders</h2>
-      <div className="row mb-4">
+      <div className="row">
         <div className="col-md-3">
           <input
             type="text"

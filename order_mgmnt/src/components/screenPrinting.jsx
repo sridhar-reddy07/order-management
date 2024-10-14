@@ -354,11 +354,11 @@ const ScreenPrinting = () => {
           />
           </div>
           <div className="col-md-2">
-            <Button variant="primary" onClick={downloadPDF}>
-              <BsDownload style={{ marginRight: '5px' }} /> {/* Add download icon */}
-              Download
-            </Button>
-            </div>
+          <Button variant="primary" onClick={downloadPDF}>
+            <BsDownload style={{ marginRight: '5px' }} /> {/* Add download icon */}
+            Download
+          </Button>
+          </div>
       </div>
       
       <table className="table table-striped table-hover">

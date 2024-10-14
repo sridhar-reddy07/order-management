@@ -344,7 +344,7 @@ const Karachi = () => {
   return (
     <div className="container" style={{ marginLeft: 250, paddingTop: 20,marginBottom:70 }}>
       <h2>Karachi Team</h2>
-      <div className="row mb-4">
+      <div className="row">
         <div className="col-md-3">
           <input
             type="text"
@@ -359,7 +359,7 @@ const Karachi = () => {
               <BsDownload style={{ marginRight: '5px' }} /> {/* Add download icon */}
               Download
             </Button>
-            </div>
+          </div>
       </div>
       
       <table className="table table-striped table-hover">

@@ -336,7 +336,7 @@ const Packing = () => {
   return (
     <div className="container" style={{ marginLeft: 250, paddingTop: 20,marginBottom:70 }}>
       <h2>Packing List</h2>
-      <div className="row mb-4">
+      <div className="row">
         <div className="col-md-3">
           <input
             type="text"

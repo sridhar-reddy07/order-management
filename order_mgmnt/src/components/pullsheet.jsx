@@ -108,7 +108,7 @@ const Pullsheet = () => {
       <h2>Pullsheet</h2>
 
       {/* Date Filter Inputs */}
-      <div className="row mb-4">
+      <div className="row">
         <div className="col-md-3">
           <label>From Date:</label>
           <input
