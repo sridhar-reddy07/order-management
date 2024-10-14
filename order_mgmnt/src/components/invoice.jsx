@@ -37,7 +37,7 @@ const Invoice = () => {
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
     // Check if user is an admin
-    if (user && user.email === "admin@gmail.com") {
+    if (user && (user.email.toLowerCase() === "riz@tssprinting.com" )) {
       setIsAdmin(true);
     } else {
       setIsAdmin(false);

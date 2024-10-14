@@ -118,7 +118,7 @@ const Bob = () => {
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
     // Check if user is an admin
-    if (user && user.name === "Riz") {
+    if (user.email.toLowerCase() === "riz@tssprinting.com" || user.email.toLowerCase() === "bob@tssprinting.com") {
       setIsAdmin(true);
     } else {
       setIsAdmin(false);

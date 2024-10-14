@@ -115,7 +115,7 @@ const SpEmd = () => {
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
     // Check if user is an admin
-    if (user && user.email === "admin@gmail.com") {
+    if (user && (user.email.toLowerCase() === "riz@tssprinting.com" || user.email.toLowerCase() === "mussa@tssprinting.com" || user.email.toLowerCase() === "karachi@tssprinting.com")) {
       setIsAdmin(true);
     } else {
       setIsAdmin(false);
@@ -228,7 +228,7 @@ const SpEmd = () => {
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.orderNumber === orderNumber ? { ...order, orderStatus: status } : order
-        ).filter((order) => order.orderStatus !== 'DONE')
+        ).filter((order) => order.orderStatus !== 'DTGEMG')
       );
     } catch (error) {
       console.error('Error updating order status:', error);
