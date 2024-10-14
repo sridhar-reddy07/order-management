@@ -300,17 +300,17 @@ app.delete('/deleteorder/:orderNumber', (req, res) => {
 
 
 
-app.put('/updateOrder/:orderNumber', (req, res) => {
-  const { orderNumber } = req.params;
+app.put('/updateOrder/:id', (req, res) => {
+  const { id } = req.params;
   const updateData = req.body; // The field to update, e.g., { orderStatus: 'APPROVED' }
 
   const field = Object.keys(updateData)[0]; // Get the field name
   const value = updateData[field]; // Get the new value
 
-  const query = `UPDATE orders SET ${field} = ? WHERE orderNumber = ?`;
+  const query = `UPDATE orders SET ${field} = ? WHERE id = ?`;
 
   // Execute the SQL query
-  db.query(query, [value, orderNumber], (err, result) => {
+  db.query(query, [value, id], (err, result) => {
     if (err) {
       console.error('Error updating order:', err);
       return res.status(500).send({ message: 'Internal server error' });

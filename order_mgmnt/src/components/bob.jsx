@@ -199,20 +199,20 @@ const Bob = () => {
   const handleUpdateOrder = async () => {
     try {
       // API call to update the selected order's specific field
-      const response = await axios.put(`http://137.184.75.176:5000/updateOrder/${selectedOrder}`, { [field]: updatedOrder });
+      const response = await axios.put(`http://137.184.75.176:5000/updateOrder/${orderId}`, { [field]: updatedOrder });
       
       alert('Order updated successfully');
       
       // Update the local state with the new order data
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
-          order.orderNumber === selectedOrder ? { ...order, [field]: updatedOrder } : order
+          order.id === orderId ? { ...order, [field]: updatedOrder } : order
         )
       );
 
       // Reset the modal state after update
       setShowModal3(false);
-      setSelectedOrder('');
+      setOrderId('');
       setUpdatedOrder(''); // Clear updated order value
       
     } catch (error) {
@@ -221,9 +221,9 @@ const Bob = () => {
   };
 
   // Function to show modal and set the order and field being edited
-  const handleOrder = (orderNumber, field) => {
+  const handleOrder = (id, field) => {
     setShowModal3(true);
-    setSelectedOrder(orderNumber);
+    setOrderId(id);
     setField(field); // Track the field being updated
   };
 
@@ -365,7 +365,7 @@ const Bob = () => {
                     {isAdmin ? (<i 
                           className="bi bi-pencil" 
                           style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                          onClick={() => handleOrder(order.orderNumber,"clientName")}
+                          onClick={() => handleOrder(order.id,"clientName")}
                         ></i>) : ''}
                     </>
                   </td>
@@ -374,7 +374,7 @@ const Bob = () => {
                     {isAdmin ? (<i 
                           className="bi bi-pencil" 
                           style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                          onClick={() => handleOrder(order.orderNumber,"clientPhone")}
+                          onClick={() => handleOrder(order.id,"clientPhone")}
                         ></i>) : ''}
                     </>
                   </td>
@@ -383,7 +383,7 @@ const Bob = () => {
                     {isAdmin ? (<i 
                           className="bi bi-pencil" 
                           style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                          onClick={() => handleOrder(order.orderNumber,"clientgmail")}
+                          onClick={() => handleOrder(order.id,"clientgmail")}
                         ></i>) : ''}
                     </>
                   </td>
@@ -405,7 +405,7 @@ const Bob = () => {
                     {isAdmin ? (<i 
                           className="bi bi-pencil" 
                           style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                          onClick={() => handleOrder(order.orderNumber,"garmentPO")}
+                          onClick={() => handleOrder(order.id,"garmentPO")}
                         ></i>) : ''}
                   </>
                   </td>
@@ -419,7 +419,7 @@ const Bob = () => {
                           {isAdmin ? (<i 
                                 className="bi bi-pencil" 
                                 style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                                onClick={() => handleOrder(order.orderNumber,"trackingLabel")}
+                                onClick={() => handleOrder(order.id,"trackingLabel")}
                               ></i>) : ''}
                         </>
                       </>
@@ -427,7 +427,7 @@ const Bob = () => {
                       <button 
                         className="btn btn-primary" 
                         style={{ cursor: 'pointer' }} 
-                        onClick={() => handleOrder(order.orderNumber,"trackingLabel")}
+                        onClick={() => handleOrder(order.id,"trackingLabel")}
                       > 
                         Add num
                       </button>
@@ -437,7 +437,7 @@ const Bob = () => {
                   <td>
                     <Button
                       variant="primary"
-                      onClick={() => handleSizeModalShow(order.orderNumber,order.shippingAddress)}
+                      onClick={() => handleSizeModalShow(order.id,order.shippingAddress)}
                     >
                       Add Size
                     </Button>
@@ -461,7 +461,7 @@ const Bob = () => {
                           {isAdmin ? (<i 
                                 className="bi bi-pencil" 
                                 style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                                onClick={() => handleOrder(order.orderNumber,"shippingAddress")}
+                                onClick={() => handleOrder(order.id,"shippingAddress")}
                               ></i>) : ''}
                         </>
                         </p>
@@ -470,7 +470,7 @@ const Bob = () => {
                           {isAdmin ? (<i 
                                 className="bi bi-pencil" 
                                 style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                                onClick={() => handleOrder(order.orderNumber,"garmentDetails")}
+                                onClick={() => handleOrder(order.id,"garmentDetails")}
                               ></i>) : ''}
                         </></p>
                         
@@ -479,7 +479,7 @@ const Bob = () => {
                         <i 
                           className="bi bi-pencil" 
                           style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                          onClick={() => handleOrder(order.orderNumber,"notes")}
+                          onClick={() => handleOrder(order.id,"notes")}
                         ></i>
                         </p>
                         
