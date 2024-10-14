@@ -228,7 +228,7 @@ const Embroidory = () => {
 
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
-          order.orderNumber === orderNumber ? { ...order, orderStatus: status } : order
+          order.id === id ? { ...order, orderStatus: status } : order
         ).filter((order) => order.orderStatus !== 'DONE')
       );
     } catch (error) {
