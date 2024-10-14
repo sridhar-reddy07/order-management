@@ -107,6 +107,7 @@ const Entry = () => {
         <div className="register-section">
           <p>Don’t have an account? <button onClick={() => setShowRegisterModal(true)} className="register-link">Register here</button></p>
         </div>
+        
       </div>
 
       {/* Registration Modal */}
