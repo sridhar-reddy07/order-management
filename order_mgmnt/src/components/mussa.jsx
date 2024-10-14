@@ -244,20 +244,20 @@ const Mussa = () => {
   const handleUpdateOrder = async () => {
     try {
       // API call to update the selected order's specific field
-      const response = await axios.put(`http://137.184.75.176:5000/updateOrder/${selectedOrder}`, { [field]: updatedOrder });
+      const response = await axios.put(`http://137.184.75.176:5000/updateOrder/${orderId}`, { [field]: updatedOrder });
       
       alert('Order updated successfully');
       
       // Update the local state with the new order data
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
-          order.orderNumber === selectedOrder ? { ...order, [field]: updatedOrder } : order
+          order.id === orderId ? { ...order, [field]: updatedOrder } : order
         )
       );
 
       // Reset the modal state after update
       setShowModal3(false);
-      setSelectedOrder('');
+      setOrderId('');
       setUpdatedOrder(''); // Clear updated order value
       
     } catch (error) {
@@ -266,19 +266,19 @@ const Mussa = () => {
   };
 
   // Function to show modal and set the order and field being edited
-  const handleOrder = (orderNumber, field) => {
+  const handleOrder = (id, field) => {
     setShowModal3(true);
-    setSelectedOrder(orderNumber);
+    setOrderId(id);
     setField(field); // Track the field being updated
   };
 
-  const deleteOrder = async (orderNumber) => {
+  const deleteOrder = async (id) => {
     const confirmDelete = window.confirm('Are you sure you want to delete this order?');
     if (confirmDelete) {
       try {
-        const response = await axios.delete(`http://137.184.75.176:5000/deleteorder/${orderNumber}`);
+        const response = await axios.delete(`http://137.184.75.176:5000/deleteorder/${id}`);
         if (response.status === 200) {
-          setOrders(orders.filter(order => order.orderNumber !== orderNumber));
+          setOrders(orders.filter(order => order.id !== id));
           alert('Order deleted successfully.');
         }
       } catch (error) {

@@ -284,7 +284,6 @@ const Dtg = () => {
       }
     }
   };
-
   const toggleSortByDueDate = () => {
     setSortByDueDate(!sortByDueDate);
     const sortedOrders = [...orders].sort((a, b) => {
