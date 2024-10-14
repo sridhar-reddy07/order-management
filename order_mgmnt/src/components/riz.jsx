@@ -438,7 +438,7 @@ const Riz = () => {
                       <option value="APPROVED">APPROVED</option>
                       <option value="HARDDATE">HARDDATE</option>
                       <option value="PENDING APPROVAL">PENDING APPROVAL</option>
-                      <option value="DONE">DONE</option>
+                      
                     </select>
                   </td>
 
