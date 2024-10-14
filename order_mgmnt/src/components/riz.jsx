@@ -133,7 +133,7 @@ const Riz = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch('http://137.184.75.176:5000/riList');
+        const response = await fetch('http://137.184.75.176:5000/rizList');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
