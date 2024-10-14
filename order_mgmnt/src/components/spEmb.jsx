@@ -398,7 +398,7 @@ const SpEmd = () => {
                     {isAdmin ? (<i 
                           className="bi bi-pencil" 
                           style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                          onClick={() => handleOrder(order.orderNumber,"clientName")}
+                          onClick={() => handleOrder(order.id,"clientName")}
                         ></i>) : ''}
                     </>
                   </td>
@@ -407,7 +407,7 @@ const SpEmd = () => {
                     {isAdmin ? (<i 
                           className="bi bi-pencil" 
                           style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                          onClick={() => handleOrder(order.orderNumber,"clientPhone")}
+                          onClick={() => handleOrder(order.id,"clientPhone")}
                         ></i>) : ''}
                     </>
                   </td>
@@ -416,23 +416,14 @@ const SpEmd = () => {
                     {isAdmin ? (<i 
                           className="bi bi-pencil" 
                           style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                          onClick={() => handleOrder(order.orderNumber,"clientgmail")}
+                          onClick={() => handleOrder(order.id,"clientgmail")}
                         ></i>) : ''}
                     </>
                   </td>
                   <td>
-                    <select
-                      className={getSelectClass(order.orderStatus)}
-                      value={order.orderStatus || ""}
-                      onChange={(e) => updateOrderStatusInDatabase(e, order.orderNumber)}
-                    >
-                      <option value="READY">Ready</option>
-                      <option value="ONHOLD">On Hold</option>
-                      <option value="INPROGRESS">In Progress</option>
-                      <option value="HARDDATE">Hard Date</option>
-                      <option value="DTGEMD">Screen Printing Done</option>  
-                    </select>
+                    {order.orderStatus}
                   </td>
+
                   <td>{order.orderMethod}</td>
                   <td>{order.jobType}</td>
                   
@@ -447,7 +438,7 @@ const SpEmd = () => {
                     {isAdmin ? (<i 
                           className="bi bi-pencil" 
                           style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                          onClick={() => handleOrder(order.orderNumber,"garmentPO")}
+                          onClick={() => handleOrder(order.id,"garmentPO")}
                         ></i>) : ''}
                   </>
                   </td>
@@ -461,7 +452,7 @@ const SpEmd = () => {
                           {isAdmin ? (<i 
                                 className="bi bi-pencil" 
                                 style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                                onClick={() => handleOrder(order.orderNumber,"trackingLabel")}
+                                onClick={() => handleOrder(order.id,"trackingLabel")}
                               ></i>) : ''}
                         </>
                       </>
@@ -469,7 +460,7 @@ const SpEmd = () => {
                       <button 
                         className="btn btn-primary" 
                         style={{ cursor: 'pointer' }} 
-                        onClick={() => handleOrder(order.orderNumber,"trackingLabel")}
+                        onClick={() => handleOrder(order.id,"trackingLabel")}
                       > 
                         Add num
                       </button>
@@ -489,7 +480,7 @@ const SpEmd = () => {
                     <i
                       className="bi bi-trash"
                       style={{ cursor: 'pointer', color: 'red' }}
-                      onClick={() => deleteOrder(order.orderNumber)}
+                      onClick={() => deleteOrder(order.id)}
                     ></i>
                   </td>
 
@@ -503,7 +494,7 @@ const SpEmd = () => {
                           {isAdmin ? (<i 
                                 className="bi bi-pencil" 
                                 style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                                onClick={() => handleOrder(order.orderNumber,"shippingAddress")}
+                                onClick={() => handleOrder(order.id,"shippingAddress")}
                               ></i>) : ''}
                         </>
                         </p>
@@ -512,7 +503,7 @@ const SpEmd = () => {
                           {isAdmin ? (<i 
                                 className="bi bi-pencil" 
                                 style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                                onClick={() => handleOrder(order.orderNumber,"garmentDetails")}
+                                onClick={() => handleOrder(order.id,"garmentDetails")}
                               ></i>) : ''}
                         </></p>
                         
@@ -521,7 +512,7 @@ const SpEmd = () => {
                         <i 
                           className="bi bi-pencil" 
                           style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                          onClick={() => handleOrder(order.orderNumber,"notes")}
+                          onClick={() => handleOrder(order.id,"notes")}
                         ></i>
                         </p>
                         

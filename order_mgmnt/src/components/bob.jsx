@@ -227,13 +227,13 @@ const Bob = () => {
     setField(field); // Track the field being updated
   };
 
-  const deleteOrder = async (orderNumber) => {
+  const deleteOrder = async (id) => {
     const confirmDelete = window.confirm('Are you sure you want to delete this order?');
     if (confirmDelete) {
       try {
-        const response = await axios.delete(`http://137.184.75.176:5000/deleteorder/${orderNumber}`);
+        const response = await axios.delete(`http://137.184.75.176:5000/deleteorder/${id}`);
         if (response.status === 200) {
-          setOrders(orders.filter(order => order.orderNumber !== orderNumber));
+          setOrders(orders.filter(order => order.id !== id));
           alert('Order deleted successfully.');
         }
       } catch (error) {
@@ -437,7 +437,7 @@ const Bob = () => {
                   <td>
                     <Button
                       variant="primary"
-                      onClick={() => handleSizeModalShow(order.id,order.shippingAddress)}
+                      onClick={() => handleSizeModalShow(order.orderNumber,order.shippingAddress)}
                     >
                       Add Size
                     </Button>
@@ -447,7 +447,7 @@ const Bob = () => {
                     <i
                       className="bi bi-trash"
                       style={{ cursor: 'pointer', color: 'red' }}
-                      onClick={() => deleteOrder(order.orderNumber)}
+                      onClick={() => deleteOrder(order.id)}
                     ></i>
                   </td>
 

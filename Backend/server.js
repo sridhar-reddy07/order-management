@@ -243,13 +243,13 @@ app.post('/login', (req, res) => {
 });
 
 
-app.delete('/deleteorder/:orderNumber', (req, res) => {
-  const { orderNumber } = req.params;
+app.delete('/deleteorder/:id', (req, res) => {
+  const { id } = req.params;
 
   // SQL query to delete the order from the database
-  const sql = 'DELETE FROM orders WHERE orderNumber = ?';
+  const sql = 'DELETE FROM orders WHERE id = ?';
 
-  db.query(sql, [orderNumber], (err, result) => {
+  db.query(sql, [id], (err, result) => {
     if (err) {
       console.error('Error deleting the order:', err);
       return res.status(500).json({ message: 'Failed to delete order' });

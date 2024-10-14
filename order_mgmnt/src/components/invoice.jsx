@@ -384,7 +384,7 @@ const Invoice = () => {
                     {isAdmin ? (<i 
                           className="bi bi-pencil" 
                           style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                          onClick={() => handleOrder(order.orderNumber,"clientName")}
+                          onClick={() => handleOrder(order.id,"clientName")}
                         ></i>) : ''}
                     </>
                   </td>
@@ -393,7 +393,7 @@ const Invoice = () => {
                     {isAdmin ? (<i 
                           className="bi bi-pencil" 
                           style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                          onClick={() => handleOrder(order.orderNumber,"clientPhone")}
+                          onClick={() => handleOrder(order.id,"clientPhone")}
                         ></i>) : ''}
                     </>
                   </td>
@@ -402,28 +402,13 @@ const Invoice = () => {
                     {isAdmin ? (<i 
                           className="bi bi-pencil" 
                           style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                          onClick={() => handleOrder(order.orderNumber,"clientgmail")}
+                          onClick={() => handleOrder(order.id,"clientgmail")}
                         ></i>) : ''}
                     </>
                   </td>
                   <td>
-                    <>
-                    {
-                        isAdmin ?
-                        <select
-                      className={getSelectClass(order.orderStatus)}
-                      value={order.orderStatus || ""}
-                      onChange={(e) => updateOrderStatusInDatabase(e, order.orderNumber)}
-                    >
-                      <option value="DONE">Done</option>
-                      <option value="COMPLETED">Completed</option>
-                      
-                    </select> : ''
-                    }
-                    </>
-                    
+                    {order.orderStatus}
                   </td>
-
 
                   <td>{order.orderMethod}</td>
                   <td>{order.jobType}</td>
@@ -439,7 +424,7 @@ const Invoice = () => {
                     {isAdmin ? (<i 
                           className="bi bi-pencil" 
                           style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                          onClick={() => handleOrder(order.orderNumber,"garmentPO")}
+                          onClick={() => handleOrder(order.id,"garmentPO")}
                         ></i>) : ''}
                   </>
                   </td>
@@ -453,7 +438,7 @@ const Invoice = () => {
                           {isAdmin ? (<i 
                                 className="bi bi-pencil" 
                                 style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                                onClick={() => handleOrder(order.orderNumber,"trackingLabel")}
+                                onClick={() => handleOrder(order.id,"trackingLabel")}
                               ></i>) : ''}
                         </>
                       </>
@@ -461,13 +446,12 @@ const Invoice = () => {
                       <button 
                         className="btn btn-primary" 
                         style={{ cursor: 'pointer' }} 
-                        onClick={() => handleOrder(order.orderNumber,"trackingLabel")}
+                        onClick={() => handleOrder(order.id,"trackingLabel")}
                       > 
                         Add num
                       </button>
                     )}
                   </td>
-
                   <td>
                     <>
                         {order.invoice ? (
@@ -491,16 +475,23 @@ const Invoice = () => {
                         )}
                     </>
                     </td>
-
-                  <td>
+                    <td>
                   <Button onClick={() => generatePDF(order)} className="ml-2">Download Invoice PDF</Button>
+                  </td>
+                  <td>
+                    <Button
+                      variant="primary"
+                      onClick={() => handleSizeModalShow(order.orderNumber,order.shippingAddress)}
+                    >
+                      Add Size
+                    </Button>
                   </td>
 
                   <td>
                     <i
                       className="bi bi-trash"
                       style={{ cursor: 'pointer', color: 'red' }}
-                      onClick={() => deleteOrder(order.orderNumber)}
+                      onClick={() => deleteOrder(order.id)}
                     ></i>
                   </td>
 
@@ -514,7 +505,7 @@ const Invoice = () => {
                           {isAdmin ? (<i 
                                 className="bi bi-pencil" 
                                 style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                                onClick={() => handleOrder(order.orderNumber,"shippingAddress")}
+                                onClick={() => handleOrder(order.id,"shippingAddress")}
                               ></i>) : ''}
                         </>
                         </p>
@@ -523,7 +514,7 @@ const Invoice = () => {
                           {isAdmin ? (<i 
                                 className="bi bi-pencil" 
                                 style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                                onClick={() => handleOrder(order.orderNumber,"garmentDetails")}
+                                onClick={() => handleOrder(order.id,"garmentDetails")}
                               ></i>) : ''}
                         </></p>
                         
@@ -532,7 +523,7 @@ const Invoice = () => {
                         <i 
                           className="bi bi-pencil" 
                           style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                          onClick={() => handleOrder(order.orderNumber,"notes")}
+                          onClick={() => handleOrder(order.id,"notes")}
                         ></i>
                         </p>
                         
@@ -552,6 +543,11 @@ const Invoice = () => {
                         ) : (
                           <p>No sizes added for this order yet.</p>
                         )}
+                  
+
+                  
+
+                  
                         
                        
                         <p><strong>Files Uploaded:</strong></p>
