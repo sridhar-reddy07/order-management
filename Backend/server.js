@@ -1302,7 +1302,7 @@ app.get('/karachiList', (req, res) => {
         }
   
         // Send a successful response
-        res.status(200).json({ message: 'Order status updated successfully', updatedOrder: { orderNumber, status } });
+        res.status(200).json({ message: 'Order status updated successfully', updatedOrder: { id , status } });
       });
     } catch (error) {
       console.error('Error updating order status:', error);
