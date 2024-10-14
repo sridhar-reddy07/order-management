@@ -212,10 +212,10 @@ const Mussa = () => {
     }
   };
 
-  const updateOrderStatusInDatabase = async (e, orderNumber) => {
+  const updateOrderStatusInDatabase = async (e, id) => {
     const status = e.target.value;
     try {
-      const response = await fetch(`http://137.184.75.176:5000/updateOrderStatus/${orderNumber}`, {
+      const response = await fetch(`http://137.184.75.176:5000/updateOrderStatus/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -426,7 +426,7 @@ const Mussa = () => {
                   <td>
                     <select
                       value={order.orderStatus}
-                      onChange={(e) => updateOrderStatusInDatabase(e, order.orderNumber)}
+                      onChange={(e) => updateOrderStatusInDatabase(e, order.id)}
                       className={getSelectClass(order.orderStatus)}
                     >
                       <option value="READY">READY</option>

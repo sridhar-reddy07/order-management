@@ -1279,8 +1279,8 @@ app.get('/karachiList', (req, res) => {
   
   
 
-  app.put('/updateOrderStatus/:orderNumber', async (req, res) => {
-    const { orderNumber } = req.params;
+  app.put('/updateOrderStatus/:id', async (req, res) => {
+    const { id } = req.params;
     const { status } = req.body;
   
     // Log the status for debugging purposes
@@ -1288,9 +1288,9 @@ app.get('/karachiList', (req, res) => {
   
     try {
       // Use a parameterized query to avoid SQL injection and errors
-      const query = 'UPDATE orders SET orderStatus = ? WHERE orderNumber = ?';
+      const query = 'UPDATE orders SET orderStatus = ? WHERE id = ?';
       
-      db.query(query, [status, orderNumber], (err, result) => {
+      db.query(query, [status, id], (err, result) => {
         if (err) {
           console.error('Error updating order status:', err);
           return res.status(500).json({ message: 'Internal server error' });
