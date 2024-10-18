@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Collapse, Modal, Button, Form } from 'react-bootstrap';
+import { Collapse, Modal, Button } from 'react-bootstrap';
 import axios from 'axios';
 import moment from 'moment';
-import * as XLSX from 'xlsx';
 import { BsDownload } from 'react-icons/bs';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'; // Import for drag-and-drop
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 const Pullsheet = () => {
   const [orders, setOrders] = useState([]);
@@ -70,7 +69,7 @@ const Pullsheet = () => {
     }
 
     const reorderedOrders = reorder(orders, source.index, destination.index);
-    setOrders(reorderedOrders); // Update the state with new order
+    setOrders(reorderedOrders);
   };
 
   const downloadPDF = () => {
@@ -140,70 +139,170 @@ const Pullsheet = () => {
         </div>
       </div>
 
-      {/* Drag and drop context for the orders */}
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="orders">
           {(provided) => (
-            <table className="table table-striped table-hover" ref={provided.innerRef} {...provided.droppableProps}>
-              <thead className="thead-dark table-header">
-                <tr>
-                  <th scope="col">Order Number</th>
-                  <th scope="col">Client Name</th>
-                  <th scope="col">Client Phone</th>
-                  <th scope="col">Client Gmail</th>
-                  <th scope="col">Order Status</th>
-                  <th scope="col">Order Method</th>
-                  <th scope="col">Job Type</th>
-                  <th scope="col">Due Date</th>
-                  <th scope="col">Garment PO</th>
-                  <th scope="col">Tracking Number</th>
-                </tr>
-              </thead>
-              <tbody>
-                {orders.map((order, index) => (
-                  <Draggable key={order.id} draggableId={order.id.toString()} index={index}>
-                    {(provided) => (
-                      <React.Fragment>
-                        <tr
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                        >
-                          <td className="order-cell">
-                            <i className="bi bi-eye" onClick={() => handleOrderClick(order.orderNumber, order.id)}></i>
-                            {order.orderNumber}
-                          </td>
-                          <td>{order.clientName}</td>
-                          <td>{order.clientPhone}</td>
-                          <td>{order.clientgmail}</td>
-                          <td>{order.orderStatus}</td>
-                          <td>{order.orderMethod}</td>
-                          <td>{order.jobType}</td>
-                          <td>{new Date(order.dueDate).toLocaleDateString('en-US')}</td>
-                          <td>{order.garmentPO}</td>
-                          <td>{order.trackingLabel}</td>
-                        </tr>
-                        <tr>
-                          <td colSpan="6">
-                            <Collapse in={openOrder === order.orderNumber}>
+            <div ref={provided.innerRef} {...provided.droppableProps}>
+              <table className="table table-striped table-hover">
+                <thead className="thead-dark table-header">
+                  <tr>
+                    <th scope="col">Order Number</th>
+                    <th scope="col">Client Name</th>
+                    <th scope="col">Client Phone</th>
+                    <th scope="col">Client Gmail</th>
+                    <th scope="col">Order Status</th>
+                    <th scope="col">Order Method</th>
+                    <th scope="col">Job Type</th>
+                    <th scope="col">Due Date</th>
+                    <th scope="col">Garment PO</th>
+                    <th scope="col">Tracking Number</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {orders.map((order, index) => (
+                    <Draggable key={order.id} draggableId={order.id.toString()} index={index}>
+                      {(provided) => (
+                        <React.Fragment>
+                          <tr
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                          >
+                            <td className="order-cell">
+                              <i className="bi bi-eye" onClick={() => handleOrderClick(order.orderNumber, order.id)}></i>
+                              {order.orderNumber}
+                            </td>
+                            <td>{order.clientName}</td>
+                            <td>{order.clientPhone}</td>
+                            <td>{order.clientgmail}</td>
+                            <td>{order.orderStatus}</td>
+                            <td>{order.orderMethod}</td>
+                            <td>{order.jobType}</td>
+                            <td>{new Date(order.dueDate).toLocaleDateString('en-US')}</td>
+                            <td>{order.garmentPO}</td>
+                            <td>{order.trackingLabel}</td>
+                          </tr>
+                          <tr>
+                            <td colSpan="6">
+                              <Collapse in={openOrder === order.orderNumber}>
                               <div>
-                                {/* Order details go here */}
-                              </div>
-                            </Collapse>
-                          </td>
-                        </tr>
-                      </React.Fragment>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </tbody>
-            </table>
+                                  <p><strong>Shipping Address:</strong> {order.shippingAddress}</p>
+                                  <p><strong>Garment Details:</strong> {order.garmentDetails}</p>
+                                  <p><strong>Team:</strong> {order.team}</p>
+                                  <p><strong>Notes:</strong> {order.notes}</p>
+                                  <h5>Order Sizes</h5>
+                                  {order.orderSizes ? (
+                                    <ul>
+                                      {order.orderSizes.map((size, idx) => (
+                                        <li key={idx}>
+                                          <b>{size.category}</b> - <i>{size.color}</i>: XS({size.xs}), S({size.s}),
+                                          M({size.m}), L({size.l}), XL({size.xl}), XXL({size.xxl}),
+                                          3XL({size.xxxl}), 4XL({size.xxxxl}), 5XL({size.xxxxxl})
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  ) : (
+                                    <p>No sizes added for this order yet.</p>
+                                  )}
+                                  <p><strong>Files Uploaded:</strong></p>
+                                    <ul>
+                                      {order.files && order.files.length > 0 ? (
+                                        order.files.map((file, idx) => (
+                                          <li key={idx} style={{ marginBottom: '15px' }}>
+                                            {/* Image files (Preview + Download) */}
+                                            {file.fileUrl.match(/\.(jpeg|jpg|gif|png)$/i) ? (
+                                              <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                <img
+                                                  src={file.fileUrl}
+                                                  alt={`file-${idx}`}
+                                                  style={{
+                                                    width: '100px',
+                                                    height: '100px',
+                                                    cursor: 'pointer',
+                                                    marginRight: '10px',
+                                                  }}
+                                                  onClick={() => handleImageClick(file.fileUrl)} // Open the image on click
+                                                />
+                                                <a href={file.fileUrl} download={file.fileUrl.split('/').pop()}>
+                                                  <i className="bi bi-download" style={{ marginLeft: '8px' }}></i>
+                                                </a>
+                                              </div>
+                                            ) : file.fileUrl.match(/\.(pdf)$/i) ? (
+                                              // PDF files (Preview + Download)
+                                              <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                <div
+                                                  style={{
+                                                    width: '100px',
+                                                    height: '100px',
+                                                    cursor: 'pointer',
+                                                    border: '1px solid #ddd',
+                                                    borderRadius: '5px',
+                                                    display: 'flex',
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
+                                                    marginRight: '10px',
+                                                    backgroundColor: '#f8f9fa',
+                                                  }}
+                                                  onClick={() => window.open(`https://docs.google.com/viewer?url=${file.fileUrl}&embedded=true`, '_blank')} // Opens PDF in a new tab for full preview
+                                                >
+                                                  <i className="bi bi-file-earmark-pdf" style={{ fontSize: '24px', color: '#d9534f' }}></i> {/* PDF icon */}
+                                                </div>
+                                                <a href={file.fileUrl} download={file.fileUrl.split('/').pop()} style={{ marginLeft: '10px', textDecoration: 'none', color: '#007bff' }}>
+                                                  <span>{file.fileUrl.split('/').pop()}</span>
+                                                  <i className="bi bi-download" style={{ marginLeft: '8px', fontSize: '16px' }}></i> {/* Download icon */}
+                                                </a>
+                                              </div>
+                                            ) : (
+                                              // Other file types (Preview + Download)
+                                              <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
+                                                <a
+                                                  href={file.fileUrl}
+                                                  target="_blank"
+                                                  rel="noopener noreferrer"
+                                                  style={{
+                                                    width: '100px',
+                                                    height: '100px',
+                                                    display: 'inline-flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    border: '1px solid #ddd',
+                                                    borderRadius: '5px',
+                                                    marginRight: '10px',
+                                                    textDecoration: 'none',
+                                                    backgroundColor: '#f8f9fa',
+                                                  }}
+                                                >
+                                                  <i className="bi bi-file-earmark" style={{ fontSize: '24px' }}></i> {/* Generic file icon */}
+                                                </a>
+                                                <a href={file.fileUrl} download={file.fileUrl.split('/').pop()} style={{ marginLeft: '10px', textDecoration: 'none', color: '#007bff' }}>
+                                                  <span>{file.fileUrl.split('/').pop()}</span>
+                                                  <i className="bi bi-download" style={{ marginLeft: '8px', fontSize: '16px' }}></i> {/* Download icon */}
+                                                </a>
+                                              </div>
+                                            )}
+                                          </li>
+                                        ))
+                                      ) : (
+                                        <li>No files uploaded.</li>
+                                      )}
+                                    </ul>
+
+                                </div>
+                              </Collapse>
+                            </td>
+                          </tr>
+                        </React.Fragment>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </tbody>
+              </table>
+            </div>
           )}
         </Droppable>
       </DragDropContext>
 
-      {/* Image Modal */}
       <Modal show={showImageModal} onHide={() => setShowImageModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Image Preview</Modal.Title>
