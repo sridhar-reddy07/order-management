@@ -74,6 +74,7 @@ const Pullsheet = () => {
   
   const onDragEnd = debounce((result) => {
     const { source, destination } = result;
+    console.log(result)
     if (!destination) return;
   
     const reorderedOrders = reorder(orders, source.index, destination.index);
@@ -169,7 +170,7 @@ const Pullsheet = () => {
                {(provided) => (
                 <tbody  ref={provided.innerRef} {...provided.droppableProps}>
                   {orders.map((order, index) => (
-                    <Draggable key={order.id} draggableId={order.id} index={index}>
+                    <Draggable key={order.id} draggableId={order.id.toString()} index={index}>
                       {(provided) => (
                         <React.Fragment>
                           <tr
