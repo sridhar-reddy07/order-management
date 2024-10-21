@@ -29,7 +29,7 @@ import CompletedInvoice from "./components/completedInvoice";
 import Pullsheet from "./components/pullsheet";
 
 // Import ErrorBoundary component
-import ErrorBoundary from "./components/errorBoundaryy";
+import ErrorBoundary from "./components/errorBoundary";
 
 function App() {
   const location = useLocation();
