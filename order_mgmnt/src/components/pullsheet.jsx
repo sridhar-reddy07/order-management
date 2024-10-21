@@ -62,15 +62,23 @@ const Pullsheet = () => {
   };
 
   // Handle drag end
-  const onDragEnd = (result) => {
+  const debounce = (fn, delay) => {
+    let timeoutId;
+    return (...args) => {
+      if (timeoutId) clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        fn(...args);
+      }, delay);
+    };
+  };
+  
+  const onDragEnd = debounce((result) => {
     const { source, destination } = result;
-    if (!destination) {
-      return; // Drop outside the list
-    }
-
+    if (!destination) return;
+  
     const reorderedOrders = reorder(orders, source.index, destination.index);
     setOrders(reorderedOrders);
-  };
+  }, 300);
 
   const downloadPDF = () => {
     const tableData = orders.map((order) => [
