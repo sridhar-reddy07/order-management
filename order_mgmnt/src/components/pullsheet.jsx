@@ -138,7 +138,7 @@ const Pullsheet = () => {
           </Button>
         </div>
       </div>
-
+      {orders.length > 0 ? (
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="orders">
           {(provided) => (
@@ -302,6 +302,9 @@ const Pullsheet = () => {
           )}
         </Droppable>
       </DragDropContext>
+      ):
+      <h1>No orders available.
+      </h1>}
 
       <Modal show={showImageModal} onHide={() => setShowImageModal(false)} centered>
         <Modal.Header closeButton>
