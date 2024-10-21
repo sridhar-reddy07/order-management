@@ -140,9 +140,8 @@ const Pullsheet = () => {
       </div>
       {orders.length > 0 ? (
       <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="orders">
-          {(provided) => (
-            <div ref={provided.innerRef} {...provided.droppableProps}>
+        
+            <div>
               <table className="table table-striped table-hover">
                 <thead className="thead-dark table-header">
                   <tr>
@@ -158,7 +157,9 @@ const Pullsheet = () => {
                     <th scope="col">Tracking Number</th>
                   </tr>
                 </thead>
-                <tbody>
+                <Droppable droppableId="orders">
+               {(provided) => (
+                <tbody  ref={provided.innerRef} {...provided.droppableProps}>
                   {orders.map((order, index) => (
                     <Draggable key={order.id} draggableId={order.id.toString()} index={index}>
                       {(provided) => (
@@ -295,12 +296,17 @@ const Pullsheet = () => {
                       )}
                     </Draggable>
                   ))}
+                  
                   {provided.placeholder}
+                  
+                  
                 </tbody>
+              )}
+              </Droppable>
               </table>
             </div>
-          )}
-        </Droppable>
+        
+        
       </DragDropContext>
       ):
       <h1>No orders available.
