@@ -28,7 +28,6 @@ import SpEmd from "./components/spEmb";
 import CompletedInvoice from "./components/completedInvoice";
 import Pullsheet from "./components/pullsheet";
 
-// Import ErrorBoundary component
 
 
 function App() {
@@ -44,7 +43,6 @@ function App() {
       {showSidebar && <Sidenavigationbar />}
 
       {/* Wrap Routes inside ErrorBoundary */}
-   
         <Routes>
           <Route path='/' element={<Entry />} />
           <Route path='/Home' element={<Home />} />
@@ -66,7 +64,6 @@ function App() {
           <Route path='/completedInvoice' element={<CompletedInvoice />} />
           <Route path='/pullsheet' element={<Pullsheet />} />
         </Routes>
-      
 
       {/* Footer */}
       <Footer />
