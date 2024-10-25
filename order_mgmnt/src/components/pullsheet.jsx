@@ -40,6 +40,11 @@ const Pullsheet = () => {
     fetchOrders();
   }, [fromDate, toDate, search]);
 
+  useEffect(() => {
+    console.log('Current Orders:', orders); // Log the orders list on each update
+  }, [orders]); // This will trigger every time the orders state changes
+  
+
   const handleOrderClick = (orderNumber, order_Id) => {
     setOpenOrder(openOrder === orderNumber ? null : orderNumber);
     setOrderId(order_Id);
@@ -170,13 +175,14 @@ const Pullsheet = () => {
                {(provided) => (
                 <tbody  ref={provided.innerRef} {...provided.droppableProps}>
                   {orders.map((order, index) => (
-                    <Draggable key={order.id.toString()} draggableId={order.id} index={index}>
+                    <Draggable key={order.id.toString()} draggableId={order.id.toString()} index={index}>
                       {(provided) => (
                         <React.Fragment>
                           <tr
-                            ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
+                            ref={provided.innerRef}
+                            
                           >
                             {console.log (order.id, index) }
                             <td className="order-cell">
