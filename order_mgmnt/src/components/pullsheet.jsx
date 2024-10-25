@@ -175,7 +175,7 @@ const Pullsheet = () => {
                {(provided) => (
                 <tbody  ref={provided.innerRef} {...provided.droppableProps}>
                   {orders.map((order, index) => (
-                    <Draggable key={order.orderId} draggableId={order.orderId.toString()} index={index}>
+                    <Draggable key={order.id.toString()} draggableId={order.id.toString()} index={index}>
                       {(provided) => (
                         <React.Fragment>
                           <tr
