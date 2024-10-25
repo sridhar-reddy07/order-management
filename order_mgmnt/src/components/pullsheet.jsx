@@ -182,6 +182,7 @@ const Pullsheet = () => {
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
                             ref={provided.innerRef}
+                            onUnmount={() => console.log(`Draggable unmounted for Order ID: ${order.id}`)}
                             
                           >
                             {console.log (order.id, index) }
