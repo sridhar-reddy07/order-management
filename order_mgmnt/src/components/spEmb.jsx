@@ -430,7 +430,7 @@ const SpEmd = () => {
                       <option value="ONHOLD">ONHOLD</option>
                       <option value="INPROGRESS">INPROGRESS</option>
                       <option value="HARDDATE">HARDDATE</option>
-                      <option value="DONE">DONE</option>
+                      <option value="DTGEMD">SP DONE</option>
                     </select>
                   </td>
 
