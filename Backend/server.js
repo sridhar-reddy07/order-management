@@ -1356,6 +1356,78 @@ app.get('/karachiList', (req, res) => {
 
 
 
+app.post('/api/orders/:orderId/files', upload.array('files'), (req, res) => {
+  const { orderId } = req.params;
+
+  // Ensure files were uploaded
+  if (!req.files || req.files.length === 0) {
+    return res.status(400).json({ message: 'No files uploaded' });
+  }
+
+  // Extract file URLs from uploaded files
+  const fileUrls = req.files.map(file => file.location); // S3 file URL
+  
+  // Join file URLs into a single string (you can store them as JSON if preferred)
+  const filesString = fileUrls.join(',');
+
+  // SQL query to update the files column for the order
+  const sql = `UPDATE orders SET files = IFNULL(CONCAT(files, ',' , ?), ?) WHERE id = ?`;
+  db.query(sql, [filesString, filesString, orderId], (err, result) => {
+    if (err) {
+      console.error('Error saving files to database:', err);
+      return res.status(500).json({ message: 'Database error' });
+    }
+
+    res.status(200).json({
+      message: 'Files uploaded successfully',
+      files: fileUrls,
+    });
+  });
+});
+
+
+
+const { DeleteObjectCommand } = require('@aws-sdk/client-s3');
+
+app.delete('/api/orders/:orderId/files', async (req, res) => {
+  const { orderId } = req.params;
+  const { fileUrl } = req.body;
+
+  if (!fileUrl) {
+    return res.status(400).json({ message: 'File URL required for deletion' });
+  }
+
+  // Extract the filename from the file URL
+  const fileName = fileUrl.split('/').pop();
+
+  // Delete the file from S3
+  try {
+    await s3.send(new DeleteObjectCommand({
+      Bucket: process.env.S3_BUCKET_NAME,
+      Key: fileName,
+    }));
+
+    // Update the database by removing the file URL from the files column
+    const sql = `UPDATE orders SET files = REPLACE(files, ?, '') WHERE id = ?`;
+    db.query(sql, [fileUrl, orderId], (err, result) => {
+      if (err) {
+        console.error('Error updating files in database:', err);
+        return res.status(500).json({ message: 'Database update failed' });
+      }
+
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ message: 'Order not found' });
+      }
+
+      res.status(200).json({ message: 'File deleted successfully' });
+    });
+  } catch (err) {
+    console.error('Error deleting file from S3:', err);
+    res.status(500).json({ message: 'File deletion from S3 failed' });
+  }
+});
+
+
 
   
   // Serve static files from 'uploads' directory
