@@ -399,7 +399,13 @@ const OrderList = () => {
 
 const handleDeleteFile = async (file ,index, id) => {
   
-
+  setOrders((prevOrders) =>
+    prevOrders.map((order) =>
+      order.id === id
+        ? { ...order, files: order.files.filter((f)=>f.fileUrl !== file.fileUrl) }
+        : order
+    )
+  );
   try {
     const response = await fetch(`http://137.184.75.176:5000/api/orders/${id}/files`, {
       method: 'DELETE',
