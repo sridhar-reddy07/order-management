@@ -339,17 +339,15 @@ const DtgEmd = () => {
   };
   const handleFileUpload = async (id) => {
     try {
-        console.log("clickme")
         const fileInput = document.createElement('input');
         fileInput.type = 'file';
+        fileInput.multiple = true; // Allow multiple files to be selected
         fileInput.onchange = async (event) => {
-            const file = event.target.files[0];
-            if (!file) return;
+            const files = Array.from(event.target.files);
+            if (files.length === 0) return;
 
             const formData = new FormData();
-            formData.append('files', file);
-
-            console.log("when file added" +file)
+            files.forEach((file) => formData.append('files', file)); // Append each file
 
             const response = await fetch(`http://137.184.75.176:5000/api/orders/${id}/files`, {
                 method: 'POST',
@@ -357,31 +355,28 @@ const DtgEmd = () => {
             });
 
             if (response.ok) {
-                const uploadedFile = await response.json();
-                console.log("filesdata:"+uploadedFile.fileUrls)
-                console.log("Full response from backend:", JSON.stringify(uploadedFile, null, 2));
-                console.dir(uploadedFile);
-                const fileUrl = uploadedFile.fileUrls
-                // Ensure `fileUrl` is available
-                
-                if (!fileUrl) {
-                    console.error('File URL is undefined from backend.');
+                const uploadedFiles = await response.json(); // Assuming it returns an array of file URLs
+                const fileUrls = uploadedFiles.fileUrls || [];
+
+                if (fileUrls.length === 0) {
+                    console.error('File URLs are undefined or empty from backend.');
                     return;
                 }
-                console.log(`fileUrl type before conversion: ${typeof fileUrl}`);
-                
-                console.log(fileUrl+"to orderslist")
+
                 // Update state to include new file details
                 setOrders((prevOrders) =>
                     prevOrders.map((order) =>
                         order.id === id
-                            ? { ...order, files: [...(order.files ), { fileUrl }] }
+                            ? { 
+                                ...order, 
+                                files: [...(order.files || []), ...fileUrls.map((url) => ({ fileUrl: url }))] 
+                              }
                             : order
                     )
                 );
-                console.log(orders)
+                console.log(orders);
             } else {
-                console.error('Failed to upload file:', response.statusText);
+                console.error('Failed to upload files:', response.statusText);
             }
         };
         fileInput.click();
@@ -389,6 +384,7 @@ const DtgEmd = () => {
         console.error('Error during file upload:', error);
     }
 };
+
 
 const handleDeleteFile = async (file ,index, id) => {
   
