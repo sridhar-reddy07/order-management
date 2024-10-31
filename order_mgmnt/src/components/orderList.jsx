@@ -367,7 +367,7 @@ const OrderList = () => {
 
             if (response.ok) {
                 const uploadedFile = await response.json();
-                console.log(uploadedFile.data.file)
+                console.log(uploadedFile.data)
                 // Ensure `fileUrl` is available
                 const fileUrl = uploadedFile.fileUrl || uploadedFile.location || ''; 
                 if (!fileUrl) {
