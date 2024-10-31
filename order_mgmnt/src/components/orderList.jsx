@@ -374,12 +374,14 @@ const OrderList = () => {
                     console.error('File URL is undefined from backend.');
                     return;
                 }
+                console.log(`fileUrl type before conversion: ${typeof fileUrl}`);
+                
                 console.log(fileUrl+"to orderslist")
                 // Update state to include new file details
                 setOrders((prevOrders) =>
                     prevOrders.map((order) =>
                         order.id === id
-                            ? { ...order, files: [...(order.files || []), { fileUrl }] }
+                            ? { ...order, files: [...(order.files ), { fileUrl }] }
                             : order
                     )
                 );
