@@ -366,7 +366,7 @@ const OrderList = () => {
                 console.log("filesdata:"+uploadedFile)
                 console.log("Full response from backend:", JSON.stringify(uploadedFile, null, 2));
                 console.dir(uploadedFile);
-                const fileUrl =  JSON.stringify(uploadedFile, null, 2).fileUrls
+                const fileUrl =  JSON.stringify(uploadedFile, null, 2).fileUrls[0]
                 // Ensure `fileUrl` is available
                 
                 if (!fileUrl) {
