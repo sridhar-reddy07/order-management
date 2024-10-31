@@ -1388,7 +1388,7 @@ app.post('/api/orders/:orderId/files', upload.array('files'), (req, res) => {
 
 const { DeleteObjectCommand } = require('@aws-sdk/client-s3');
 
-const { DeleteObjectCommand } = require('@aws-sdk/client-s3');
+
 
 app.delete('/api/orders/:orderId/files', async (req, res) => {
   const { orderId } = req.params;
