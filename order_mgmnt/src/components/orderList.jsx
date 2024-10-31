@@ -354,7 +354,7 @@ const OrderList = () => {
   
         // Create a FormData object to send file data
         const formData = new FormData();
-        filesArray.forEach((file) => formData.append('files', file));
+        formData.append('files', file);
   
         // Send POST request to upload the file
         const response = await fetch(`http://137.184.75.176:5000/api/orders/${id}/files`, {
