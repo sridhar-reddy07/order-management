@@ -369,7 +369,7 @@ const OrderList = () => {
                 const uploadedFile = await response.json();
                 console.log("filesdata:"+uploadedFile)
                 // Ensure `fileUrl` is available
-                const fileUrl = uploadedFile.fileUrl || uploadedFile.location || ''; 
+                const fileUrl = uploadedFile.fileUrl || uploadedFile.location ; 
                 if (!fileUrl) {
                     console.error('File URL is undefined from backend.');
                     return;
@@ -394,6 +394,11 @@ const OrderList = () => {
 };
 
 const handleDeleteFile = async (file, index, id) => {
+  if (!file.fileUrl) {
+    console.warn("Empty file URL, skipping delete.");
+    return;
+  }
+
   try {
     const response = await fetch(`http://137.184.75.176:5000/api/orders/${id}/files`, {
       method: 'DELETE',
