@@ -365,17 +365,22 @@ const OrderList = () => {
                 const uploadedFile = await response.json();
                 console.log("filesdata:"+uploadedFile)
                 // Ensure `fileUrl` is available
-                const fileUrl = uploadedFile.fileUrl || uploadedFile.location ; 
-                if (!fileUrl) {
-                    console.error('File URL is undefined from backend.');
-                    return;
+                
+                let fileUrlString = "";
+                if (typeof uploadedFile.fileUrl === "object") {
+                    fileUrlString = JSON.stringify(uploadedFile.fileUrl); // Convert to string if it's an object
+                } else if (uploadedFile.fileUrl) {
+                    fileUrlString = uploadedFile.fileUrl; // Use directly if it's already a string
+                } else if (typeof uploadedFile.location === "object") {
+                    fileUrlString = JSON.stringify(uploadedFile.location); // Convert location to string if it's an object
+                } else {
+                    fileUrlString = uploadedFile.location || ""; // Use directly if it's a string
                 }
-
                 // Update state to include new file details
                 setOrders((prevOrders) =>
                     prevOrders.map((order) =>
                         order.id === id
-                            ? { ...order, files: [...(order.files || []), { fileUrl }] }
+                            ? { ...order, files: [...(order.files || []), { fileUrlString }] }
                             : order
                     )
                 );
