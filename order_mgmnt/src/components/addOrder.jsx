@@ -56,79 +56,79 @@ const AddOrder = () => {
     xxxxxl:0,
   });
 
-  const handleSizeInputChange = (event) => {
-    const { name, value } = event.target;
-    setSizeData((prevData) => ({
-      ...prevData,
-      [name]: name === 'xs' || name === 's' || name === 'm' || name === 'l' || name === 'xl' || name === 'xxl' || name === 'xxxl' || name === 'xxxxl' || name === 'xxxxxl'
-        ? parseInt(value) || 0  // Convert to number or default to 0 if empty
-        : value
-    }));
-    console.log(sizeData);
-  };
+  // const handleSizeInputChange = (event) => {
+  //   const { name, value } = event.target;
+  //   setSizeData((prevData) => ({
+  //     ...prevData,
+  //     [name]: name === 'xs' || name === 's' || name === 'm' || name === 'l' || name === 'xl' || name === 'xxl' || name === 'xxxl' || name === 'xxxxl' || name === 'xxxxxl'
+  //       ? parseInt(value) || 0  // Convert to number or default to 0 if empty
+  //       : value
+  //   }));
+  //   console.log(sizeData);
+  // };
 
-  const handleSizeFormSubmit = async () => {
-    try {
-      // Fetch order ID using the selected order and address
-      const response = await fetch(
-        `http://137.184.75.176:5000/getOrderId?orderNumber=${selectedOrder}&shippingAddress=${address}`
-      );
+  // const handleSizeFormSubmit = async () => {
+  //   try {
+  //     // Fetch order ID using the selected order and address
+  //     const response = await fetch(
+  //       `http://137.184.75.176:5000/getOrderId?orderNumber=${selectedOrder}&shippingAddress=${address}`
+  //     );
       
-      if (!response.ok) {
-        throw new Error('Order not found');
-      }
+  //     if (!response.ok) {
+  //       throw new Error('Order not found');
+  //     }
   
-      const data = await response.json();  // Correctly parse the response JSON
-       // Log the received order ID or response
+  //     const data = await response.json();  // Correctly parse the response JSON
+  //      // Log the received order ID or response
   
-      if (!data || !data.order_id) {  // Check if order_id exists in the response
-        alert('Order not found');
-        return;
-      }
+  //     if (!data || !data.order_id) {  // Check if order_id exists in the response
+  //       alert('Order not found');
+  //       return;
+  //     }
   
-      // Ensure sizeData contains valid numbers for sizes
-      const formattedSizeData = {
-        ...sizeData,
-        xs: parseInt(sizeData.xs) || 0,
-        s: parseInt(sizeData.s) || 0,
-        m: parseInt(sizeData.m) || 0,
-        l: parseInt(sizeData.l) || 0,
-        xl: parseInt(sizeData.xl) || 0,
-        xxl: parseInt(sizeData.xxl) || 0,
-        xxxl: parseInt(sizeData.xxxl) || 0,
-        xxxxl: parseInt(sizeData.xxxxl) || 0,
-        xxxxxl: parseInt(sizeData.xxxxxl) || 0,
-      };
+  //     // Ensure sizeData contains valid numbers for sizes
+  //     const formattedSizeData = {
+  //       ...sizeData,
+  //       xs: parseInt(sizeData.xs) || 0,
+  //       s: parseInt(sizeData.s) || 0,
+  //       m: parseInt(sizeData.m) || 0,
+  //       l: parseInt(sizeData.l) || 0,
+  //       xl: parseInt(sizeData.xl) || 0,
+  //       xxl: parseInt(sizeData.xxl) || 0,
+  //       xxxl: parseInt(sizeData.xxxl) || 0,
+  //       xxxxl: parseInt(sizeData.xxxxl) || 0,
+  //       xxxxxl: parseInt(sizeData.xxxxxl) || 0,
+  //     };
   
-      // POST the size data to the server using the retrieved order_id
-      const sizeResponse = await axios.post(
-        `http://137.184.75.176:5000/orders/${data.order_id}/sizes`,
-        formattedSizeData
-      );
+  //     // POST the size data to the server using the retrieved order_id
+  //     const sizeResponse = await axios.post(
+  //       `http://137.184.75.176:5000/orders/${data.order_id}/sizes`,
+  //       formattedSizeData
+  //     );
       
-      console.log('Size data added:', sizeResponse.data);
+  //     console.log('Size data added:', sizeResponse.data);
 
-      setSizeData({
-        category: 'Adult',
-        description: '',
-        color: '',
-        xs: 0,
-        s: 0,
-        m: 0,
-        l: 0,
-        xl: 0,
-        xxl: 0,
-        xxxl: 0,
-        xxxxl: 0,
-        xxxxxl: 0,
-      });
+  //     setSizeData({
+  //       category: 'Adult',
+  //       description: '',
+  //       color: '',
+  //       xs: 0,
+  //       s: 0,
+  //       m: 0,
+  //       l: 0,
+  //       xl: 0,
+  //       xxl: 0,
+  //       xxxl: 0,
+  //       xxxxl: 0,
+  //       xxxxxl: 0,
+  //     });
 
       
-    } catch (error) {
-      console.error('Error adding size data:', error);
-      alert(error.message); // Display error to the user
-    }
-  };
+  //   } catch (error) {
+  //     console.error('Error adding size data:', error);
+  //     alert(error.message); // Display error to the user
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -184,9 +184,9 @@ const AddOrder = () => {
   
       if (response.ok) {
         alert('Order added successfully!');
-        setSelectedOrder(orderNumber); // Set the selected order number
-        setAddress(shippingAddress)
-        setShowSizeModal(true);
+        // setSelectedOrder(orderNumber); // Set the selected order number
+        // setAddress(shippingAddress)
+        //setShowSizeModal(true);
         // Reset all form fields after successful submission
         setOrderNumber('');
         setOrderStatus('');
@@ -448,15 +448,15 @@ const AddOrder = () => {
         {/* Submit Button */}
         <button type="submit" className="submit-button">Submit Order</button>
       </form>
-      
-      {/* Size Entry Modal */}
+{/*       
+     
       <Modal show={showSizeModal} onHide={() => setShowSizeModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Add Sizes for Order #{selectedOrder}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
-            {/* Category Dropdown */}
+            
             <Form.Group controlId="formCategory">
               <Form.Label>Category</Form.Label>
               <Form.Control
@@ -471,7 +471,7 @@ const AddOrder = () => {
               </Form.Control>
             </Form.Group>
 
-            {/* Description */}
+            
             <Form.Group controlId="formDesc">
               <Form.Label>Description</Form.Label>
               <Form.Control
@@ -483,7 +483,7 @@ const AddOrder = () => {
               />
             </Form.Group>
 
-            {/* Color */}
+           
             <Form.Group controlId="formColor">
               <Form.Label>Color</Form.Label>
               <Form.Control
@@ -495,11 +495,11 @@ const AddOrder = () => {
               />
             </Form.Group>
 
-            {/* Size Inputs */}
+]
             <Form.Group controlId="formSizes">
               <Form.Label>Sizes</Form.Label>
 
-              {/* First Row: XS, S, M, L */}
+]
               <div className="row mb-3">
                 <div className="col-md-3 col-sm-4 col-6 mb-2">
                   <Form.Label>XS</Form.Label>
@@ -547,7 +547,7 @@ const AddOrder = () => {
                 </div>
               </div>
 
-              {/* Second Row: XL, XXL, XXXL */}
+]
               <div className="row mb-3">
                 <div className="col-md-3 col-sm-4 col-6 mb-2">
                   <Form.Label>XL</Form.Label>
@@ -584,7 +584,7 @@ const AddOrder = () => {
                 </div>
               </div>
 
-              {/* Third Row: 4XL, 5XL */}
+              
               <div className="row">
                 <div className="col-md-3 col-sm-4 col-6 mb-2">
                   <Form.Label>4XL</Form.Label>
@@ -620,7 +620,7 @@ const AddOrder = () => {
             Submit
           </Button>
         </Modal.Footer>
-      </Modal>
+      </Modal> */}
     </div>
   );
 };
