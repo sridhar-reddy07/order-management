@@ -410,7 +410,7 @@ const handleDeleteFile = async (file ,index, id) => {
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.id === id
-            ? { ...order, files: order.files.filter((_, url) => url !== file.fileUrl) }
+            ? { ...order, files: order.files.filter((file)=>file.fileUrl !== fileUrl) }
             : order
         )
       );
