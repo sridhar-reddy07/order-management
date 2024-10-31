@@ -1364,7 +1364,9 @@ app.post('/api/orders/:orderId/files', upload.array('files'), (req, res) => {
   }
 
   // Map file URLs (assuming S3 URL is stored in `location` property)
-  const fileUrls = req.files.map(file => file.location); 
+  let fileUrls = req.files.map(file => file.location); 
+  
+
 
   const filesString = fileUrls.join(',');
 
@@ -1374,7 +1376,7 @@ app.post('/api/orders/:orderId/files', upload.array('files'), (req, res) => {
       console.error('Error saving files to database:', err);
       return res.status(500).json({ message: 'Database error' });
     }
-
+    fileUrls = Array.isArray(req.files) ? req.files.map(file => file.location) : [];
     res.status(200).json({
       message: 'Files uploaded successfully',
       fileUrls: fileUrls, // Ensure this is an array
