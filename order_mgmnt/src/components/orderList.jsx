@@ -354,7 +354,7 @@ const OrderList = () => {
             const formData = new FormData();
             formData.append('files', file);
 
-            consolelog("when file added" +file)
+            console.log("when file added" +file)
 
             const response = await fetch(`http://137.184.75.176:5000/api/orders/${id}/files`, {
                 method: 'POST',
