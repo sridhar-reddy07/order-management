@@ -367,9 +367,9 @@ const OrderList = () => {
 
             if (response.ok) {
                 const uploadedFile = await response.json();
-                
+                console.log(uploadedFile)
                 // Ensure `fileUrl` is available
-                const fileUrl = uploadedFile.fileUrl || uploadedFile.location || ''; 
+                const fileUrl = uploadedFile.fileUrls || uploadedFile.location || ''; 
                 if (!fileUrl) {
                     console.error('File URL is undefined from backend.');
                     return;
