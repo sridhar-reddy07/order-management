@@ -345,62 +345,75 @@ const OrderList = () => {
 
   const handleFileUpload = async (id) => {
     try {
-      const fileInput = document.createElement('input');
-      fileInput.type = 'file';
-      fileInput.onchange = async (event) => {
-        const file = event.target.files[0];
-        if (!file) return;
-  
-        const formData = new FormData();
-        formData.append('files', file);
-  
-        const response = await fetch(`http://137.184.75.176:5000/api/orders/${id}/files`, {
-          method: 'POST',
-          body: formData,
-        });
-  
-        if (response.ok) {
-          const uploadedFile = await response.json();
-  
-          setOrders((prevOrders) =>
-            prevOrders.map((order) =>
-              order.id === id
-                ? { ...order, files: [...(order.files || []), uploadedFile] }
-                : order
-            )
-          );
-        } else {
-          console.error('Failed to upload file:', response.statusText);
-        }
-      };
-      fileInput.click();
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.onchange = async (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append('files', file);
+
+            // Check the file name to prevent unintended files from being uploaded
+            if (file.name === 'orderslist.jsk') {
+                console.warn('Skipped unwanted file upload: orderslist.jsk');
+                return;
+            }
+
+            const response = await fetch(`http://137.184.75.176:5000/api/orders/${id}/files`, {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (response.ok) {
+                const uploadedFile = await response.json();
+                
+                // Ensure `fileUrl` is available
+                const fileUrl = uploadedFile.fileUrl || uploadedFile.location || ''; 
+                if (!fileUrl) {
+                    console.error('File URL is undefined from backend.');
+                    return;
+                }
+
+                // Update state to include new file details
+                setOrders((prevOrders) =>
+                    prevOrders.map((order) =>
+                        order.id === id
+                            ? { ...order, files: [...(order.files || []), { fileUrl }] }
+                            : order
+                    )
+                );
+            } else {
+                console.error('Failed to upload file:', response.statusText);
+            }
+        };
+        fileInput.click();
     } catch (error) {
-      console.error('Error during file upload:', error);
+        console.error('Error during file upload:', error);
     }
-  };
-  
-  const handleDeleteFile = async (file, index, id) => {
+};
+
+const handleDeleteFile = async (file, index, id) => {
     try {
-      const response = await fetch(`http://137.184.75.176:5000/api/orders/${id}/files/${file.id}`, {
-        method: 'DELETE',
-      });
-  
-      if (response.ok) {
-        setOrders((prevOrders) =>
-          prevOrders.map((order) =>
-            order.id === id
-              ? { ...order, files: order.files.filter((_, idx) => idx !== index) }
-              : order
-          )
-        );
-      } else {
-        console.error('Failed to delete file:', response.statusText);
-      }
+        const response = await fetch(`http://137.184.75.176:5000/api/orders/${id}/files/${file.id}`, {
+            method: 'DELETE',
+        });
+
+        if (response.ok) {
+            setOrders((prevOrders) =>
+                prevOrders.map((order) =>
+                    order.id === id
+                        ? { ...order, files: order.files.filter((_, idx) => idx !== index) }
+                        : order
+                )
+            );
+        } else {
+            console.error('Failed to delete file:', response.statusText);
+        }
     } catch (error) {
-      console.error('Error during file deletion:', error);
+        console.error('Error during file deletion:', error);
     }
-  };
-  
+};
     
 
 
