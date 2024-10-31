@@ -363,7 +363,7 @@ const OrderList = () => {
 
             if (response.ok) {
                 const uploadedFile = await response.json();
-                console.log("filesdata:"+uploadedFile)
+                console.log("filesdata:"+uploadedFile.fileUrls)
                 console.log("Full response from backend:", JSON.stringify(uploadedFile, null, 2));
                 console.dir(uploadedFile);
                 const fileUrl =  JSON.stringify(uploadedFile, null, 2).fileUrls[0]
