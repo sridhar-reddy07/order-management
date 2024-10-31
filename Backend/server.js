@@ -1388,41 +1388,48 @@ app.post('/api/orders/:orderId/files', upload.array('files'), (req, res) => {
 
 const { DeleteObjectCommand } = require('@aws-sdk/client-s3');
 
+const { DeleteObjectCommand } = require('@aws-sdk/client-s3');
+
 app.delete('/api/orders/:orderId/files', async (req, res) => {
   const { orderId } = req.params;
   const { fileUrl } = req.body;
 
+  // Validate required fields
   if (!fileUrl) {
-    return res.status(400).json({ message: 'File URL required for deletion' });
+    return res.status(400).json({ message: 'File URL is required for deletion' });
+  }
+  if (!process.env.S3_BUCKET_NAME) {
+    console.error('S3_BUCKET_NAME is not set in .env');
+    return res.status(500).json({ message: 'S3 bucket configuration is missing' });
   }
 
-  // Extract the filename from the file URL for S3 Key
+  // Extract the file name for the S3 Key
   const fileName = fileUrl.split('/').pop();
 
   try {
-    // Delete from S3
+    // S3 Deletion
     await s3.send(new DeleteObjectCommand({
       Bucket: process.env.S3_BUCKET_NAME,
       Key: fileName,
     }));
-    console.log(`Deleted ${fileName} from S3 successfully`);
+    console.log(`File ${fileName} deleted successfully from S3`);
 
-    // Update database to remove file URL
+    // Update the database to remove the file URL
     const sql = `UPDATE orders SET files = REPLACE(files, ?, '') WHERE id = ?`;
     db.query(sql, [fileUrl, orderId], (err, result) => {
       if (err) {
-        console.error('Database error during file URL removal:', err);
+        console.error('Database error while removing file URL:', err);
         return res.status(500).json({ message: 'Database update failed' });
       }
       if (result.affectedRows === 0) {
         console.warn(`Order ID ${orderId} not found in database`);
         return res.status(404).json({ message: 'Order not found' });
       }
-      res.status(200).json({ message: 'File deleted successfully from both S3 and database' });
+      return res.status(200).json({ message: 'File successfully deleted from S3 and database' });
     });
   } catch (s3Error) {
     console.error('Error during S3 file deletion:', s3Error);
-    return res.status(500).json({ message: 'S3 file deletion failed' });
+    return res.status(500).json({ message: 'Failed to delete file from S3' });
   }
 });
 
