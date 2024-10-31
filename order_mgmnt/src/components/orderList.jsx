@@ -345,18 +345,15 @@ const OrderList = () => {
 
   const handleFileUpload = async (id) => {
     try {
-      // Open file picker and get the selected file
       const fileInput = document.createElement('input');
       fileInput.type = 'file';
       fileInput.onchange = async (event) => {
         const file = event.target.files[0];
         if (!file) return;
   
-        // Create a FormData object to send file data
         const formData = new FormData();
         formData.append('files', file);
   
-        // Send POST request to upload the file
         const response = await fetch(`http://137.184.75.176:5000/api/orders/${id}/files`, {
           method: 'POST',
           body: formData,
@@ -364,11 +361,14 @@ const OrderList = () => {
   
         if (response.ok) {
           const uploadedFile = await response.json();
-          // Update state to display the new file in the list
-          setOrders((prevOrder) => ({
-            ...prevOrder,
-            files: [...(prevOrder.files || []), uploadedFile], // Use an empty array if files is undefined
-          }));
+  
+          setOrders((prevOrders) =>
+            prevOrders.map((order) =>
+              order.id === id
+                ? { ...order, files: [...(order.files || []), uploadedFile] }
+                : order
+            )
+          );
         } else {
           console.error('Failed to upload file:', response.statusText);
         }
@@ -377,20 +377,22 @@ const OrderList = () => {
     } catch (error) {
       console.error('Error during file upload:', error);
     }
-};
-
-  const handleDeleteFile = async (file, index,id) => {
+  };
+  
+  const handleDeleteFile = async (file, index, id) => {
     try {
       const response = await fetch(`http://137.184.75.176:5000/api/orders/${id}/files/${file.id}`, {
         method: 'DELETE',
       });
   
       if (response.ok) {
-        // Update the UI to remove the deleted file
-        setOrders((prevOrder) => ({
-          ...prevOrder,
-          files: prevOrder.files.filter((_, idx) => idx !== index),
-        }));
+        setOrders((prevOrders) =>
+          prevOrders.map((order) =>
+            order.id === id
+              ? { ...order, files: order.files.filter((_, idx) => idx !== index) }
+              : order
+          )
+        );
       } else {
         console.error('Failed to delete file:', response.statusText);
       }
@@ -398,6 +400,7 @@ const OrderList = () => {
       console.error('Error during file deletion:', error);
     }
   };
+  
     
 
 
