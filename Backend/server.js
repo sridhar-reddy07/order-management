@@ -1358,6 +1358,7 @@ app.get('/karachiList', (req, res) => {
 
 app.post('/api/orders/:orderId/files', upload.array('files'), (req, res) => {
   const { orderId } = req.params;
+  console.log(req.files)
 
   // Ensure files were uploaded
   if (!req.files || req.files.length === 0) {
