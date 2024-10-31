@@ -366,9 +366,9 @@ const OrderList = () => {
                 console.log("filesdata:"+uploadedFile)
                 console.log("Full response from backend:", JSON.stringify(uploadedFile, null, 2));
                 console.dir(uploadedFile);
-
+                const fileUrl =  JSON.stringify(uploadedFile, null, 2).fileUrls
                 // Ensure `fileUrl` is available
-                const fileUrl = uploadedFile.fileUrl || uploadedFile.location ; 
+                
                 if (!fileUrl) {
                     console.error('File URL is undefined from backend.');
                     return;
