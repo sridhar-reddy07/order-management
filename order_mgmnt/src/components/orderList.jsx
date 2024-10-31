@@ -357,7 +357,7 @@ const OrderList = () => {
         formData.append('file', file);
   
         // Send POST request to upload the file
-        const response = await fetch(`/api/orders/${id}/files`, {
+        const response = await fetch(`http://137.184.75.176:5000/api/orders/${id}/files`, {
           method: 'POST',
           body: formData,
         });
@@ -380,7 +380,7 @@ const OrderList = () => {
   };
   const handleDeleteFile = async (file, index,id) => {
     try {
-      const response = await fetch(`/api/orders/${id}/files/${file.id}`, {
+      const response = await fetch(`http://137.184.75.176:5000/api/orders/${id}/files/${file.id}`, {
         method: 'DELETE',
       });
   
