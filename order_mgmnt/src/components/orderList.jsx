@@ -121,6 +121,7 @@ const OrderList = () => {
     } else {
       setIsAdmin(false);
     }
+
   }, []);
 
 
@@ -635,7 +636,7 @@ const handleDeleteFile = async (file ,index, id) => {
                         
                        
                         <p><strong>Files Uploaded:</strong></p>
-                            <a
+                        {isAdmin ? <a
                               
                               onClick={() => handleFileUpload(order.id)} // Define this function to handle file uploads
                               style={{
@@ -648,7 +649,8 @@ const handleDeleteFile = async (file ,index, id) => {
                               }}
                             >
                               <i className="bi bi-plus-circle" style={{ marginRight: '5px', fontSize: '20px' }}></i> Add File
-                            </a>
+                            </a> : ''}
+                            
                             <ul>
                             {order.files && order.files.length > 0 ? (
                               order.files
@@ -676,7 +678,8 @@ const handleDeleteFile = async (file ,index, id) => {
                                             <span>{fileUrl.split('/').pop()}</span>
                                             <i className="bi bi-download" style={{ marginLeft: '8px', fontSize: '16px' }}></i>
                                           </a>
-                                          <button
+                                          
+                                          {isAdmin ? (<button
                                             onClick={() => handleDeleteFile(file, idx, order.id)}
                                             style={{
                                               marginLeft: '10px',
@@ -686,7 +689,7 @@ const handleDeleteFile = async (file ,index, id) => {
                                             }}
                                           >
                                             <i className="bi bi-trash" style={{ color: '#d9534f' }}></i>
-                                          </button>
+                                          </button>) : ''}
                                         </div>
                                       ) : fileUrl.match(/\.(pdf)$/i) ? (
                                         <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -716,7 +719,7 @@ const handleDeleteFile = async (file ,index, id) => {
                                             <span>{fileUrl.split('/').pop()}</span>
                                             <i className="bi bi-download" style={{ marginLeft: '8px', fontSize: '16px' }}></i>
                                           </a>        
-                                          <button
+                                          {isAdmin ? (<button
                                             onClick={() => handleDeleteFile(file, idx, order.id)}
                                             style={{
                                               marginLeft: '10px',
@@ -726,7 +729,7 @@ const handleDeleteFile = async (file ,index, id) => {
                                             }}
                                           >
                                             <i className="bi bi-trash" style={{ color: '#d9534f' }}></i>
-                                          </button>
+                                          </button>) : ''}
                                         </div>
                                       ) : (
                                         <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
@@ -753,7 +756,7 @@ const handleDeleteFile = async (file ,index, id) => {
                                             <span>{fileUrl.split('/').pop()}</span>
                                             <i className="bi bi-download" style={{ marginLeft: '8px', fontSize: '16px' }}></i>
                                           </a>
-                                          <button
+                                          {isAdmin ? (<button
                                             onClick={() => handleDeleteFile(file, idx, order.id)}
                                             style={{
                                               marginLeft: '10px',
@@ -763,7 +766,7 @@ const handleDeleteFile = async (file ,index, id) => {
                                             }}
                                           >
                                             <i className="bi bi-trash" style={{ color: '#d9534f' }}></i>
-                                          </button>
+                                          </button>) : ''}
                                         </div>
                                       )}
                                     </li>
