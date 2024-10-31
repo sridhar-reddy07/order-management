@@ -653,129 +653,129 @@ const handleDeleteFile = async (file, index, id) => {
                               <i className="bi bi-plus-circle" style={{ marginRight: '5px', fontSize: '20px' }}></i> Add File
                             </a>
                             <ul>
-                              {order.files && order.files.length > 0 ? (
-                                order.files
-                                  .filter(file => file.fileUrl) // Filter out files with empty URLs
-                                  .map((file, idx) => {
-                                    const fileUrl = file.fileUrl;
-                                    const fileName = fileUrl.split('/').pop();
+                            {order.files && order.files.length > 0 ? (
+                              order.files
+                                .filter((file) => file.fileUrl) // Filter out any files without a URL
+                                .map((file, idx) => {
+                                  const fileUrl = String(file.fileUrl); // Convert fileUrl to a string
 
-                                    return (
-                                      <li key={idx} style={{ marginBottom: '15px' }}>
-                                        {fileUrl.match(/\.(jpeg|jpg|gif|png)$/i) ? (
-                                          <div style={{ display: 'flex', alignItems: 'center' }}>
-                                            <img
-                                              src={fileUrl}
-                                              alt={`file-${idx}`}
-                                              style={{
-                                                width: '100px',
-                                                height: '100px',
-                                                cursor: 'pointer',
-                                                marginRight: '10px',
-                                              }}
-                                              onClick={() => handleImageClick(fileUrl)}
-                                            />
-                                            <a href={fileUrl} download={fileName}>
-                                              <span>{fileName}</span>
-                                              <i className="bi bi-download" style={{ marginLeft: '8px', fontSize: '16px' }}></i>
-                                            </a>
-                                            <button
-                                              onClick={() => handleDeleteFile(file, idx, order.id)}
-                                              style={{
-                                                marginLeft: '10px',
-                                                cursor: 'pointer',
-                                                border: 'none',
-                                                background: 'transparent',
-                                              }}
-                                            >
-                                              <i className="bi bi-trash" style={{ color: '#d9534f' }}></i>
-                                            </button>
+                                  return (
+                                    <li key={idx} style={{ marginBottom: '15px' }}>
+                                      {fileUrl.match(/\.(jpeg|jpg|gif|png)$/i) ? (
+                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                          <img
+                                            src={fileUrl}
+                                            alt={`file-${idx}`}
+                                            style={{
+                                              width: '100px',
+                                              height: '100px',
+                                              cursor: 'pointer',
+                                              marginRight: '10px',
+                                            }}
+                                            onClick={() => handleImageClick(fileUrl)}
+                                          />
+                                          
+                                          <a href={fileUrl} download={fileUrl.split('/').pop()}>
+                                            <span>{fileUrl.split('/').pop()}</span>
+                                            <i className="bi bi-download" style={{ marginLeft: '8px', fontSize: '16px' }}></i>
+                                          </a>
+                                          <button
+                                            onClick={() => handleDeleteFile(file, idx, order.id)}
+                                            style={{
+                                              marginLeft: '10px',
+                                              cursor: 'pointer',
+                                              border: 'none',
+                                              background: 'transparent',
+                                            }}
+                                          >
+                                            <i className="bi bi-trash" style={{ color: '#d9534f' }}></i>
+                                          </button>
+                                        </div>
+                                      ) : fileUrl.match(/\.(pdf)$/i) ? (
+                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                          <div
+                                            style={{
+                                              width: '100px',
+                                              height: '100px',
+                                              cursor: 'pointer',
+                                              border: '1px solid #ddd',
+                                              borderRadius: '5px',
+                                              display: 'flex',
+                                              justifyContent: 'center',
+                                              alignItems: 'center',
+                                              marginRight: '10px',
+                                              backgroundColor: '#f8f9fa',
+                                            }}
+                                            onClick={() =>
+                                              window.open(
+                                                `https://docs.google.com/viewer?url=${fileUrl}&embedded=true`,
+                                                '_blank'
+                                              )
+                                            }
+                                          >
+                                            <i className="bi bi-file-earmark-pdf" style={{ fontSize: '24px', color: '#d9534f' }}></i>
                                           </div>
-                                        ) : fileUrl.match(/\.(pdf)$/i) ? (
-                                          <div style={{ display: 'flex', alignItems: 'center' }}>
-                                            <div
-                                              style={{
-                                                width: '100px',
-                                                height: '100px',
-                                                cursor: 'pointer',
-                                                border: '1px solid #ddd',
-                                                borderRadius: '5px',
-                                                display: 'flex',
-                                                justifyContent: 'center',
-                                                alignItems: 'center',
-                                                marginRight: '10px',
-                                                backgroundColor: '#f8f9fa',
-                                              }}
-                                              onClick={() =>
-                                                window.open(
-                                                  `https://docs.google.com/viewer?url=${fileUrl}&embedded=true`,
-                                                  '_blank'
-                                                )
-                                              }
-                                            >
-                                              <i className="bi bi-file-earmark-pdf" style={{ fontSize: '24px', color: '#d9534f' }}></i>
-                                            </div>
-                                            <a href={fileUrl} download={fileName}>
-                                              <span>{fileName}</span>
-                                              <i className="bi bi-download" style={{ marginLeft: '8px', fontSize: '16px' }}></i>
-                                            </a>
-                                            <button
-                                              onClick={() => handleDeleteFile(file, idx, order.id)}
-                                              style={{
-                                                marginLeft: '10px',
-                                                cursor: 'pointer',
-                                                border: 'none',
-                                                background: 'transparent',
-                                              }}
-                                            >
-                                              <i className="bi bi-trash" style={{ color: '#d9534f' }}></i>
-                                            </button>
-                                          </div>
-                                        ) : (
-                                          <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
-                                            <a
-                                              href={fileUrl}
-                                              target="_blank"
-                                              rel="noopener noreferrer"
-                                              style={{
-                                                width: '100px',
-                                                height: '100px',
-                                                display: 'inline-flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                border: '1px solid #ddd',
-                                                borderRadius: '5px',
-                                                marginRight: '10px',
-                                                textDecoration: 'none',
-                                                backgroundColor: '#f8f9fa',
-                                              }}
-                                            >
-                                              <i className="bi bi-file-earmark" style={{ fontSize: '24px' }}></i>
-                                            </a>
-                                            <a href={fileUrl} download={fileName}>
-                                              <span>{fileName}</span>
-                                              <i className="bi bi-download" style={{ marginLeft: '8px', fontSize: '16px' }}></i>
-                                            </a>
-                                            <button
-                                              onClick={() => handleDeleteFile(file, idx, order.id)}
-                                              style={{
-                                                marginLeft: '10px',
-                                                cursor: 'pointer',
-                                                border: 'none',
-                                                background: 'transparent',
-                                              }}
-                                            >
-                                              <i className="bi bi-trash" style={{ color: '#d9534f' }}></i>
-                                            </button>
-                                          </div>
-                                        )}
-                                      </li>
-                                    );
-                                  })
-                              ) : (
-                                <li>No files uploaded.</li>
-                              )}
-                            </ul>
+                                          <a href={fileUrl} download={fileUrl.split('/').pop()}>
+                                            <span>{fileUrl.split('/').pop()}</span>
+                                            <i className="bi bi-download" style={{ marginLeft: '8px', fontSize: '16px' }}></i>
+                                          </a>        
+                                          <button
+                                            onClick={() => handleDeleteFile(file, idx, order.id)}
+                                            style={{
+                                              marginLeft: '10px',
+                                              cursor: 'pointer',
+                                              border: 'none',
+                                              background: 'transparent',
+                                            }}
+                                          >
+                                            <i className="bi bi-trash" style={{ color: '#d9534f' }}></i>
+                                          </button>
+                                        </div>
+                                      ) : (
+                                        <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
+                                          <a
+                                            href={fileUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            style={{
+                                              width: '100px',
+                                              height: '100px',
+                                              display: 'inline-flex',
+                                              alignItems: 'center',
+                                              justifyContent: 'center',
+                                              border: '1px solid #ddd',
+                                              borderRadius: '5px',
+                                              marginRight: '10px',
+                                              textDecoration: 'none',
+                                              backgroundColor: '#f8f9fa',
+                                            }}
+                                          >
+                                            <i className="bi bi-file-earmark" style={{ fontSize: '24px' }}></i>
+                                          </a>
+                                          <a href={fileUrl} download={fileUrl.split('/').pop()}>
+                                            <span>{fileUrl.split('/').pop()}</span>
+                                            <i className="bi bi-download" style={{ marginLeft: '8px', fontSize: '16px' }}></i>
+                                          </a>
+                                          <button
+                                            onClick={() => handleDeleteFile(file, idx, order.id)}
+                                            style={{
+                                              marginLeft: '10px',
+                                              cursor: 'pointer',
+                                              border: 'none',
+                                              background: 'transparent',
+                                            }}
+                                          >
+                                            <i className="bi bi-trash" style={{ color: '#d9534f' }}></i>
+                                          </button>
+                                        </div>
+                                      )}
+                                    </li>
+                                  );
+                                })
+                            ) : (
+                              <li>No files uploaded.</li>
+                            )}
+                          </ul>
 
 
 
