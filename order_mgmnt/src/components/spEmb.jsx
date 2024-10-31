@@ -228,7 +228,7 @@ const SpEmd = () => {
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.id === id ? { ...order, orderStatus: status } : order
-        ).filter((order) => order.orderStatus !== 'DTGEMG')
+        ).filter((order) => order.orderStatus !== 'DTGEMD')
       );
     } catch (error) {
       console.error('Error updating order status:', error);
