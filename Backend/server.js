@@ -1391,7 +1391,7 @@ const { DeleteObjectCommand } = require('@aws-sdk/client-s3');
 app.delete('/api/orders/:orderId/files', async (req, res) => {
   const { orderId } = req.params;
   const { fileUrl } = req.body;
-
+  
   if (!fileUrl) {
     return res.status(400).json({ message: 'File URL required for deletion' });
   }
