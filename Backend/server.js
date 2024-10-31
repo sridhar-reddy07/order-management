@@ -1391,33 +1391,31 @@ const { DeleteObjectCommand } = require('@aws-sdk/client-s3');
 app.delete('/api/orders/:orderId/files', async (req, res) => {
   const { orderId } = req.params;
   const { fileUrl } = req.body;
-  
+
   if (!fileUrl) {
     return res.status(400).json({ message: 'File URL required for deletion' });
   }
 
-  // Extract the filename from the file URL
+  // Extract the filename from the URL to use as the S3 Key
   const fileName = fileUrl.split('/').pop();
 
-  // Delete the file from S3
   try {
+    // Send a delete command to S3
     await s3.send(new DeleteObjectCommand({
       Bucket: process.env.S3_BUCKET_NAME,
       Key: fileName,
     }));
 
-    // Update the database by removing the file URL from the files column
+    // Update the database to remove this URL from the files column
     const sql = `UPDATE orders SET files = REPLACE(files, ?, '') WHERE id = ?`;
     db.query(sql, [fileUrl, orderId], (err, result) => {
       if (err) {
         console.error('Error updating files in database:', err);
         return res.status(500).json({ message: 'Database update failed' });
       }
-
       if (result.affectedRows === 0) {
         return res.status(404).json({ message: 'Order not found' });
       }
-
       res.status(200).json({ message: 'File deleted successfully' });
     });
   } catch (err) {
@@ -1425,7 +1423,6 @@ app.delete('/api/orders/:orderId/files', async (req, res) => {
     res.status(500).json({ message: 'File deletion from S3 failed' });
   }
 });
-
 
 
   

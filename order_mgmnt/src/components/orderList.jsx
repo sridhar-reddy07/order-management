@@ -394,27 +394,31 @@ const OrderList = () => {
 };
 
 const handleDeleteFile = async (file, index, id) => {
-    try {
-        const response = await fetch(`http://137.184.75.176:5000/api/orders/${id}/files/${file.id}`, {
-            method: 'DELETE',
-        });
+  try {
+    const response = await fetch(`http://137.184.75.176:5000/api/orders/${id}/files`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ fileUrl: file.fileUrl }), // Send file URL in body
+    });
 
-        if (response.ok) {
-            setOrders((prevOrders) =>
-                prevOrders.map((order) =>
-                    order.id === id
-                        ? { ...order, files: order.files.filter((_, idx) => idx !== index) }
-                        : order
-                )
-            );
-        } else {
-            console.error('Failed to delete file:', response.statusText);
-        }
-    } catch (error) {
-        console.error('Error during file deletion:', error);
+    if (response.ok) {
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order.id === id
+            ? { ...order, files: order.files.filter((_, idx) => idx !== index) }
+            : order
+        )
+      );
+    } else {
+      console.error('Failed to delete file:', response.statusText);
     }
+  } catch (error) {
+    console.error('Error during file deletion:', error);
+  }
 };
-    
+
 
 
   return (
