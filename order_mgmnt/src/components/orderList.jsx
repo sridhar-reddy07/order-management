@@ -345,6 +345,7 @@ const OrderList = () => {
 
   const handleFileUpload = async (id) => {
     try {
+        console.log("clickme")
         const fileInput = document.createElement('input');
         fileInput.type = 'file';
         fileInput.onchange = async (event) => {
@@ -636,7 +637,7 @@ const handleDeleteFile = async (file, index, id) => {
                        
                         <p><strong>Files Uploaded:</strong></p>
                             <a
-                              href="#"
+                              
                               onClick={() => handleFileUpload(order.id)} // Define this function to handle file uploads
                               style={{
                                 display: 'inline-flex',
