@@ -1358,20 +1358,16 @@ app.get('/karachiList', (req, res) => {
 
 app.post('/api/orders/:orderId/files', upload.array('files'), (req, res) => {
   const { orderId } = req.params;
-  console.log(req.files)
 
-  // Ensure files were uploaded
   if (!req.files || req.files.length === 0) {
     return res.status(400).json({ message: 'No files uploaded' });
   }
 
-  // Extract file URLs from uploaded files
-  const fileUrls = req.files.map(file => file.location); // S3 file URL
-  
-  // Join file URLs into a single string (you can store them as JSON if preferred)
+  // Map file URLs (assuming S3 URL is stored in `location` property)
+  const fileUrls = req.files.map(file => file.location); 
+
   const filesString = fileUrls.join(',');
 
-  // SQL query to update the files column for the order
   const sql = `UPDATE orders SET files = IFNULL(CONCAT(files, ',' , ?), ?) WHERE id = ?`;
   db.query(sql, [filesString, filesString, orderId], (err, result) => {
     if (err) {
@@ -1381,7 +1377,7 @@ app.post('/api/orders/:orderId/files', upload.array('files'), (req, res) => {
 
     res.status(200).json({
       message: 'Files uploaded successfully',
-      files: fileUrls,
+      fileUrls: fileUrls, // Ensure this is an array
     });
   });
 });
