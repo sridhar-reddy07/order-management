@@ -397,10 +397,8 @@ const handleDeleteFile = async (file, index, id) => {
   try {
     const response = await fetch(`http://137.184.75.176:5000/api/orders/${id}/files`, {
       method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ fileUrl: file.fileUrl }), // Send file URL in body
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fileUrl: file.fileUrl }),
     });
 
     if (response.ok) {
@@ -412,12 +410,14 @@ const handleDeleteFile = async (file, index, id) => {
         )
       );
     } else {
-      console.error('Failed to delete file:', response.statusText);
+      const errorText = await response.text();
+      console.error('Failed to delete file:', errorText);
     }
   } catch (error) {
     console.error('Error during file deletion:', error);
   }
 };
+
 
 
 
