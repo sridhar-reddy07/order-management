@@ -354,11 +354,7 @@ const OrderList = () => {
             const formData = new FormData();
             formData.append('files', file);
 
-            // Check the file name to prevent unintended files from being uploaded
-            if (file.name === 'orderslist.jsk') {
-                console.warn('Skipped unwanted file upload: orderslist.jsk');
-                return;
-            }
+            consolelog("when file added" +file)
 
             const response = await fetch(`http://137.184.75.176:5000/api/orders/${id}/files`, {
                 method: 'POST',
@@ -383,6 +379,7 @@ const OrderList = () => {
                             : order
                     )
                 );
+                console.log(orders)
             } else {
                 console.error('Failed to upload file:', response.statusText);
             }
@@ -653,7 +650,7 @@ const handleDeleteFile = async (file, index, id) => {
                               {order.files && order.files.length > 0 ? (
                                 order.files.map((file, idx) => (
                                   <li key={idx} style={{ marginBottom: '15px' }}>
-                                    {file.fileUrl && file.fileUrl.match(/\.(jpeg|jpg|gif|png)$/i) ? (
+                                    {file.fileUrl.match(/\.(jpeg|jpg|gif|png)$/i) ? (
                                       <div style={{ display: 'flex', alignItems: 'center' }}>
                                         <img
                                           src={file.fileUrl}
@@ -667,8 +664,8 @@ const handleDeleteFile = async (file, index, id) => {
                                           onClick={() => handleImageClick(file.fileUrl)}
                                         />
                                         
-                                        <a href={file.fileUrl || '#'} download={file.fileUrl ? file.fileUrl.split('/').pop() : 'file'}>
-                                          <span>{file.fileUrl ? file.fileUrl.split('/').pop() : 'File not available'}</span>
+                                        <a href={file.fileUrl } download={file.fileUrl.split('/').pop() }>
+                                          <span>{ file.fileUrl.split('/').pop() }</span>
                                           <i className="bi bi-download" style={{ marginLeft: '8px', fontSize: '16px' }}></i>
                                         </a>
                                         <button
@@ -707,10 +704,10 @@ const handleDeleteFile = async (file, index, id) => {
                                         >
                                           <i className="bi bi-file-earmark-pdf" style={{ fontSize: '24px', color: '#d9534f' }}></i>
                                         </div>
-                                        <a href={file.fileUrl || '#'} download={file.fileUrl ? file.fileUrl.split('/').pop() : 'file'}>
-                                          <span>{file.fileUrl ? file.fileUrl.split('/').pop() : 'File not available'}</span>
+                                        <a href={file.fileUrl } download={file.fileUrl.split('/').pop() }>
+                                          <span>{ file.fileUrl.split('/').pop() }</span>
                                           <i className="bi bi-download" style={{ marginLeft: '8px', fontSize: '16px' }}></i>
-                                        </a>          
+                                        </a>        
                                         <button
                                           onClick={() => handleDeleteFile(file,index, order.id)}
                                           style={{
@@ -744,8 +741,8 @@ const handleDeleteFile = async (file, index, id) => {
                                         >
                                           <i className="bi bi-file-earmark" style={{ fontSize: '24px' }}></i>
                                         </a>
-                                        <a href={file.fileUrl || '#'} download={file.fileUrl ? file.fileUrl.split('/').pop() : 'file'}>
-                                          <span>{file.fileUrl ? file.fileUrl.split('/').pop() : 'File not available'}</span>
+                                        <a href={file.fileUrl } download={file.fileUrl.split('/').pop() }>
+                                          <span>{ file.fileUrl.split('/').pop() }</span>
                                           <i className="bi bi-download" style={{ marginLeft: '8px', fontSize: '16px' }}></i>
                                         </a>
                                         <button

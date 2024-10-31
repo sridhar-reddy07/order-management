@@ -1362,11 +1362,12 @@ app.post('/api/orders/:orderId/files', upload.array('files'), (req, res) => {
   if (!req.files || req.files.length === 0) {
     return res.status(400).json({ message: 'No files uploaded' });
   }
+  console.log(req.files)
 
   // Map file URLs (assuming S3 URL is stored in `location` property)
   let fileUrls = req.files.map(file => file.location); 
   
-
+  console.log(fileUrls)
 
   const filesString = fileUrls.join(',');
 
@@ -1377,6 +1378,7 @@ app.post('/api/orders/:orderId/files', upload.array('files'), (req, res) => {
       return res.status(500).json({ message: 'Database error' });
     }
     fileUrls = Array.isArray(req.files) ? req.files.map(file => file.location) : [];
+    console.log(fileUrls)
     res.status(200).json({
       message: 'Files uploaded successfully',
       fileUrls: fileUrls, // Ensure this is an array
