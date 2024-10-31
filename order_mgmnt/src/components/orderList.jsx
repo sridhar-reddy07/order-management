@@ -367,7 +367,7 @@ const OrderList = () => {
           // Update state to display the new file in the list
           setOrders((prevOrder) => ({
             ...prevOrder,
-            files: [...prevOrder.files, uploadedFile],
+            files: [...(prevOrder.files || []), uploadedFile], // Use an empty array if files is undefined
           }));
         } else {
           console.error('Failed to upload file:', response.statusText);
@@ -377,7 +377,8 @@ const OrderList = () => {
     } catch (error) {
       console.error('Error during file upload:', error);
     }
-  };
+};
+
   const handleDeleteFile = async (file, index,id) => {
     try {
       const response = await fetch(`http://137.184.75.176:5000/api/orders/${id}/files/${file.id}`, {
