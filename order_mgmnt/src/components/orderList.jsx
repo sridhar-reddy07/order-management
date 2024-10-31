@@ -631,7 +631,7 @@ const OrderList = () => {
                               {order.files && order.files.length > 0 ? (
                                 order.files.map((file, idx) => (
                                   <li key={idx} style={{ marginBottom: '15px' }}>
-                                    {file.fileUrl.match(/\.(jpeg|jpg|gif|png)$/i) ? (
+                                    {file.fileUrl && file.fileUrl.match(/\.(jpeg|jpg|gif|png)$/i) ? (
                                       <div style={{ display: 'flex', alignItems: 'center' }}>
                                         <img
                                           src={file.fileUrl}
@@ -659,7 +659,7 @@ const OrderList = () => {
                                           <i className="bi bi-trash" style={{ color: '#d9534f' }}></i>
                                         </button>
                                       </div>
-                                    ) : file.fileUrl.match(/\.(pdf)$/i) ? (
+                                    ) : file.fileUrl && file.fileUrl.match(/\.(pdf)$/i) ? (
                                       <div style={{ display: 'flex', alignItems: 'center' }}>
                                         <div
                                           style={{
