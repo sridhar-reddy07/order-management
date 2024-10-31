@@ -644,8 +644,10 @@ const OrderList = () => {
                                           }}
                                           onClick={() => handleImageClick(file.fileUrl)}
                                         />
-                                        <a href={file.fileUrl} download={file.fileUrl.split('/').pop()}>
-                                          <i className="bi bi-download" style={{ marginLeft: '8px' }}></i>
+                                        
+                                        <a href={file.fileUrl || '#'} download={file.fileUrl ? file.fileUrl.split('/').pop() : 'file'}>
+                                          <span>{file.fileUrl ? file.fileUrl.split('/').pop() : 'File not available'}</span>
+                                          <i className="bi bi-download" style={{ marginLeft: '8px', fontSize: '16px' }}></i>
                                         </a>
                                         <button
                                           onClick={() => handleDeleteFile(file,index, order.id)}
@@ -683,10 +685,10 @@ const OrderList = () => {
                                         >
                                           <i className="bi bi-file-earmark-pdf" style={{ fontSize: '24px', color: '#d9534f' }}></i>
                                         </div>
-                                        <a href={file.fileUrl} download={file.fileUrl.split('/').pop()} style={{ marginLeft: '10px', textDecoration: 'none', color: '#007bff' }}>
-                                          <span>{file.fileUrl.split('/').pop()}</span>
+                                        <a href={file.fileUrl || '#'} download={file.fileUrl ? file.fileUrl.split('/').pop() : 'file'}>
+                                          <span>{file.fileUrl ? file.fileUrl.split('/').pop() : 'File not available'}</span>
                                           <i className="bi bi-download" style={{ marginLeft: '8px', fontSize: '16px' }}></i>
-                                        </a>
+                                        </a>          
                                         <button
                                           onClick={() => handleDeleteFile(file,index, order.id)}
                                           style={{
@@ -720,8 +722,8 @@ const OrderList = () => {
                                         >
                                           <i className="bi bi-file-earmark" style={{ fontSize: '24px' }}></i>
                                         </a>
-                                        <a href={file.fileUrl} download={file.fileUrl.split('/').pop()} style={{ marginLeft: '10px', textDecoration: 'none', color: '#007bff' }}>
-                                          <span>{file.fileUrl.split('/').pop()}</span>
+                                        <a href={file.fileUrl || '#'} download={file.fileUrl ? file.fileUrl.split('/').pop() : 'file'}>
+                                          <span>{file.fileUrl ? file.fileUrl.split('/').pop() : 'File not available'}</span>
                                           <i className="bi bi-download" style={{ marginLeft: '8px', fontSize: '16px' }}></i>
                                         </a>
                                         <button
