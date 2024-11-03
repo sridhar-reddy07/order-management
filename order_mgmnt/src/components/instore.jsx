@@ -203,6 +203,25 @@ const Instore = () => {
     }
   };
 
+  
+function cleanFileName(url) {
+  // Decode URI components to handle encoded characters like %20 for space
+  let decodedUrl = decodeURIComponent(url);
+  
+  // Extract the filename from the URL if necessary
+  let fileName = decodedUrl.split('/').pop(); // Gets the last part after the last slash
+  
+  // Optional: Remove any unwanted parts from the filename, such as timestamps or identifiers
+  // For example, if filenames contain a pattern like '1730410751349-', you might want to remove it:
+  fileName = fileName.replace(/^\d+-/, ''); // Removes leading digits followed by a dash
+  
+  // More cleaning can be applied here depending on the specific filename patterns you have
+  
+  return fileName;
+}
+
+
+
   const updateOrderStatusInDatabase = async (e, id) => {
     const status = e.target.value;
     try {
@@ -536,87 +555,89 @@ const Instore = () => {
                         
                        
                         <p><strong>Files Uploaded:</strong></p>
-                        <ul>
-                          {order.files && order.files.length > 0 ? (
-                            order.files.map((file, idx) => (
-                              <li key={idx} style={{ marginBottom: '15px' }}>
-                                {/* Image files (Preview + Download) */}
-                                {file.fileUrl.match(/\.(jpeg|jpg|gif|png)$/i) ? (
-                                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                                    <img
-                                      src={file.fileUrl}
-                                      alt={`file-${idx}`}
-                                      style={{
-                                        width: '100px',
-                                        height: '100px',
-                                        cursor: 'pointer',
-                                        marginRight: '10px',
-                                      }}
-                                      onClick={() => handleImageClick(file.fileUrl)} // Open the image on click
-                                    />
-                                    <a href={file.fileUrl} download={file.fileUrl.split('/').pop()}>
-                                      <i className="bi bi-download" style={{ marginLeft: '8px' }}></i>
-                                    </a>
-                                  </div>
-                                ) : file.fileUrl.match(/\.(pdf)$/i) ? (
-                                  // PDF files (Preview + Download)
-                                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                                    <div
-                                      style={{
-                                        width: '100px',
-                                        height: '100px',
-                                        cursor: 'pointer',
-                                        border: '1px solid #ddd',
-                                        borderRadius: '5px',
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        marginRight: '10px',
-                                        backgroundColor: '#f8f9fa',
-                                      }}
-                                      onClick={() => window.open(`https://docs.google.com/viewer?url=${file.fileUrl}&embedded=true`, '_blank')} // Opens PDF in a new tab for full preview
-                                    >
-                                      <i className="bi bi-file-earmark-pdf" style={{ fontSize: '24px', color: '#d9534f' }}></i> {/* PDF icon */}
-                                    </div>
-                                    <a href={file.fileUrl} download={file.fileUrl.split('/').pop()} style={{ marginLeft: '10px', textDecoration: 'none', color: '#007bff' }}>
-                                      <span>{file.fileUrl.split('/').pop()}</span>
-                                      <i className="bi bi-download" style={{ marginLeft: '8px', fontSize: '16px' }}></i> {/* Download icon */}
-                                    </a>
-                                  </div>
-                                ) : (
-                                  // Other file types (Preview + Download)
-                                  <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
-                                    <a
-                                      href={file.fileUrl}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      style={{
-                                        width: '100px',
-                                        height: '100px',
-                                        display: 'inline-flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        border: '1px solid #ddd',
-                                        borderRadius: '5px',
-                                        marginRight: '10px',
-                                        textDecoration: 'none',
-                                        backgroundColor: '#f8f9fa',
-                                      }}
-                                    >
-                                      <i className="bi bi-file-earmark" style={{ fontSize: '24px' }}></i> {/* Generic file icon */}
-                                    </a>
-                                    <a href={file.fileUrl} download={file.fileUrl.split('/').pop()} style={{ marginLeft: '10px', textDecoration: 'none', color: '#007bff' }}>
-                                      <span>{file.fileUrl.split('/').pop()}</span>
-                                      <i className="bi bi-download" style={{ marginLeft: '8px', fontSize: '16px' }}></i> {/* Download icon */}
-                                    </a>
-                                  </div>
-                                )}
-                              </li>
-                            ))
-                          ) : (
-                            <li>No files uploaded.</li>
-                          )}
-                        </ul>
+                        <ul style={{ display: 'flex', flexWrap: 'wrap', listStyleType: 'none', padding: 0 }}>
+                              {order.files && order.files.length > 0 ? (
+                                order.files.filter((file) => file.fileUrl)
+                                .map((file, idx) => {
+                                  const fileUrl = String(file.fileUrl); // Convert fileUrl to a string
+                                  const fileName = cleanFileName(fileUrl); // Clean the filename for display
+
+                                  return (
+                                    <li key={idx} style={{
+                                      margin: '5px',
+                                      width: 'calc(100% / 7 - 10px)', 
+                                      display: 'flex',
+                                      flexDirection: 'column',
+                                      alignItems: 'center',
+                                      justifyContent: 'center'
+                                    }}>
+                                      {/* Display different content based on file type */}
+                                      {fileUrl.match(/\.(jpeg|jpg|gif|png)$/i) ? (
+                                        <>
+                                          <img
+                                            src={fileUrl}
+                                            alt={`file-${idx}`}
+                                            style={{ width: '100%', height: 'auto', maxWidth: '100px', marginBottom: '5px' }}
+                                            onClick={() => handleImageClick(fileUrl)}
+                                          />
+                                          <div>
+                                            <a href={fileUrl} download={fileName}>
+                                              {fileName} {/* Display the cleaned filename */}
+                                            </a>
+                                            <button
+                                              onClick={() => handleDeleteFile(file, idx, order.id)}
+                                              style={{
+                                                border: 'none',
+                                                background: 'transparent',
+                                                color: '#d9534f',
+                                                cursor: 'pointer'
+                                              }}
+                                            >
+                                              <i className="bi bi-trash"></i>
+                                            </button>
+                                          </div>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <div style={{
+                                              display: 'flex', 
+                                              alignItems: 'center', 
+                                              justifyContent: 'center', 
+                                              width: '100px', 
+                                              height: '100px', 
+                                              border: '1px solid #ddd', 
+                                              borderRadius: '5px', 
+                                              backgroundColor: '#f8f9fa'
+                                            }}
+                                          >
+                                            <i className="bi bi-file-earmark-text" style={{ fontSize: '24px' }}></i>
+                                          </div>
+                                          <div>
+                                            <a href={fileUrl} download={fileName}>
+                                              {fileName} {/* Display the cleaned filename */}
+                                            </a>
+                                            <button
+                                              onClick={() => handleDeleteFile(file, idx, order.id)}
+                                              style={{
+                                                border: 'none',
+                                                background: 'transparent',
+                                                color: '#d9534f',
+                                                cursor: 'pointer'
+                                              }}
+                                            >
+                                              <i className="bi bi-trash"></i>
+                                            </button>
+                                          </div>
+                                        </>
+                                      )}
+                                    </li>
+                                  );
+                                })
+                              ) : (
+                                <li style={{ width: '100%', textAlign: 'center' }}>No files uploaded.</li>
+                              )}
+                            </ul>
+
 
 
                       </div>
