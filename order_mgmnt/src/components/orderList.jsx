@@ -480,7 +480,7 @@ const handleDeleteFile = async (file ,index, id) => {
               <React.Fragment key={index}>
                 <tr  onClick={() => handleOrderClick(order.orderNumber,order.id)}>
                   <td className="order-cell">
-                    <i className="bi bi-eye"></i>
+                    
                     {order.orderNumber}
                   </td>
                   <td>{order.clientName}
