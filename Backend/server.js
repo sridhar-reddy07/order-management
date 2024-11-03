@@ -1469,7 +1469,7 @@ app.get('/orders/sorted', (req, res) => {
           return {
               ...order,
               files: fileLinks,
-              PODate: order.PODate.toLocaleDateString() // Format the date for clarity
+              
           };
       });
 
