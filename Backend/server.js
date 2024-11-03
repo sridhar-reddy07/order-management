@@ -1438,19 +1438,48 @@ app.delete('/api/orders/:orderId/files', async (req, res) => {
   
 // Node.js Express handler for sorted orders
 app.get('/orders/sorted', (req, res) => {
-  const sortByPO = req.query.sortByPO === 'true';  // Assume a query parameter to determine sort direction
-  const sqlQuery = `
-      SELECT * FROM orders
-      ORDER BY garmentPO ${sortByPO ? 'ASC' : 'DESC'};
-  `;
+  // Prepare the search term
+  const sortByPO = req.query.sortByPO === 'true';  // Determine the sort direction from the query parameter
 
-  db.query(sqlQuery, (error, results) => {
-      if (error) {
-          return res.status(500).send('Error fetching sorted orders');
+  // SQL query to search and sort by extracted date from the `garmentPO` field
+  const sql = `
+    SELECT *, 
+       
+    FROM orders
+   
+    ORDER BY  garmentPO ${sortByPO ? 'ASC' : 'DESC'};`;
+
+  // Execute the query with the search filter
+  db.query(sql, (err, results) => {
+      if (err) {
+          console.error('Error retrieving orders:', err);
+          return res.status(500).json({ message: 'Error retrieving orders' });
       }
-      res.json(results);
+
+      // Map over the result to process file links
+      const ordersWithFileLinks = results.map(order => {
+          const files = order.files || '';
+          const fileLinks = files.split(',')
+            .filter(link => link.trim() !== '')
+            .map(fileUrl => ({
+              fileUrl,
+              downloadLink: fileUrl // Modify this if you're using specific methods for secure file access
+            }));
+
+          return {
+              ...order,
+              files: fileLinks,
+              PODate: order.PODate.toLocaleDateString() // Format the date for clarity
+          };
+      });
+
+      res.status(200).json(ordersWithFileLinks);
   });
 });
+
+
+
+
 
 
 
