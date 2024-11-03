@@ -300,21 +300,22 @@ const OrderList = () => {
     setOrders(sortedOrders);
   };
   const toggleSortByPO = () => {
-    // First toggle the state
-    setSortByPO(currentState => !currentState);
-  
-    // Then sort based on the new state
-    setOrders(currentOrders => {
-      return [...currentOrders].sort((a, b) => {
-        const POA = new Date(a.garmentPO);
-        const POB = new Date(b.garmentPO);
-  
-        // Here we need to use the inverse of the current state because the state change has not yet propagated
-        // when this function executes. The `!sortByPO` effectively uses what will be the state after toggle.
-        return sortByPO ? POB - POA : POA - POB;
-      });
+    setSortByPO(currentState => {
+        const newState = !currentState;
+        
+        // Fetch sorted data from the backend
+        axios.get(`http://137.184.75.176:5000/orders/sorted?sortByPO=${newState}`)
+            .then(response => {
+                setOrders(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching sorted orders:', error);
+            });
+
+        return newState;
     });
-  };
+};
+
   
 
   const downloadPDF = () => {

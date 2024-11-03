@@ -1436,6 +1436,26 @@ app.delete('/api/orders/:orderId/files', async (req, res) => {
 });
 
   
+// Node.js Express handler for sorted orders
+app.get('/orders/sorted', (req, res) => {
+  const sortByPO = req.query.sortByPO === 'true';  // Assume a query parameter to determine sort direction
+  const sqlQuery = `
+      SELECT * FROM orders
+      ORDER BY garmentPO ${sortByPO ? 'ASC' : 'DESC'};
+  `;
+
+  db.query(sqlQuery, (error, results) => {
+      if (error) {
+          return res.status(500).send('Error fetching sorted orders');
+      }
+      res.json(results);
+  });
+});
+
+
+
+
+
   // Serve static files from 'uploads' directory
   app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
   
