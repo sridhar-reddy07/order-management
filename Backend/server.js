@@ -1443,7 +1443,7 @@ app.get('/orders/sorted', (req, res) => {
 
   // SQL query to search and sort by extracted date from the `garmentPO` field
   const sql = `
-    SELECT *, 
+    SELECT * 
        
     FROM orders
    
