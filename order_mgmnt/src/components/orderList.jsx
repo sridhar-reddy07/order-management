@@ -300,14 +300,22 @@ const OrderList = () => {
     setOrders(sortedOrders);
   };
   const toggleSortByPO = () => {
-    setSortByPO(!sortByPO);
-    const sortedOrders = [...orders].sort((a, b) => {
-      const POA = new Date(a.garmentPO);
-      const POB = new Date(b.gamentPO);
-      return sortByPO ? POA - POB : POB - POA;
+    // First toggle the state
+    setSortByPO(currentState => !currentState);
+  
+    // Then sort based on the new state
+    setOrders(currentOrders => {
+      return [...currentOrders].sort((a, b) => {
+        const POA = new Date(a.garmentPO);
+        const POB = new Date(b.garmentPO);
+  
+        // Here we need to use the inverse of the current state because the state change has not yet propagated
+        // when this function executes. The `!sortByPO` effectively uses what will be the state after toggle.
+        return sortByPO ? POB - POA : POA - POB;
+      });
     });
-    setOrders(sortedOrders);
   };
+  
 
   const downloadPDF = () => {
     // Prepare data in the format for the table
