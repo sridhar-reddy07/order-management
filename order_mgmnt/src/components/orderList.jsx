@@ -28,7 +28,7 @@ const OrderList = () => {
   const [orderId, setOrderId] = useState(null);
  
   const [address, setAddress] = useState('')
-  const [sortByPO,setSortByPO] =useState('')
+  const [sortByPO,setSortByPO] =useState(false)
 
   const [sizeData, setSizeData] = useState({
     category: 'Adult', // Default category
