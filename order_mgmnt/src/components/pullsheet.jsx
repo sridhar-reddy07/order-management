@@ -16,7 +16,7 @@ const Pullsheet = () => {
   const [orderId, setOrderId] = useState(null);
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState('');
-
+  const [sortByPO,setSortByPO] =useState(false)
   const handleImageClick = (imageUrl) => {
     setSelectedImage(imageUrl);
     setShowImageModal(true);
@@ -110,7 +110,31 @@ const Pullsheet = () => {
     });
     doc.save(`Pullsheet_orders_${moment().format('YYYY-MM-DD')}.pdf`);
   };
+  const toggleSortByDueDate = () => {
+    setSortByDueDate(!sortByDueDate);
+    const sortedOrders = [...orders].sort((a, b) => {
+      const dateA = new Date(a.dueDate);
+      const dateB = new Date(b.dueDate);
+      return sortByDueDate ? dateA - dateB : dateB - dateA;
+    });
+    setOrders(sortedOrders);
+  };
+  const toggleSortByPO = () => {
+    setSortByPO(currentState => {
+        const newState = !currentState;
+        
+        // Fetch sorted data from the backend
+        axios.get(`http://137.184.75.176:5000/orders/sorted?sortByPO=${newState}`)
+            .then(response => {
+                setOrders(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching sorted orders:', error);
+            });
 
+        return newState;
+    });
+};
   return (
     <div className="container" style={{ marginLeft: 250, paddingTop: 20, marginBottom: 70 }}>
       <h2>Pullsheet</h2>
@@ -167,7 +191,12 @@ const Pullsheet = () => {
                     <th scope="col">Order Method</th>
                     <th scope="col">Job Type</th>
                     <th scope="col">Due Date</th>
-                    <th scope="col">Garment PO</th>
+                    <th scope="col">Garment PO
+                    <i
+                      className={`bi bi-sort-${sortByPO ? 'down' : 'up'} sort-icon`}
+                      onClick={toggleSortByPO}
+                    ></i>
+                    </th>
                     <th scope="col">Tracking Number</th>
                   </tr>
                 </thead>
