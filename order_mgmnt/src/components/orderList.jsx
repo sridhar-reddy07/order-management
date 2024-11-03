@@ -689,7 +689,7 @@ const handleDeleteFile = async (file ,index, id) => {
                                 return (
                                   <li key={idx} style={{
                                     margin: '5px',
-                                    width: 'calc(100% / 7 - 10px)', // Adjust width for 7 items per row, adjusting for margin
+                                    width: 'calc(100% / 4 - 10px)', // Adjust width for 7 items per row, adjusting for margin
                                     display: 'flex',
                                     flexDirection: 'column',
                                     alignItems: 'center',
