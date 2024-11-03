@@ -28,6 +28,7 @@ const OrderList = () => {
   const [orderId, setOrderId] = useState(null);
  
   const [address, setAddress] = useState('')
+  const [sortByPO,setSortByPO] =useState('')
 
   const [sizeData, setSizeData] = useState({
     category: 'Adult', // Default category
@@ -298,6 +299,15 @@ const OrderList = () => {
     });
     setOrders(sortedOrders);
   };
+  const toggleSortByPO = () => {
+    setSortByPO(!sortByPO);
+    const sortedOrders = [...orders].sort((a, b) => {
+      const POA = new Date(a.garmentPO);
+      const POB = new Date(b.gamentPO);
+      return sortByPO ? POA - POB : POB - POA;
+    });
+    setOrders(sortedOrders);
+  };
 
   const downloadPDF = () => {
     // Prepare data in the format for the table
@@ -469,7 +479,13 @@ const handleDeleteFile = async (file ,index, id) => {
               ></i>
             </th>
             
-            <th scope="col" className="wide-col">Garment PO</th>
+            <th scope="col" className="wide-col">
+              Garment PO
+              <i
+                className={`bi bi-sort-${sortByPO ? 'down' : 'up'} sort-icon`}
+                onClick={toggleSortByPO}
+              ></i>
+            </th>
             <th scope="col" className="extra-wide-col">Tracking Number</th>
           </tr>
         </thead>

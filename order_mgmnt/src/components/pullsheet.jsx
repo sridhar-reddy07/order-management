@@ -182,12 +182,11 @@ const Pullsheet = () => {
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
                             ref={provided.innerRef}
-                            
+                            onClick={() => handleOrderClick(order.orderNumber,order.id)}
                           >
                             {console.log (order.id, index) }
                             <td className="order-cell">
-                              <i className="bi bi-eye" onClick={() => handleOrderClick(order.orderNumber, order.id)}></i>
-                              {order.orderNumber}
+                                {order.orderNumber}
                             </td>
                             <td>{order.clientName}</td>
                             <td>{order.clientPhone}</td>

@@ -194,9 +194,9 @@ const Completed = () => {
         <tbody>
           {orders.map((order, index) => (
             <React.Fragment key={index}>
-              <tr>
+              <tr onClick={() => handleOrderClick(order.orderNumber,order.id)}>
                 <td className="order-cell">
-                  <i className="bi bi-eye" onClick={() => handleOrderClick(order.orderNumber, order.id)}></i>
+                  
                   {order.orderNumber}
                 </td>
                 <td>{order.clientName}</td>
