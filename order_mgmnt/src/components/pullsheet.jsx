@@ -110,15 +110,7 @@ const Pullsheet = () => {
     });
     doc.save(`Pullsheet_orders_${moment().format('YYYY-MM-DD')}.pdf`);
   };
-  const toggleSortByDueDate = () => {
-    setSortByDueDate(!sortByDueDate);
-    const sortedOrders = [...orders].sort((a, b) => {
-      const dateA = new Date(a.dueDate);
-      const dateB = new Date(b.dueDate);
-      return sortByDueDate ? dateA - dateB : dateB - dateA;
-    });
-    setOrders(sortedOrders);
-  };
+  
   const toggleSortByPO = () => {
     setSortByPO(currentState => {
         const newState = !currentState;
