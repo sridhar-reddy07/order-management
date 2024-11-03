@@ -595,17 +595,7 @@ function cleanFileName(url) {
                                             <a href={fileUrl} download={fileName}>
                                               {fileName} {/* Display the cleaned filename */}
                                             </a>
-                                            <button
-                                              onClick={() => handleDeleteFile(file, idx, order.id)}
-                                              style={{
-                                                border: 'none',
-                                                background: 'transparent',
-                                                color: '#d9534f',
-                                                cursor: 'pointer'
-                                              }}
-                                            >
-                                              <i className="bi bi-trash"></i>
-                                            </button>
+                                            
                                           </div>
                                         </>
                                       ) : (
@@ -627,17 +617,7 @@ function cleanFileName(url) {
                                             <a href={fileUrl} download={fileName}>
                                               {fileName} {/* Display the cleaned filename */}
                                             </a>
-                                            <button
-                                              onClick={() => handleDeleteFile(file, idx, order.id)}
-                                              style={{
-                                                border: 'none',
-                                                background: 'transparent',
-                                                color: '#d9534f',
-                                                cursor: 'pointer'
-                                              }}
-                                            >
-                                              <i className="bi bi-trash"></i>
-                                            </button>
+                                            
                                           </div>
                                         </>
                                       )}
