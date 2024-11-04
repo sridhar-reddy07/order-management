@@ -31,7 +31,7 @@ const Entry = () => {
         const user = { email: email, name : result.name ,token: "yourToken" };
         console.log(user)
         localStorage.setItem('user', JSON.stringify(user));
-         navigate("/addOrder");
+         navigate("/embroidory");
       } else {
         alert(result.message);
       }

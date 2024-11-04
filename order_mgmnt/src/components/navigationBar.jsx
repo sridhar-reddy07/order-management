@@ -57,7 +57,7 @@ const NavigationBar = () => {
   return (
     <Container fluid>
       <Navbar className='header fixed-top' bg="light" expand="lg">
-        <Navbar.Brand href={user ? "/home" : "#"} className="mx-3">
+        <Navbar.Brand href={ "#"} className="mx-3">
           <img
             src={logo}
             width="70"
