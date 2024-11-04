@@ -27,6 +27,7 @@ import Invoice from "./components/invoice";
 import SpEmd from "./components/spEmb";
 import CompletedInvoice from "./components/completedInvoice";
 import Pullsheet from "./components/pullsheet";
+import Shipped from "./components/shipped";
 
 
 
@@ -63,6 +64,7 @@ function App() {
           <Route path='/invoice' element={<Invoice />} />
           <Route path='/completedInvoice' element={<CompletedInvoice />} />
           <Route path='/pullsheet' element={<Pullsheet />} />
+          <Route Path='/shipped' element={<Shipped/>}/>
         </Routes>
 
       {/* Footer */}
