@@ -425,7 +425,7 @@ app.get('/ordersList', (req, res) => {
       jobType COLLATE utf8mb4_general_ci LIKE ? OR
       orderMethod COLLATE utf8mb4_general_ci LIKE ? OR
       orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
-      team COLLATE utf8mb4_general_ci LIKE ?
+      team COLLATE utf8mb4_general_ci LIKE ? OR
       garmentDetails COLLATE utf8mb4_general_ci LIKE ?
     )
     `; // Secondary sorting by orderNumber
