@@ -65,7 +65,7 @@ const Sidenavigationbar = () => {
             )}
 
             
-            <Nav.Link href="/Packing">Packing List</Nav.Link>
+            <Nav.Link href="/packing">Packing List</Nav.Link>
             <Nav.Link href="/shipped">Shipped Orders</Nav.Link>
             <Nav.Link href="/instore">In Store</Nav.Link>
 
