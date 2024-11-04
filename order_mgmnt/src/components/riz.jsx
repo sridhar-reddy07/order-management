@@ -521,7 +521,7 @@ function cleanFileName(url) {
 
                 </tr>
                 <tr>
-                  <td colSpan="6">
+                  <td colSpan="12">
                     <Collapse in={openOrder === order.orderNumber}>
                       <div>
                         <p><strong>Shipping Address:</strong> {order.shippingAddress}
