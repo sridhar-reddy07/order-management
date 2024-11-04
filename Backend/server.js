@@ -426,12 +426,13 @@ app.get('/ordersList', (req, res) => {
       orderMethod COLLATE utf8mb4_general_ci LIKE ? OR
       orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
       team COLLATE utf8mb4_general_ci LIKE ?
+      garmentDetails COLLATE utf8mb4_general_ci LIKE ?
     )
     `; // Secondary sorting by orderNumber
 
   const searchQuery = '%' + search + '%';
 
-  db.query(sql, [searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
+  db.query(sql, [searchQuery,searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
     if (err) {
       console.error('Error retrieving orders:', err);
       res.status(500).json({ message: 'Error retrieving orders' });
