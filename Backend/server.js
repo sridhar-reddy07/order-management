@@ -475,13 +475,14 @@ app.get('/rizList', (req, res) => {
       jobType COLLATE utf8mb4_general_ci LIKE ? OR
       orderMethod COLLATE utf8mb4_general_ci LIKE ? OR
       orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
-      team COLLATE utf8mb4_general_ci LIKE ?
+      team COLLATE utf8mb4_general_ci LIKE ? OR
+      garmentDetails COLLATE utf8mb4_general_ci LIKE ?
     ) And (team = 'RIZ' OR team = 'BOB JOB')
     `; // Secondary sorting by orderNumber
 
   const searchQuery = '%' + search + '%';
 
-  db.query(sql, [searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
+  db.query(sql, [searchQuery, searchQuery,searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
     if (err) {
       console.error('Error retrieving orders:', err);
       res.status(500).json({ message: 'Error retrieving orders' });
@@ -526,13 +527,14 @@ app.get('/mussaList', (req, res) => {
       jobType COLLATE utf8mb4_general_ci LIKE ? OR
       orderMethod COLLATE utf8mb4_general_ci LIKE ? OR
       orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
-      team COLLATE utf8mb4_general_ci LIKE ?
+      team COLLATE utf8mb4_general_ci LIKE ? OR
+      garmentDetails COLLATE utf8mb4_general_ci LIKE ?
     ) And team = 'MUSSA'
    `; // Secondary sorting by orderNumber
 
   const searchQuery = '%' + search + '%';
 
-  db.query(sql, [searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
+  db.query(sql, [searchQuery,searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
     if (err) {
       console.error('Error retrieving orders:', err);
       res.status(500).json({ message: 'Error retrieving orders' });
@@ -574,13 +576,14 @@ app.get('/karachiList', (req, res) => {
       jobType COLLATE utf8mb4_general_ci LIKE ? OR
       orderMethod COLLATE utf8mb4_general_ci LIKE ? OR
       orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
-      team COLLATE utf8mb4_general_ci LIKE ?
+      team COLLATE utf8mb4_general_ci LIKE ? OR
+      garmentDetails COLLATE utf8mb4_general_ci LIKE ?
     ) And team = 'KARACHI TEAM'
     `; // Secondary sorting by orderNumber
 
   const searchQuery = '%' + search + '%';
 
-  db.query(sql, [searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
+  db.query(sql, [searchQuery,searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
     if (err) {
       console.error('Error retrieving orders:', err);
       res.status(500).json({ message: 'Error retrieving orders' });
@@ -626,13 +629,14 @@ app.get('/karachiList', (req, res) => {
         jobType COLLATE utf8mb4_general_ci LIKE ? OR
         orderMethod COLLATE utf8mb4_general_ci LIKE ? OR
         orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
-        team COLLATE utf8mb4_general_ci LIKE ?
+        team COLLATE utf8mb4_general_ci LIKE ? OR
+      garmentDetails COLLATE utf8mb4_general_ci LIKE ?
       ) And team = 'BOB JOB'
       `; // Secondary sorting by orderNumber
   
     const searchQuery = '%' + search + '%';
   
-    db.query(sql, [searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
+    db.query(sql, [searchQuery,searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
       if (err) {
         console.error('Error retrieving orders:', err);
         res.status(500).json({ message: 'Error retrieving orders' });
@@ -673,7 +677,8 @@ app.get('/karachiList', (req, res) => {
         jobType COLLATE utf8mb4_general_ci LIKE ? OR
         orderMethod COLLATE utf8mb4_general_ci LIKE ? OR
         orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
-        team COLLATE utf8mb4_general_ci LIKE ?
+        team COLLATE utf8mb4_general_ci LIKE ? OR
+      garmentDetails COLLATE utf8mb4_general_ci LIKE ?
       ) 
       ORDER BY 
       CASE 
@@ -684,7 +689,7 @@ app.get('/karachiList', (req, res) => {
   
     const searchQuery = '%' + search + '%';
   
-    db.query(sql, [searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
+    db.query(sql, [searchQuery,searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
       if (err) {
         console.error('Error retrieving orders:', err);
         res.status(500).json({ message: 'Error retrieving orders' });
@@ -726,7 +731,8 @@ app.get('/karachiList', (req, res) => {
         jobType COLLATE utf8mb4_general_ci LIKE ? OR
         orderMethod COLLATE utf8mb4_general_ci LIKE ? OR
         orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
-        team COLLATE utf8mb4_general_ci LIKE ?
+        team COLLATE utf8mb4_general_ci LIKE ? OR
+      garmentDetails COLLATE utf8mb4_general_ci LIKE ?
       ) 
       ORDER BY 
       CASE 
@@ -737,7 +743,7 @@ app.get('/karachiList', (req, res) => {
   
     const searchQuery = '%' + search + '%';
   
-    db.query(sql, [searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
+    db.query(sql, [searchQuery,searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
       if (err) {
         console.error('Error retrieving orders:', err);
         res.status(500).json({ message: 'Error retrieving orders' });
@@ -778,7 +784,8 @@ app.get('/karachiList', (req, res) => {
         jobType COLLATE utf8mb4_general_ci LIKE ? OR
         orderMethod COLLATE utf8mb4_general_ci LIKE ? OR
         orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
-        team COLLATE utf8mb4_general_ci LIKE ?
+        team COLLATE utf8mb4_general_ci LIKE ? OR
+      garmentDetails COLLATE utf8mb4_general_ci LIKE ?
       ) 
       ORDER BY 
       CASE 
@@ -789,7 +796,7 @@ app.get('/karachiList', (req, res) => {
   
     const searchQuery = '%' + search + '%';
   
-    db.query(sql, [searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
+    db.query(sql, [searchQuery,searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
       if (err) {
         console.error('Error retrieving orders:', err);
         res.status(500).json({ message: 'Error retrieving orders' });
@@ -832,7 +839,8 @@ app.get('/karachiList', (req, res) => {
         jobType COLLATE utf8mb4_general_ci LIKE ? OR
         orderMethod COLLATE utf8mb4_general_ci LIKE ? OR
         orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
-        team COLLATE utf8mb4_general_ci LIKE ?
+        team COLLATE utf8mb4_general_ci LIKE ? OR
+      garmentDetails COLLATE utf8mb4_general_ci LIKE ?
       ) 
       ORDER BY 
       CASE 
@@ -843,7 +851,7 @@ app.get('/karachiList', (req, res) => {
   
     const searchQuery = '%' + search + '%';
   
-    db.query(sql, [searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
+    db.query(sql, [searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
       if (err) {
         console.error('Error retrieving orders:', err);
         res.status(500).json({ message: 'Error retrieving orders' });
@@ -885,7 +893,8 @@ app.get('/karachiList', (req, res) => {
         jobType COLLATE utf8mb4_general_ci LIKE ? OR
         orderMethod COLLATE utf8mb4_general_ci LIKE ? OR
         orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
-        team COLLATE utf8mb4_general_ci LIKE ?
+        team COLLATE utf8mb4_general_ci LIKE ? OR
+      garmentDetails COLLATE utf8mb4_general_ci LIKE ?
       ) 
       ORDER BY 
       CASE 
@@ -896,7 +905,7 @@ app.get('/karachiList', (req, res) => {
   
     const searchQuery = '%' + search + '%';
   
-    db.query(sql, [searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
+    db.query(sql, [searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
       if (err) {
         console.error('Error retrieving orders:', err);
         res.status(500).json({ message: 'Error retrieving orders' });
@@ -939,13 +948,14 @@ app.get('/karachiList', (req, res) => {
         jobType COLLATE utf8mb4_general_ci LIKE ? OR
         orderMethod COLLATE utf8mb4_general_ci LIKE ? OR
         orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
-        team COLLATE utf8mb4_general_ci LIKE ?
+        team COLLATE utf8mb4_general_ci LIKE ? OR
+      garmentDetails COLLATE utf8mb4_general_ci LIKE ?
       ) 
       `; // Secondary sorting by orderNumber
   
     const searchQuery = '%' + search + '%';
   
-    db.query(sql, [searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
+    db.query(sql, [searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
       if (err) {
         console.error('Error retrieving orders:', err);
         res.status(500).json({ message: 'Error retrieving orders' });
@@ -987,13 +997,14 @@ app.get('/karachiList', (req, res) => {
         jobType COLLATE utf8mb4_general_ci LIKE ? OR
         orderMethod COLLATE utf8mb4_general_ci LIKE ? OR
         orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
-        team COLLATE utf8mb4_general_ci LIKE ?
+        team COLLATE utf8mb4_general_ci LIKE ? OR
+      garmentDetails COLLATE utf8mb4_general_ci LIKE ?
       ) 
       `; // Secondary sorting by orderNumber
   
     const searchQuery = '%' + search + '%';
   
-    db.query(sql, [searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
+    db.query(sql, [searchQuery,searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
       if (err) {
         console.error('Error retrieving orders:', err);
         res.status(500).json({ message: 'Error retrieving orders' });
@@ -1036,13 +1047,14 @@ app.get('/karachiList', (req, res) => {
         jobType COLLATE utf8mb4_general_ci LIKE ? OR
         orderMethod COLLATE utf8mb4_general_ci LIKE ? OR
         orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
-        team COLLATE utf8mb4_general_ci LIKE ?
+        team COLLATE utf8mb4_general_ci LIKE ? OR
+      garmentDetails COLLATE utf8mb4_general_ci LIKE ?
       ) 
       `; // Secondary sorting by orderNumber
   
     const searchQuery = '%' + search + '%';
   
-    db.query(sql, [searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
+    db.query(sql, [searchQuery, searchQuery,searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
       if (err) {
         console.error('Error retrieving orders:', err);
         res.status(500).json({ message: 'Error retrieving orders' });
@@ -1083,13 +1095,15 @@ app.get('/karachiList', (req, res) => {
         jobType COLLATE utf8mb4_general_ci LIKE ? OR
         orderMethod COLLATE utf8mb4_general_ci LIKE ? OR
         orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
-        team COLLATE utf8mb4_general_ci LIKE ?
+        team COLLATE utf8mb4_general_ci LIKE ? OR
+      garmentDetails COLLATE utf8mb4_general_ci LIKE ?
+
       ) And team = 'BOB JOB'
       `; // Secondary sorting by orderNumber
   
     const searchQuery = '%' + search + '%';
   
-    db.query(sql, [searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
+    db.query(sql, [searchQuery, searchQuery,searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
       if (err) {
         console.error('Error retrieving orders:', err);
         res.status(500).json({ message: 'Error retrieving orders' });
@@ -1130,13 +1144,14 @@ app.get('/karachiList', (req, res) => {
         jobType COLLATE utf8mb4_general_ci LIKE ? OR
         orderMethod COLLATE utf8mb4_general_ci LIKE ? OR
         orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
-        team COLLATE utf8mb4_general_ci LIKE ?
+        team COLLATE utf8mb4_general_ci LIKE ? OR
+      garmentDetails COLLATE utf8mb4_general_ci LIKE ?
       ) And team = 'BOB JOB'
       `; // Secondary sorting by orderNumber
   
     const searchQuery = '%' + search + '%';
   
-    db.query(sql, [searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
+    db.query(sql, [searchQuery,searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
       if (err) {
         console.error('Error retrieving orders:', err);
         res.status(500).json({ message: 'Error retrieving orders' });
@@ -1184,14 +1199,15 @@ app.get('/karachiList', (req, res) => {
         jobType COLLATE utf8mb4_general_ci LIKE ? OR
         orderMethod COLLATE utf8mb4_general_ci LIKE ? OR
         orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
-        team COLLATE utf8mb4_general_ci LIKE ?
+        team COLLATE utf8mb4_general_ci LIKE ? OR
+      garmentDetails COLLATE utf8mb4_general_ci LIKE ?
       )
       ORDER BY createdAt DESC`; // Sorting by the order creation/completion date
   
     const searchQuery = '%' + search + '%';
   
     // Execute the query with the fromDate, toDate, and search filters
-    db.query(sql, [fromDate, adjustedToDate, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
+    db.query(sql, [fromDate, adjustedToDate, searchQuery,searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
       if (err) {
         console.error('Error retrieving orders:', err);
         return res.status(500).json({ message: 'Error retrieving orders' });
@@ -1241,14 +1257,15 @@ app.get('/karachiList', (req, res) => {
         jobType COLLATE utf8mb4_general_ci LIKE ? OR
         orderMethod COLLATE utf8mb4_general_ci LIKE ? OR
         orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
-        team COLLATE utf8mb4_general_ci LIKE ?
+        team COLLATE utf8mb4_general_ci LIKE ? OR
+      garmentDetails COLLATE utf8mb4_general_ci LIKE ?
       )
       ORDER BY createdAt DESC`; // Sorting by the order creation/completion date
   
     const searchQuery = '%' + search + '%';
   
     // Execute the query with the fromDate, adjustedToDate, and search filters
-    db.query(sql, [fromDate, adjustedToDate, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
+    db.query(sql, [fromDate, adjustedToDate, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery, searchQuery], (err, result) => {
       if (err) {
         console.error('Error retrieving orders:', err);
         return res.status(500).json({ message: 'Error retrieving orders' });
