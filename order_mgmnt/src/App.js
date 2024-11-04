@@ -64,7 +64,7 @@ function App() {
           <Route path='/invoice' element={<Invoice />} />
           <Route path='/completedInvoice' element={<CompletedInvoice />} />
           <Route path='/pullsheet' element={<Pullsheet />} />
-          <Route Path='/shipped' element={<Shipped />}/>
+          <Route path='/shipped' element={<Shipped />}/>
         </Routes>
 
       {/* Footer */}
