@@ -1174,7 +1174,7 @@ app.get('/karachiList', (req, res) => {
       SELECT * 
       FROM orders
       WHERE orderStatus = 'COMPLETED'
-      AND createdAt BETWEEN ? AND ?
+      AND completedDate BETWEEN ? AND ?
       AND (
         orderNumber COLLATE utf8mb4_general_ci LIKE ? OR 
         clientName COLLATE utf8mb4_general_ci LIKE ? OR 
@@ -1335,29 +1335,43 @@ app.get('/karachiList', (req, res) => {
     console.log('Status:', status);
   
     try {
-      // Use a parameterized query to avoid SQL injection and errors
-      const query = 'UPDATE orders SET orderStatus = ? WHERE id = ?';
-      
-      db.query(query, [status, id], (err, result) => {
+      // Define the SQL query based on status
+      let query;
+      let queryParams;
+  
+      if (status === 'COMPLETED') {
+        // If status is "COMPLETED," update both `orderStatus` and `completedDate`
+        query = 'UPDATE orders SET orderStatus = ?, completedDate = ? WHERE id = ?';
+        queryParams = [status, new Date(), id]; // Use today's date as the completed date
+      } else {
+        // Otherwise, only update `orderStatus`
+        query = 'UPDATE orders SET orderStatus = ? WHERE id = ?';
+        queryParams = [status, id];
+      }
+  
+      db.query(query, queryParams, (err, result) => {
         if (err) {
           console.error('Error updating order status:', err);
           return res.status(500).json({ message: 'Internal server error' });
         }
-        
+  
         // Check if any rows were updated
         if (result.affectedRows === 0) {
           return res.status(404).json({ message: 'Order not found' });
         }
   
         // Send a successful response
-        res.status(200).json({ message: 'Order status updated successfully', updatedOrder: { id , status } });
+        res.status(200).json({
+          message: 'Order status updated successfully',
+          updatedOrder: { id, status, completedDate: status === 'COMPLETED' ? new Date() : null },
+        });
       });
     } catch (error) {
       console.error('Error updating order status:', error);
       res.status(500).json({ message: 'Internal server error' });
     }
   });
-
+  
 
   app.put('/updateTrackingLabel/:orderNumber', (req, res) => {
     const { orderNumber } = req.params;
