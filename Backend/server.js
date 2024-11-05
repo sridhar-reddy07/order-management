@@ -1248,7 +1248,7 @@ app.get('/karachiList', (req, res) => {
       SELECT * 
       FROM orders
       WHERE orderStatus = 'READY'
-      AND createdAt BETWEEN ? AND ?
+      AND readyDate BETWEEN ? AND ?
       AND (
         orderNumber COLLATE utf8mb4_general_ci LIKE ? OR 
         clientName COLLATE utf8mb4_general_ci LIKE ? OR 
@@ -1353,16 +1353,20 @@ app.get('/karachiList', (req, res) => {
     console.log('Status:', status);
   
     try {
-      // Define the SQL query based on status
+      // Define the SQL query and parameters based on status
       let query;
       let queryParams;
   
       if (status === 'COMPLETED') {
-        // If status is "COMPLETED," update both `orderStatus` and `completedDate`
+        // If status is "COMPLETED," update `orderStatus` and `completedDate`
         query = 'UPDATE orders SET orderStatus = ?, completedDate = ? WHERE id = ?';
-        queryParams = [status, new Date(), id]; // Use today's date as the completed date
+        queryParams = [status, new Date(), id];
+      } else if (status === 'READY') {
+        // If status is "READY," update `orderStatus` and `readyDate`
+        query = 'UPDATE orders SET orderStatus = ?, readyDate = ? WHERE id = ?';
+        queryParams = [status, new Date(), id];
       } else {
-        // Otherwise, only update `orderStatus`
+        // For other statuses, update only `orderStatus`
         query = 'UPDATE orders SET orderStatus = ? WHERE id = ?';
         queryParams = [status, id];
       }
@@ -1381,7 +1385,12 @@ app.get('/karachiList', (req, res) => {
         // Send a successful response
         res.status(200).json({
           message: 'Order status updated successfully',
-          updatedOrder: { id, status, completedDate: status === 'COMPLETED' ? new Date() : null },
+          updatedOrder: { 
+            id, 
+            status, 
+            completedDate: status === 'COMPLETED' ? new Date() : null,
+            readyDate: status === 'READY' ? new Date() : null 
+          },
         });
       });
     } catch (error) {
@@ -1389,6 +1398,7 @@ app.get('/karachiList', (req, res) => {
       res.status(500).json({ message: 'Internal server error' });
     }
   });
+  
   
 
   app.put('/updateTrackingLabel/:orderNumber', (req, res) => {
