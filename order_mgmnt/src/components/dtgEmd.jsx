@@ -228,7 +228,7 @@ const DtgEmd = () => {
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.id === id ? { ...order, orderStatus: status } : order
-        ).filter((order) => order.orderStatus !== 'DTGEMD')
+        ).filter((order) => order.orderStatus !== 'DTGEMD' || order.orderStatus !== 'PENDING')
       );
     } catch (error) {
       console.error('Error updating order status:', error);

@@ -247,7 +247,7 @@ function cleanFileName(url) {
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.id === id ? { ...order, orderStatus: status } : order
-        ).filter((order) => order.orderStatus !== 'DONE')
+        ).filter((order) => order.orderStatus !== 'DONE' || order.orderStatus !== 'PENDING')
       );
     } catch (error) {
       console.error('Error updating order status:', error);
