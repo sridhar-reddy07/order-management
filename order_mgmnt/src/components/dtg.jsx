@@ -229,7 +229,7 @@ const Dtg = () => {
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.id === id ? { ...order, orderStatus: status } : order
-        ).filter((order) => order.orderStatus !== 'DONE' ||  order.orderStatus !== 'PENDING')
+        ).filter((order) => order.orderStatus !== 'DONE' &&  order.orderStatus !== 'PENDING')
       );
      
     } catch (error) {
