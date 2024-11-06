@@ -523,6 +523,7 @@ const handleDeleteFile = async (file ,index, id) => {
                       <option value="INPROGRESS">INPROGRESS</option>
                       <option value="HARDDATE">HARDDATE</option>
                       <option value="DTGEMD">DTG DONE</option>
+                      {isAdmin ? (<option value="PENDING">PENDING</option>):''}
                     </select>
                   </td>
 
