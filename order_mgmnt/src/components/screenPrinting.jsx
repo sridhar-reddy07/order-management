@@ -679,6 +679,7 @@ const handleDeleteFile = async (file ,index, id) => {
                                             <a href={fileUrl} download={fileName}>
                                               {fileName} {/* Display the cleaned filename */}
                                             </a>
+                                            {isAdmin ?(
                                             <button
                                               onClick={() => handleDeleteFile(file, idx, order.id)}
                                               style={{
@@ -689,7 +690,7 @@ const handleDeleteFile = async (file ,index, id) => {
                                               }}
                                             >
                                               <i className="bi bi-trash"></i>
-                                            </button>
+                                            </button>) :''}
                                           </div>
                                         </>
                                       ) : (
@@ -711,6 +712,7 @@ const handleDeleteFile = async (file ,index, id) => {
                                             <a href={fileUrl} download={fileName}>
                                               {fileName} {/* Display the cleaned filename */}
                                             </a>
+                                            {isAdmin ?(
                                             <button
                                               onClick={() => handleDeleteFile(file, idx, order.id)}
                                               style={{
@@ -721,7 +723,7 @@ const handleDeleteFile = async (file ,index, id) => {
                                               }}
                                             >
                                               <i className="bi bi-trash"></i>
-                                            </button>
+                                            </button>) :''}
                                           </div>
                                         </>
                                       )}
