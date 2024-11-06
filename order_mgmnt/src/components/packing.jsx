@@ -240,7 +240,7 @@ function cleanFileName(url) {
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.id === id ? { ...order, orderStatus: status } : order
-        ).filter((order) => order.orderStatus !== 'COMPLETED')
+        ).filter((order) => order.orderStatus !== 'SHIPPED')
       );
     } catch (error) {
       console.error('Error updating order status:', error);
