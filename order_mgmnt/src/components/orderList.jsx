@@ -742,114 +742,102 @@ function cleanFileName(url) {
                               <i className="bi bi-plus-circle" style={{ marginRight: '5px', fontSize: '20px' }}></i> Add File
                             </a> : ''}
                             
-                            <ul style={{ display: 'flex', flexWrap: 'wrap', listStyleType: 'none', padding: 0 }}>
-  {order.files && order.files.length > 0 ? (
-    order.files.filter((file) => file.fileUrl)
-    .map((file, idx) => {
-      const fileUrl = String(file.fileUrl); // Convert fileUrl to a string
-      const fileName = cleanFileName(fileUrl); // Clean the filename for display
+                                                    <ul style={{ display: 'flex', flexWrap: 'wrap', listStyleType: 'none', padding: 0 }}>
+                          {order.files && order.files.length > 0 ? (
+                            order.files.filter((file) => file.fileUrl)
+                            .map((file, idx) => {
+                              const fileUrl = String(file.fileUrl); // Convert fileUrl to a string
+                              const fileName = cleanFileName(fileUrl); // Clean the filename for display
 
-      return (
-        <li key={idx} style={{
-          margin: '5px',
-          width: 'calc(100% / 7 - 10px)', 
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}>
-          {/* Display different content based on file type */}
-          {fileUrl.match(/\.(jpeg|jpg|gif|png)$/i) ? (
-            <>
-              <img
-                src={fileUrl}
-                alt={`file-${idx}`}
-                style={{ width: '100%', height: 'auto', maxWidth: '100px', marginBottom: '5px' }}
-                onClick={() => handleImageClick(fileUrl)}
-              />
-              <div>
-                <a href={fileUrl} download={fileName}>
-                  {fileName}
-                </a>
-                <button
-                  onClick={() => handleDeleteFile(file, idx, order.id)}
-                  style={{
-                    border: 'none',
-                    background: 'transparent',
-                    color: '#d9534f',
-                    cursor: 'pointer'
-                  }}
-                >
-                  <i className="bi bi-trash"></i>
-                </button>
-                {/* Preview Button */}
-                <button
-                  onClick={() => handlePDFPreview(fileUrl)}
-                  style={{
-                    border: 'none',
-                    background: 'transparent',
-                    color: '#007bff',
-                    cursor: 'pointer',
-                    marginLeft: '10px'
-                  }}
-                >
-                  <i className="bi bi-eye"></i> Preview
-                </button>
-              </div>
-            </>
-          ) : (
-            <>
-              <div style={{
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'center', 
-                  width: '100px', 
-                  height: '100px', 
-                  border: '1px solid #ddd', 
-                  borderRadius: '5px', 
-                  backgroundColor: '#f8f9fa'
-                }}
-              >
-                <i className="bi bi-file-earmark-text" style={{ fontSize: '24px' }}></i>
-              </div>
-              <div>
-                <a href={fileUrl} download={fileName}>
-                  {fileName}
-                </a>
-                <button
-                  onClick={() => handleDeleteFile(file, idx, order.id)}
-                  style={{
-                    border: 'none',
-                    background: 'transparent',
-                    color: '#d9534f',
-                    cursor: 'pointer'
-                  }}
-                >
-                  <i className="bi bi-trash"></i>
-                </button>
-                {/* Preview Button */}
-                <button
-                  onClick={() => handlePDFPreview(fileUrl)}
-                  style={{
-                    border: 'none',
-                    background: 'transparent',
-                    color: '#007bff',
-                    cursor: 'pointer',
-                    marginLeft: '10px'
-                  }}
-                >
-                  <i className="bi bi-eye"></i> Preview
-                </button>
-              </div>
-            </>
-          )}
-        </li>
-      );
-    })
-  ) : (
-    <li style={{ width: '100%', textAlign: 'center' }}>No files uploaded.</li>
-  )}
-</ul>
+                              return (
+                                <li key={idx} style={{
+                                  margin: '5px',
+                                  width: 'calc(100% / 7 - 10px)', 
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                  alignItems: 'center',
+                                  justifyContent: 'center'
+                                }}>
+                                  {/* Display different content based on file type */}
+                                  {fileUrl.match(/\.(jpeg|jpg|gif|png)$/i) ? (
+                                    <>
+                                      <img
+                                        src={fileUrl}
+                                        alt={`file-${idx}`}
+                                        style={{ width: '100%', height: 'auto', maxWidth: '100px', marginBottom: '5px' }}
+                                        onClick={() => handleImageClick(fileUrl)}
+                                      />
+                                      <div>
+                                        <a href={fileUrl} download={fileName}>
+                                          {fileName}
+                                        </a>
+                                        <button
+                                          onClick={() => handleDeleteFile(file, idx, order.id)}
+                                          style={{
+                                            border: 'none',
+                                            background: 'transparent',
+                                            color: '#d9534f',
+                                            cursor: 'pointer'
+                                          }}
+                                        >
+                                          <i className="bi bi-trash"></i>
+                                        </button>
+                                        
+                                      </div>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <div style={{
+                                          display: 'flex', 
+                                          alignItems: 'center', 
+                                          justifyContent: 'center', 
+                                          width: '100px', 
+                                          height: '100px', 
+                                          border: '1px solid #ddd', 
+                                          borderRadius: '5px', 
+                                          backgroundColor: '#f8f9fa'
+                                        }}
+                                      >
+                                        <i className="bi bi-file-earmark-text" style={{ fontSize: '24px' }}></i>
+                                      </div>
+                                      <div>
+                                        <a href={fileUrl} download={fileName}>
+                                          {fileName}
+                                        </a>
+                                        <button
+                                          onClick={() => handleDeleteFile(file, idx, order.id)}
+                                          style={{
+                                            border: 'none',
+                                            background: 'transparent',
+                                            color: '#d9534f',
+                                            cursor: 'pointer'
+                                          }}
+                                        >
+                                          <i className="bi bi-trash"></i>
+                                        </button>
+                                        {/* Preview Button */}
+                                        <button
+                                          onClick={() => handlePDFPreview(fileUrl)}
+                                          style={{
+                                            border: 'none',
+                                            background: 'transparent',
+                                            color: '#007bff',
+                                            cursor: 'pointer',
+                                            marginLeft: '10px'
+                                          }}
+                                        >
+                                          <i className="bi bi-eye"></i> Preview
+                                        </button>
+                                      </div>
+                                    </>
+                                  )}
+                                </li>
+                              );
+                            })
+                          ) : (
+                            <li style={{ width: '100%', textAlign: 'center' }}>No files uploaded.</li>
+                          )}
+                        </ul>
 
 
 
