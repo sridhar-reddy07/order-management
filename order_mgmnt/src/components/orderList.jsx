@@ -518,7 +518,7 @@ function cleanFileName(url) {
             console.log('Current Order Status:', order.orderStatus); // Debug log
             return (
               <React.Fragment key={index}>
-                <tr  onClick={() => handleOrderClick(order.orderNumber,order.id)}>
+                <tr  onMouseDown={() => handleOrderClick(order.orderNumber,order.id)}>
                   <td className="order-cell">
                     
                     {order.orderNumber}
