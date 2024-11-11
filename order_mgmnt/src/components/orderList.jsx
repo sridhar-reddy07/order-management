@@ -523,8 +523,8 @@ function cleanFileName(url) {
                 <tr  
                 style={{
                   backgroundColor: order.jobType.trim() === 'DTG+EMB' ? 'yellow' : 'transparent'
-                }} >
-                  <td className="order-cell"  onClick={() => handleOrderClick(order.orderNumber,order.id)}>
+                }}  onClick={() => handleOrderClick(order.orderNumber,order.id)}>
+                  <td className="order-cell" >
                     
                     {order.orderNumber}
                   </td>
