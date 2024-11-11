@@ -578,14 +578,14 @@ const handleDeleteFile = async (file ,index, id) => {
                       Add Size
                     </Button>
                   </td>
-
-                  <td>
+                  {isAdmin ? (<td>
                     <i
                       className="bi bi-trash"
                       style={{ cursor: 'pointer', color: 'red' }}
                       onClick={() => deleteOrder(order.id)}
                     ></i>
-                  </td>
+                  </td>) :'' }
+                  
 
                 </tr>
                 <tr>
