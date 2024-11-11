@@ -255,15 +255,9 @@ const CompletedInvoice = () => {
       
       order.garmentPO,
       
-      order.garmentDetails ? (
-        <ul>
-          {order.garmentDetails.split('\n').map((detail, index) => (
-            <li key={index}>{detail}</li> // Display each detail as a list item
-          ))}
-        </ul>
-      ) : (
-        <p>No Garment details</p>
-      ),
+      order.garmentDetails ? 
+      order.garmentDetails.split('\n').join(', ') : // Convert to a comma-separated string
+      'No Garment details',
       order.jobType
       
     ]);
