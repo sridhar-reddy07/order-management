@@ -222,7 +222,23 @@ function cleanFileName(url) {
                 <td>{order.jobType}</td>
                 <td>{new Date(order.dueDate).toLocaleDateString('en-US')}</td>
                 <td>{order.garmentPO}</td>
-                <td>{order.trackingLabel}</td>
+                <td>
+                
+                      
+                        {order.trackingLabel}
+                        
+                        {/* Copy icon */}
+                        <i
+                          className="bi bi-clipboard"
+                          style={{ cursor: 'pointer', marginLeft: '10px' }}
+                          onClick={() => {
+                            navigator.clipboard.writeText(order.trackingLabel);
+                            alert('Copied to clipboard!'); // Optional feedback for the user
+                          }}
+                        ></i>
+                      
+                    
+                  </td>
               </tr>
               <tr>
                 <td colSpan="12">

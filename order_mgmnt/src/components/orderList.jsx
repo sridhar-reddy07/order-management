@@ -588,23 +588,34 @@ function cleanFileName(url) {
                   
                   
                   <td>
-                    {order.trackingLabel ? (
+                {order.trackingLabel ? (
                       <>
                         {order.trackingLabel}
                         <>
-                          {isAdmin ? (<i 
-                                className="bi bi-pencil" 
-                                style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                                onClick={() => handleOrder(order.id,"trackingLabel")}
-                              ></i>) : ''}
+                          {isAdmin && (
+                            <i
+                              className="bi bi-pencil"
+                              style={{ cursor: 'pointer', marginLeft: '5px' }}
+                              onClick={() => handleOrder(order.id, "trackingLabel")}
+                            ></i>
+                          )}
                         </>
+                        {/* Copy icon */}
+                        <i
+                          className="bi bi-clipboard"
+                          style={{ cursor: 'pointer', marginLeft: '10px' }}
+                          onClick={() => {
+                            navigator.clipboard.writeText(order.trackingLabel);
+                            alert('Copied to clipboard!'); // Optional feedback for the user
+                          }}
+                        ></i>
                       </>
                     ) : (
-                      <button 
-                        className="btn btn-primary" 
-                        style={{ cursor: 'pointer' }} 
-                        onClick={() => handleOrder(order.id,"trackingLabel")}
-                      > 
+                      <button
+                        className="btn btn-primary"
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => handleOrder(order.id, "trackingLabel")}
+                      >
                         Add num
                       </button>
                     )}
