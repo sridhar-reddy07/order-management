@@ -198,7 +198,7 @@ function cleanFileName(url) {
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-              <Dropdown.Item onClick={generatePDF}>Download All Orders</Dropdown.Item>
+              <Dropdown.Item onClick={generatePDF(orders,'')}>Download All Orders</Dropdown.Item>
               <Dropdown.Item onClick={downloadEmbroideryPDF}>Download Embroidery</Dropdown.Item>
               <Dropdown.Item onClick={downloadDTGPDF}>Download DTG</Dropdown.Item>
             </Dropdown.Menu>
