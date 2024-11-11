@@ -76,6 +76,15 @@ const Pullsheet = () => {
       }, delay);
     };
   };
+  const downloadEmbroideryPDF = () => {
+    const embroideryOrders = orders.filter(order => order.jobType === 'EMBROIDERY');
+    generatePDF(embroideryOrders, 'Embroidery Orders');
+  };
+  
+  const downloadDTGPDF = () => {
+    const dtgOrders = orders.filter(order => order.jobType === 'DTG');
+    generatePDF(dtgOrders, 'DTG Orders');
+  };
   
   const onDragEnd = debounce((result) => {
     const { source, destination } = result;
@@ -178,9 +187,17 @@ function cleanFileName(url) {
           />
         </div>
         <div className="col-md-2">
-          <Button variant="primary" onClick={downloadPDF}>
-            <BsDownload style={{ marginRight: '5px' }} /> Download
-          </Button>
+          <Dropdown>
+            <Dropdown.Toggle variant="light" id="dropdown-basic" style={{ backgroundColor: 'transparent' }}>
+              <BsDownload style={{ marginRight: '5px' }} /> Download
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              <Dropdown.Item onClick={downloadPDF}>Download All Orders</Dropdown.Item>
+              <Dropdown.Item onClick={downloadEmbroideryPDF}>Download Embroidery</Dropdown.Item>
+              <Dropdown.Item onClick={downloadDTGPDF}>Download DTG</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </div>
       </div>
       {orders.length > 0 ? (

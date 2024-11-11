@@ -228,14 +228,14 @@ function cleanFileName(url) {
                         {order.trackingLabel}
                         
                         {/* Copy icon */}
-                        <i
+                        {/* <i
                           className="bi bi-clipboard"
                           style={{ cursor: 'pointer', marginLeft: '10px' }}
                           onClick={() => {
                             navigator.clipboard.writeText(order.trackingLabel);
                             alert('Copied to clipboard!'); // Optional feedback for the user
                           }}
-                        ></i>
+                        ></i> */}
                       
                     
                   </td>
