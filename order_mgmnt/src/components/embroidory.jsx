@@ -759,7 +759,7 @@ const handleDeleteFile = async (file ,index, id) => {
                                             background: 'transparent',
                                             color: '#007bff',
                                             cursor: 'pointer',
-                                            marginLeft: '10px'
+                                            
                                           }}
                                         >
                                           {(fileUrl.match(/\.pdf$/i)) ? 
