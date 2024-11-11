@@ -258,32 +258,16 @@ function cleanFileName(url) {
                               )}
                             </div>
 
-                            {isAdmin && (
-                              <i
-                                className="bi bi-pencil"
-                                style={{ cursor: 'pointer', marginLeft: '5px' }}
-                                onClick={() => handleOrder(order.id, "garmentDetails")}
-                              ></i>
-                            )}
+                            
                           </div>
                           <p><strong>Notes:</strong> {order.notes}
-                        <i 
-                          className="bi bi-pencil" 
-                          style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                          onClick={() => handleOrder(order.id,"notes")}
-                        ></i>
+                        
                         </p>
                         <p><strong>Team:</strong> {order.team}</p>
                         
                         
                         <p><strong>Shipping Address:</strong> {order.shippingAddress}
-                        <>
-                          {isAdmin ? (<i 
-                                className="bi bi-pencil" 
-                                style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                                onClick={() => handleOrder(order.id,"shippingAddress")}
-                              ></i>) : ''}
-                        </>
+                        
                         </p>
                         
                       <h5>Order Sizes</h5>
