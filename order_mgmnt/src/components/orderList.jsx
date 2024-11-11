@@ -517,7 +517,7 @@ function cleanFileName(url) {
         </thead>
         <tbody>
           {orders.map((order, index) => {
-            onsole.log('Job Type:', order.jobType); // Debug log
+            console.log('Job Type:', order.jobType); // Debug log
             return (
               <React.Fragment key={index}>
                 <tr  
