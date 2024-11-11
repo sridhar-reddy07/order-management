@@ -522,7 +522,7 @@ function cleanFileName(url) {
               <React.Fragment key={index}>
                 <tr  
                 style={{
-                  backgroundColor: order.jobType === 'DTG+EMB' ? 'yellow' : 'transparent'
+                  backgroundColor: order.jobType === 'DTG' ? 'yellow' : 'transparent'
                 }} >
                   <td className="order-cell"  onClick={() => handleOrderClick(order.orderNumber,order.id)}>
                     
