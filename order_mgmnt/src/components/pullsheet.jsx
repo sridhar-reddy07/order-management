@@ -99,14 +99,14 @@ const Pullsheet = () => {
   };
   
   const generatePDF = (data, title) => {
-    const tableData = data.map(order => [
+    const tableData = data ? data.map(order => [
       order.id,
       order.orderNumber,
       order.clientName,
       order.garmentPO,
       order.garmentDetails,
       order.jobType,
-    ]);
+    ]) : [];
   
     const tableColumns = ['ID', 'Order Number', 'Client Name', 'Garment PO', 'Garment Details', 'JobType'];
   
