@@ -90,12 +90,12 @@ const Pullsheet = () => {
 
   const downloadEmbroideryPDF = () => {
     const embroideryOrders = orders.filter(order => order.jobType === 'EMBROIDERY');
-    generatePDF(embroideryOrders, 'Embroidery Orders');
+    generatePDF(embroideryOrders, 'Pull Sheet Embroidery Orders');
   };
   
   const downloadDTGPDF = () => {
     const dtgOrders = orders.filter(order => order.jobType === 'DTG');
-    generatePDF(dtgOrders, 'DTG Orders');
+    generatePDF(dtgOrders, 'Pull Sheet DTG Orders');
   };
   
   const generatePDF = (data, title) => {
@@ -120,7 +120,8 @@ const Pullsheet = () => {
       styles: { fontSize: 8 },
       headStyles: { fillColor: [22, 160, 133], textColor: 255 },
     });
-    doc.save(`${title.replace(' ', '_')}_${moment().format('YYYY-MM-DD')}.pdf`);
+    doc.save(`${title ? title.replace(/ /g, '_') : 'PullSheetOrders'}_${moment().format('YYYY-MM-DD')}.pdf`);
+
   };
   
   
@@ -197,7 +198,7 @@ function cleanFileName(url) {
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-              <Dropdown.Item onClick={downloadPDF}>Download All Orders</Dropdown.Item>
+              <Dropdown.Item onClick={generatePDF}>Download All Orders</Dropdown.Item>
               <Dropdown.Item onClick={downloadEmbroideryPDF}>Download Embroidery</Dropdown.Item>
               <Dropdown.Item onClick={downloadDTGPDF}>Download DTG</Dropdown.Item>
             </Dropdown.Menu>
