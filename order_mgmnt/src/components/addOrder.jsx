@@ -172,7 +172,7 @@ const AddOrder = () => {
     formData.append('clientgmail', clientgmail);
     formData.append('shippingAddress', shippingAddress);
     formData.append('trackingLabel', trackingLabel);
-    formData.append('garmentDetails', garmentDetailsList);
+    formData.append('garmentDetails', garmentDetails);
     formData.append('garmentPO', garmentPO);
     formData.append('team', team);
     formData.append('dueDate', dueDate);
@@ -360,7 +360,7 @@ const AddOrder = () => {
           <textarea
             id="garmentDetails"
             value={garmentDetails}
-            onChange={(e) => setGarmentDetails(e.target.value)}
+            onChange={handleGarmentDetailsChange}
             className="form-input"
           />
         </div>

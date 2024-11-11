@@ -641,11 +641,11 @@ function cleanFileName(url) {
                               ></i>) : ''}
                         </>
                         </p>
-                        <p><strong>Garment Details:</strong> {garmentDetails.length > 0 && (
+                        <p><strong>Garment Details:</strong> {order.garmentDetails.length > 0 && (
                                 <div>
                                   <h4>Garment Details List:</h4>
                                   <ul>
-                                    {garmentDetails.map((detail, index) => (
+                                    {order.garmentDetails.map((detail, index) => (
                                       <li key={index}>{detail}</li>
                                     ))}
                                   </ul>
