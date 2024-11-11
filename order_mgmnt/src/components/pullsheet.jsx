@@ -76,15 +76,7 @@ const Pullsheet = () => {
       }, delay);
     };
   };
-  const downloadEmbroideryPDF = () => {
-    const embroideryOrders = orders.filter(order => order.jobType === 'EMBROIDERY');
-    generatePDF(embroideryOrders, 'Embroidery Orders');
-  };
-  
-  const downloadDTGPDF = () => {
-    const dtgOrders = orders.filter(order => order.jobType === 'DTG');
-    generatePDF(dtgOrders, 'DTG Orders');
-  };
+ 
   
   const onDragEnd = debounce((result) => {
     const { source, destination } = result;
@@ -95,8 +87,18 @@ const Pullsheet = () => {
     setOrders(reorderedOrders);
   }, 300);
 
-  const downloadPDF = () => {
-    const tableData = orders.map((order) => [
+  const downloadEmbroideryPDF = () => {
+    const embroideryOrders = orders.filter(order => order.jobType === 'EMBROIDERY');
+    generatePDF(embroideryOrders, 'Embroidery Orders');
+  };
+  
+  const downloadDTGPDF = () => {
+    const dtgOrders = orders.filter(order => order.jobType === 'DTG');
+    generatePDF(dtgOrders, 'DTG Orders');
+  };
+  
+  const generatePDF = (data, title) => {
+    const tableData = data.map(order => [
       order.id,
       order.orderNumber,
       order.clientName,
@@ -104,11 +106,11 @@ const Pullsheet = () => {
       order.garmentDetails,
       order.jobType,
     ]);
-
+  
     const tableColumns = ['ID', 'Order Number', 'Client Name', 'Garment PO', 'Garment Details', 'JobType'];
-
+  
     const doc = new jsPDF('landscape');
-    doc.text('Pullsheet Orders', 14, 22);
+    doc.text(title, 14, 22);
     doc.autoTable({
       head: [tableColumns],
       body: tableData,
@@ -117,8 +119,9 @@ const Pullsheet = () => {
       styles: { fontSize: 8 },
       headStyles: { fillColor: [22, 160, 133], textColor: 255 },
     });
-    doc.save(`Pullsheet_orders_${moment().format('YYYY-MM-DD')}.pdf`);
+    doc.save(`${title.replace(' ', '_')}_${moment().format('YYYY-MM-DD')}.pdf`);
   };
+  
   
 function cleanFileName(url) {
   // Decode URI components to handle encoded characters like %20 for space
