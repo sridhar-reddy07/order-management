@@ -327,7 +327,15 @@ const OrderList = () => {
       
       order.garmentPO,
       
-      order.garmentDetails,
+      order.garmentDetails ? (
+        <ul>
+          {order.garmentDetails.split('\n').map((detail, index) => (
+            <li key={index}>{detail}</li> // Display each detail as a list item
+          ))}
+        </ul>
+      ) : (
+        <p>No Garment details</p>
+      ),
       order.jobType
       
     ]);

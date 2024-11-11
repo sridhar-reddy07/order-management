@@ -90,12 +90,12 @@ const Pullsheet = () => {
 
   const downloadEmbroideryPDF = () => {
     const embroideryOrders = orders.filter(order => order.jobType === 'EMBROIDERY');
-    generatePDF(embroideryOrders, 'Pull Sheet Embroidery Orders');
+    generatePDF(embroideryOrders, 'PullSheetEmbroideryOrders');
   };
   
   const downloadDTGPDF = () => {
     const dtgOrders = orders.filter(order => order.jobType === 'DTG');
-    generatePDF(dtgOrders, 'Pull Sheet DTG Orders');
+    generatePDF(dtgOrders, 'PullSheetDTGOrders');
   };
   
   const generatePDF = (data, title) => {

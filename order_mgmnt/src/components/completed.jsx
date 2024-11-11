@@ -245,7 +245,22 @@ function cleanFileName(url) {
                   <Collapse in={openOrder === order.orderNumber}>
                     <div>
                       <p><strong>Shipping Address:</strong> {order.shippingAddress}</p>
-                      <p><strong>Garment Details:</strong> {order.garmentDetails}</p>
+                      <div>
+                            <p><strong>Garment Details:</strong></p>
+                            <div style={{ paddingLeft: '20px' }}>
+                              {order.garmentDetails ? (
+                                <ul>
+                                  {order.garmentDetails.split('\n').map((detail, index) => (
+                                    <li key={index}>{detail}</li> // Display each detail as a list item
+                                  ))}
+                                </ul>
+                              ) : (
+                                <p>No Garment details</p>
+                              )}
+                            </div>
+
+                            
+                          </div>
                       <p><strong>Team:</strong> {order.team}</p>
                       <p><strong>Notes:</strong> {order.notes}</p>
                       <h5>Order Sizes</h5>

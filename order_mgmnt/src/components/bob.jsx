@@ -281,7 +281,15 @@ const Bob = () => {
       
       order.garmentPO,
       
-      order.garmentDetails,
+      order.garmentDetails ? (
+        <ul>
+          {order.garmentDetails.split('\n').map((detail, index) => (
+            <li key={index}>{detail}</li> // Display each detail as a list item
+          ))}
+        </ul>
+      ) : (
+        <p>No Garment details</p>
+      ),
       order.jobType
       
     ]);
@@ -484,15 +492,29 @@ const Bob = () => {
                               ></i>) : ''}
                         </>
                         </p>
-                        <p><strong>Garment Details:</strong> {order.garmentDetails}
-                        <>
-                          {isAdmin ? (<i 
-                                className="bi bi-pencil" 
-                                style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                                onClick={() => handleOrder(order.id,"garmentDetails")}
-                              ></i>) : ''}
-                        </></p>
                         
+                        <div>
+                            <p><strong>Garment Details:</strong></p>
+                            <div style={{ paddingLeft: '20px' }}>
+                              {order.garmentDetails ? (
+                                <ul>
+                                  {order.garmentDetails.split('\n').map((detail, index) => (
+                                    <li key={index}>{detail}</li> // Display each detail as a list item
+                                  ))}
+                                </ul>
+                              ) : (
+                                <p>No Garment details</p>
+                              )}
+                            </div>
+
+                            {isAdmin && (
+                              <i
+                                className="bi bi-pencil"
+                                style={{ cursor: 'pointer', marginLeft: '5px' }}
+                                onClick={() => handleOrder(order.id, "garmentDetails")}
+                              ></i>
+                            )}
+                          </div>
                         <p><strong>Team:</strong> {order.team}</p>
                         <p><strong>Notes:</strong> {order.notes}
                         <i 
