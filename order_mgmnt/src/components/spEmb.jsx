@@ -589,16 +589,7 @@ const handleDeleteFile = async (file ,index, id) => {
                   <td colSpan="12">
                     <Collapse in={openOrder === order.orderNumber}>
                       <div>
-                        <p><strong>Shipping Address:</strong> {order.shippingAddress}
-                        <>
-                          {isAdmin ? (<i 
-                                className="bi bi-pencil" 
-                                style={{ cursor: 'pointer', marginLeft: '5px' }} 
-                                onClick={() => handleOrder(order.id,"shippingAddress")}
-                              ></i>) : ''}
-                        </>
-                        </p>
-                        <div>
+                      <div>
                             <p><strong>Garment Details:</strong></p>
                             <div style={{ paddingLeft: '20px' }}>
                               {order.garmentDetails ? (
@@ -620,15 +611,26 @@ const handleDeleteFile = async (file ,index, id) => {
                               ></i>
                             )}
                           </div>
-                        
-                        <p><strong>Team:</strong> {order.team}</p>
-                        <p><strong>Notes:</strong> {order.notes}
+                          <p><strong>Notes:</strong> {order.notes}
                         <i 
                           className="bi bi-pencil" 
                           style={{ cursor: 'pointer', marginLeft: '5px' }} 
                           onClick={() => handleOrder(order.id,"notes")}
                         ></i>
                         </p>
+                        <p><strong>Team:</strong> {order.team}</p>
+                        
+                        
+                        <p><strong>Shipping Address:</strong> {order.shippingAddress}
+                        <>
+                          {isAdmin ? (<i 
+                                className="bi bi-pencil" 
+                                style={{ cursor: 'pointer', marginLeft: '5px' }} 
+                                onClick={() => handleOrder(order.id,"shippingAddress")}
+                              ></i>) : ''}
+                        </>
+                        </p>
+                        
                         
 
                         <h5>Order Sizes</h5>
