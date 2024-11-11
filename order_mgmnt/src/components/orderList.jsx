@@ -416,15 +416,13 @@ const OrderList = () => {
 
 const handlePDFPreview = (fileUrl) => {
   if (fileUrl.match(/\.pdf$/i)) {
-    const iframe = document.createElement('iframe');
-    iframe.src = fileUrl;
-    iframe.style.width = '100%';
-    iframe.style.height = '600px';
-    document.body.appendChild(iframe);
+    const googleViewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(fileUrl)}&embedded=true`;
+    window.open(googleViewerUrl, '_blank', 'noopener,noreferrer');
   } else {
     alert('The selected file is not a PDF.');
   }
 };
+
 
 
 
