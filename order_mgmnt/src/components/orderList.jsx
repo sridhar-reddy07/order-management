@@ -520,7 +520,10 @@ function cleanFileName(url) {
             console.log('Current Order Status:', order.orderStatus); // Debug log
             return (
               <React.Fragment key={index}>
-                <tr   >
+                <tr  
+                style={{
+                  backgroundColor: order.jobType === 'DTG+EMB' ? 'yellow' : 'transparent'
+                }} >
                   <td className="order-cell"  onClick={() => handleOrderClick(order.orderNumber,order.id)}>
                     
                     {order.orderNumber}
