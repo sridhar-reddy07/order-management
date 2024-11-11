@@ -13,7 +13,7 @@ const AddOrder = () => {
   const [clientgmail, setClientGmail] = useState(''); // New Client Email
   const [shippingAddress, setShippingAddress] = useState('');
   const [trackingLabel, setTrackingLabel] = useState('');
-  const [garmentDetails, setGarmentDetails] = useState('');
+  const [garmentDetails, setGarmentDetails] = useState([]);
   const [garmentPO, setGarmentPO] = useState('');
   const [team, setTeam] = useState('');
   const [dueDate, setDueDate] = useState('');
@@ -130,6 +130,16 @@ const AddOrder = () => {
   //   }
   // };
 
+  
+
+  const handleGarmentDetailsChange = (e) => {
+    const value = e.target.value;
+    
+
+    // Split input by newline and filter out empty lines
+    const list = value.split('\n').filter(line => line.trim() !== '');
+    setGarmentDetails(list);
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
   
@@ -162,7 +172,7 @@ const AddOrder = () => {
     formData.append('clientgmail', clientgmail);
     formData.append('shippingAddress', shippingAddress);
     formData.append('trackingLabel', trackingLabel);
-    formData.append('garmentDetails', garmentDetails);
+    formData.append('garmentDetails', garmentDetailsList);
     formData.append('garmentPO', garmentPO);
     formData.append('team', team);
     formData.append('dueDate', dueDate);
@@ -197,7 +207,7 @@ const AddOrder = () => {
         setClientGmail('');
         setShippingAddress('');
         setTrackingLabel('');
-        setGarmentDetails('');
+        setGarmentDetails([]);
         setGarmentPO('');
         setTeam('');
         setDueDate('');

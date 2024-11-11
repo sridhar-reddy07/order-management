@@ -641,7 +641,16 @@ function cleanFileName(url) {
                               ></i>) : ''}
                         </>
                         </p>
-                        <p><strong>Garment Details:</strong> {order.garmentDetails}
+                        <p><strong>Garment Details:</strong> {garmentDetails.length > 0 && (
+                                <div>
+                                  <h4>Garment Details List:</h4>
+                                  <ul>
+                                    {garmentDetails.map((detail, index) => (
+                                      <li key={index}>{detail}</li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              )}
                         <>
                           {isAdmin ? (<i 
                                 className="bi bi-pencil" 
