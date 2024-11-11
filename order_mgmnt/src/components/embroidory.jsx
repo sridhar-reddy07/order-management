@@ -705,17 +705,18 @@ const handleDeleteFile = async (file ,index, id) => {
                                         <a href={fileUrl} download={fileName}>
                                           {fileName}
                                         </a>
-                                        <button
-                                          onClick={() => handleDeleteFile(file, idx, order.id)}
-                                          style={{
-                                            border: 'none',
-                                            background: 'transparent',
-                                            color: '#d9534f',
-                                            cursor: 'pointer'
-                                          }}
-                                        >
-                                          <i className="bi bi-trash"></i>
-                                        </button>
+                                        {isAdmin ?(
+                                            <button
+                                              onClick={() => handleDeleteFile(file, idx, order.id)}
+                                              style={{
+                                                border: 'none',
+                                                background: 'transparent',
+                                                color: '#d9534f',
+                                                cursor: 'pointer'
+                                              }}
+                                            >
+                                              <i className="bi bi-trash"></i>
+                                            </button>) :''}
                                         
                                       </div>
                                     </>
@@ -738,17 +739,18 @@ const handleDeleteFile = async (file ,index, id) => {
                                         <a href={fileUrl} download={fileName}>
                                           {fileName}
                                         </a>
-                                        <button
-                                          onClick={() => handleDeleteFile(file, idx, order.id)}
-                                          style={{
-                                            border: 'none',
-                                            background: 'transparent',
-                                            color: '#d9534f',
-                                            cursor: 'pointer'
-                                          }}
-                                        >
-                                          <i className="bi bi-trash"></i>
-                                        </button>
+                                        {isAdmin ?(
+                                            <button
+                                              onClick={() => handleDeleteFile(file, idx, order.id)}
+                                              style={{
+                                                border: 'none',
+                                                background: 'transparent',
+                                                color: '#d9534f',
+                                                cursor: 'pointer'
+                                              }}
+                                            >
+                                              <i className="bi bi-trash"></i>
+                                            </button>) :''}
                                         {/* Preview Button */}
                                         <button
                                           onClick={() => handlePDFPreview(fileUrl)}
@@ -760,7 +762,11 @@ const handleDeleteFile = async (file ,index, id) => {
                                             marginLeft: '10px'
                                           }}
                                         >
+                                          {(fileUrl.match(/\.pdf$/i)) ? 
+                                          <>
                                           <i className="bi bi-eye"></i> Preview
+                                          </>
+                                          : ''}
                                         </button>
                                       </div>
                                     </>
