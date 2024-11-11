@@ -641,16 +641,14 @@ function cleanFileName(url) {
                               ></i>) : ''}
                         </>
                         </p>
-                        <p><strong>Garment Details:</strong> {order.garmentDetails.length > 0 && (
-                                <div>
-                                  <h4>Garment Details List:</h4>
-                                  <ul>
-                                    {order.garmentDetails.map((detail, index) => (
-                                      <li key={index}>{detail}</li>
-                                    ))}
-                                  </ul>
-                                </div>
-                              )}
+                        <p><strong>Garment Details:</strong> {order.garmentDetails
+                            ? order.garmentDetails.split('\n').map((detail, index) => (
+                              <p key={index}>{detail}</p> ))// Split by newline or change to ',' if it's comma-separated
+                            : 'No Garment details'
+
+                          // Render the details using map
+                          
+                          }
                         <>
                           {isAdmin ? (<i 
                                 className="bi bi-pencil" 
