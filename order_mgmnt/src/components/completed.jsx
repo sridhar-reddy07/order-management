@@ -209,8 +209,8 @@ function cleanFileName(url) {
         <tbody>
           {orders.map((order, index) => (
             <React.Fragment key={index}>
-              <tr onClick={() => handleOrderClick(order.orderNumber,order.id)}>
-                <td className="order-cell">
+              <tr >
+                <td className="order-cell" onClick={() => handleOrderClick(order.orderNumber,order.id)}>
                   
                   {order.orderNumber}
                 </td>
