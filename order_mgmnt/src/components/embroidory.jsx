@@ -752,22 +752,8 @@ const handleDeleteFile = async (file ,index, id) => {
                                               <i className="bi bi-trash"></i>
                                             </button>) :''}
                                         {/* Preview Button */}
-                                        <button
-                                          onClick={() => handlePDFPreview(fileUrl)}
-                                          style={{
-                                            border: 'none',
-                                            background: 'transparent',
-                                            color: '#007bff',
-                                            cursor: 'pointer',
-                                            marginLeft: '10px'
-                                          }}
-                                        >
-                                          {(fileUrl.match(/\.pdf$/i)) ? 
-                                          <>
-                                          <i className="bi bi-eye"></i> Preview
-                                          </>
-                                          : ''}
-                                        </button>
+                                        
+                                        <iframe src= {fileUrl}  width="100%" height="500px"> <i className="bi bi-eye"></i> Preview</iframe>
                                       </div>
                                     </>
                                   )}
