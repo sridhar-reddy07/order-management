@@ -416,12 +416,16 @@ const OrderList = () => {
 
 const handlePDFPreview = (fileUrl) => {
   if (fileUrl.match(/\.pdf$/i)) {
-    // Open a new window with a URL specifically set for preview, not download
-    window.open(fileUrl, '_blank', 'noopener,noreferrer');
+    const iframe = document.createElement('iframe');
+    iframe.src = fileUrl;
+    iframe.style.width = '100%';
+    iframe.style.height = '600px';
+    document.body.appendChild(iframe);
   } else {
     alert('The selected file is not a PDF.');
   }
 };
+
 
 
 
