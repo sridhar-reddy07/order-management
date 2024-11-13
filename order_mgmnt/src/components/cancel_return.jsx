@@ -355,7 +355,7 @@ function cleanFileName(url) {
 
   return (
     <div className="container" style={{ marginLeft: 250, paddingTop: 20,marginBottom:70 }}>
-      <h2>Cancel && Return Orders</h2>
+      <h2>Cancel & Return Orders</h2>
       <div className="row">
         <div className="col-md-3">
           <input
