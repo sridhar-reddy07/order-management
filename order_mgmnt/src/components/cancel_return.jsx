@@ -243,7 +243,7 @@ function cleanFileName(url) {
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.id === id ? { ...order, orderStatus: status } : order
-        ).filter((order) => order.orderStatus !== 'COMPLETED')
+        ).filter((order) => order.orderStatus !== 'READY')
       );
     } catch (error) {
       console.error('Error updating order status:', error);
@@ -443,6 +443,7 @@ function cleanFileName(url) {
                       <option value="CANCEL">Cancel</option>
                       <option value="RETURN RAISED">Return Raised</option>
                       <option value="RETURN ACCEPTED">Return Accepted</option>
+                      <option value="READY">Ready</option>
                     </select>
                   </td>
 
