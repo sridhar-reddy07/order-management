@@ -233,7 +233,7 @@ const Karachi = () => {
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.id === id ? { ...order, orderStatus: status } : order
-        ).filter((order) => order.orderStatus !== 'READY')
+        ).filter((order) => order.orderStatus !== 'READY' && order.orderStatus !== 'CANCEL')
       );
     } catch (error) {
       console.error('Error updating order status:', error);
@@ -453,6 +453,7 @@ function cleanFileName(url) {
                       <option value="APPROVED">APPROVED</option>
                       <option value="HARDDATE">HARDDATE</option>
                       <option value="PENDING APPROVAL">PENDING APPROVAL</option>
+                      {isAdmin ? (<option value="CANCEL">CANCEL</option>) : ''}
                       
                     </select>
                   </td>

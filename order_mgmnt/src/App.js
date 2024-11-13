@@ -28,6 +28,7 @@ import SpEmd from "./components/spEmb";
 import CompletedInvoice from "./components/completedInvoice";
 import Pullsheet from "./components/pullsheet";
 import Shipped from "./components/shipped";
+import Return from "./components/return";
 
 
 
@@ -65,6 +66,7 @@ function App() {
           <Route path='/completedInvoice' element={<CompletedInvoice />} />
           <Route path='/pullsheet' element={<Pullsheet />} />
           <Route path='/shipped' element={<Shipped />}/>
+          <Route path='/return' element={<Return />}/>
         </Routes>
 
       {/* Footer */}

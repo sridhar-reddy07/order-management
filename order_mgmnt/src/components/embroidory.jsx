@@ -255,7 +255,7 @@ function cleanFileName(url) {
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.id === id ? { ...order, orderStatus: status } : order
-        ).filter((order) => order.orderStatus !== 'DONE' && order.orderStatus !== 'PENDING')
+        ).filter((order) => order.orderStatus !== 'DONE' && order.orderStatus !== 'PENDING' && order.orderStatus !== 'CANCEL')
       );
     } catch (error) {
       console.error('Error updating order status:', error);
@@ -532,6 +532,7 @@ const handleDeleteFile = async (file ,index, id) => {
                       <option value="HARDDATE">HARDDATE</option>
                       <option value="DONE">DONE</option>
                       {isAdmin ? (<option value="PENDING">PENDING</option>):''}
+                      {isAdmin ? (<option value="CANCEL">CANCEL</option>) : ''}
                     </select>
                   </td>
 
