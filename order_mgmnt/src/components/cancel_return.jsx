@@ -442,7 +442,7 @@ function cleanFileName(url) {
                       
                       <option value="CANCEL">Cancel</option>
                       <option value="RETURN RAISED">Return Raised</option>
-                      <option value="RETURN ACCEPTED">Return Accepted</option>
+                      <option value="RETUEN ACCEPTED">Return Accepted</option>
                       <option value="READY">Ready</option>
                     </select>
                   </td>
