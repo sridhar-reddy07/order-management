@@ -1036,7 +1036,7 @@ app.get('/karachiList', (req, res) => {
     const sql = `
       SELECT * 
       FROM orders
-      WHERE orderStatus IN ('CANCEL','RETURN RAISED','RETURN ACCEPTED')
+      WHERE orderStatus IN ('CANCEL','RETURN RAISED','RETUEN ACCEPTED')
        AND(
         orderNumber COLLATE utf8mb4_general_ci LIKE ? OR 
         clientName COLLATE utf8mb4_general_ci LIKE ? OR 
