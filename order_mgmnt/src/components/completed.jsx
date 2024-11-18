@@ -10,125 +10,58 @@ import 'jspdf-autotable';
 const Completed = () => {
   const [orders, setOrders] = useState([]);
   const [openOrder, setOpenOrder] = useState(null);
-  const [search, setSearch] = useState('');
-  const [fromDate, setFromDate] = useState(moment().format('YYYY-MM-DD')); // Default to today
-  const [toDate, setToDate] = useState(moment().format('YYYY-MM-DD'));     // Default to today
-  const [orderId, setOrderId] = useState(null); // Initialize orderId state
-  const [showImageModal, setShowImageModal] = useState(false); // For controlling image modal
-  const [selectedImage, setSelectedImage] = useState('');      // For selected image
-  
+  const [showModal, setShowModal] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null); // To store the order for which "Add num" was clicked
+  const [trackingLabel, setTrackingLabel] = useState(''); // To store the tracking label input
+  const [showModal2, setShowModal2] = useState(false);
+  const [showModal3, setShowModal3] = useState('');
+  const [ordernotes, setOrdernotes] = useState("");
+  const [search, setSearch] = useState('')
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState('');
+  const [sortByDueDate, setSortByDueDate] = useState(false); // Add sorting toggle
+  const [updatedOrder, setUpdatedOrder] =useState(null);
+  const [field, setField] = useState('');
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [showSizeModal, setShowSizeModal] = useState(false); // State for Size Modal
+  const [orderSizes, setOrderSizes] = useState({});
+  const [orderId, setOrderId] = useState(null);
+ 
+  const [address, setAddress] = useState('')
 
+  const [sizeData, setSizeData] = useState({
+    category: 'Adult', // Default category
+    description: '',
+    color: '',
+    xs: 0,
+    s: 0,
+    m: 0,
+    l: 0,
+    xl: 0,
+    xxl: 0,
+    xxxl:0,
+    xxxxl:0,
+    xxxxxl:0,
+  });
 
-  const handleImageClick = (imageUrl) => {
-    setSelectedImage(imageUrl);
-    setShowImageModal(true);
+  const handleSizeInputChange = (event) => {
+    const { name, value } = event.target;
+    setSizeData((prevData) => ({
+      ...prevData,
+      [name]: name === 'xs' || name === 's' || name === 'm' || name === 'l' || name === 'xl' || name === 'xxl' || name === 'xxxl' || name === 'xxxxl' || name === 'xxxxxl'
+        ? parseInt(value) || 0  // Convert to number or default to 0 if empty
+        : value
+    }));
+    console.log(sizeData);
   };
 
-  // Fetch orders with date range (default: today's date)
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await axios.get(`http://137.184.75.176:5000/completedList?search=${search}`, {
-          params: {
-            fromDate: fromDate,  // Pass the selected date range
-            toDate: toDate,
-          },
-        });
-        setOrders(response.data);
-      } catch (error) {
-        console.error('Error fetching orders:', error);
-      }
-    };
-
-    fetchOrders();
-  }, [fromDate, toDate,search]); // Trigger fetching when dates change
-  
-
-  // Handle order collapse
-  const handleOrderClick = (orderNumber, order_Id) => {
-    setOpenOrder(openOrder === orderNumber ? null : orderNumber);
-    setOrderId(order_Id);
+  const handleSizeModalShow = (orderNumber,shippingAddress) => {
+    setSelectedOrder(orderNumber); // Set the selected order number
+    setAddress(shippingAddress)
+    setShowSizeModal(true);
   };
 
-  // Function to handle date changes
-  const handleDateChange = (e) => {
-    if (e.target.name === 'fromDate') {
-      setFromDate(e.target.value);
-    } else {
-      setToDate(e.target.value);
-    }
-  };
 
-  const downloadPDF = () => {
-    // Initialize jsPDF
-    const doc = new jsPDF();
-  
-    // Define the title of the PDF
-    doc.setFontSize(18);
-    doc.text('Completed Orders', 14, 22);
-  
-    // Define the column headers
-    const headers = [
-      'ID',
-      'Order Number',
-      'Client Name',
-      'Client Phone',
-      'Client Gmail',
-      'Order Status',
-      'Order Method',
-      'Job Type',
-      'Due Date',
-      'Garment PO',
-      'Tracking Number',
-      'Shipping Address',
-      'Garment Details',
-      'Team',
-      'Notes',
-      'Created At',
-      'Files',
-    ];
-  
-    // Prepare the data rows
-    const data = orders.map((order) => [
-      order.id,
-      order.orderNumber,
-      order.clientName,
-      order.clientPhone,
-      order.clientgmail,
-      order.orderStatus,
-      order.orderMethod,
-      order.jobType,
-      moment(order.dueDate).format('MM/DD/YYYY'),
-      order.garmentPO,
-      order.trackingLabel,
-      order.shippingAddress,
-      order.garmentDetails,
-      order.team,
-      order.notes,
-      moment(order.createdAt).format('MM/DD/YYYY'),
-      order.files && order.files.length > 0
-        ? order.files.map((file) => file.fileUrl).join(', ')
-        : 'No files uploaded',
-    ]);
-  
-    // Add AutoTable to the PDF
-    doc.autoTable({
-      head: [headers],
-      body: data,
-      startY: 30, // Starting Y position on the PDF
-      styles: { fontSize: 8 }, // Adjust font size as needed
-      headStyles: { fillColor: [22, 160, 133] }, // Header background color
-      theme: 'striped', // Table theme
-      // Add any additional customization here
-    });
-  
-    // Define the file name with the current date
-    const fileName = `completed_orders_${moment().format('YYYY-MM-DD')}.pdf`;
-  
-    // Save the PDF
-    doc.save(fileName);
-  };
-  
   
 function cleanFileName(url) {
   // Decode URI components to handle encoded characters like %20 for space
@@ -145,88 +78,418 @@ function cleanFileName(url) {
   
   return fileName;
 }
-  return (
-    <div className="container" style={{ marginLeft: 250, paddingTop: 20, marginBottom: 70 }}>
-      <h2>Completed Jobs</h2>
+  
+  const handleSizeFormSubmit = async () => {
+    try {
+      // Fetch order ID using the selected order and address
+      const response = await fetch(
+        `http://137.184.75.176:5000/getOrderId?orderNumber=${selectedOrder}&shippingAddress=${address}`
+      );
+      
+      if (!response.ok) {
+        throw new Error('Order not found');
+      }
+  
+      const data = await response.json();  // Correctly parse the response JSON
+      console.log(data + "kjhgfyhj");  // Log the received order ID or response
+  
+      if (!data || !data.order_id) {  // Check if order_id exists in the response
+        alert('Order not found');
+        return;
+      }
+  
+      // Ensure sizeData contains valid numbers for sizes
+      const formattedSizeData = {
+        ...sizeData,
+        xs: parseInt(sizeData.xs) || 0,
+        s: parseInt(sizeData.s) || 0,
+        m: parseInt(sizeData.m) || 0,
+        l: parseInt(sizeData.l) || 0,
+        xl: parseInt(sizeData.xl) || 0,
+        xxl: parseInt(sizeData.xxl) || 0,
+        xxxl: parseInt(sizeData.xxxl) || 0,
+        xxxxl: parseInt(sizeData.xxxxl) || 0,
+        xxxxxl: parseInt(sizeData.xxxxxl) || 0,
+      };
+  
+      // POST the size data to the server using the retrieved order_id
+      const sizeResponse = await axios.post(
+        `http://137.184.75.176:5000/orders/${data.order_id}/sizes`,
+        formattedSizeData
+      );
+  
+      console.log('Size data added:', sizeResponse.data);
+      setShowSizeModal(false); // Close the modal after successful submission
+    } catch (error) {
+      console.error('Error adding size data:', error);
+      alert(error.message); // Display error to the user
+    }
+  };
+  
+  
 
-      {/* Date Filter Inputs */}
+  
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    // Check if user is an admin
+    if (user && (user.email.toLowerCase() === "riz@tssprinting.com" || user.email.toLowerCase() === "mussa@tssprinting.com" || user.email.toLowerCase() === "karachi@tssprinting.com")) {
+      setIsAdmin(true);
+    } else {
+      setIsAdmin(false);
+    }
+  }, []);
+
+
+  const handleImageClick = (imageUrl) => {
+    setSelectedImage(imageUrl);
+    setShowImageModal(true);
+  };
+  
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch('http://137.184.75.176:5000/completedList');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        console.log('Fetched Orders:', data); // Debug log
+        setOrders(data);
+        console.log(orders.files);
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+  useEffect(() => {
+    // Fetch orders with the search query
+    axios.get(`http://137.184.75.176:5000/completedList?search=${search}`)
+      .then((response) => {
+        console.log(response)
+        setOrders(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching orders:', error);
+      });
+  }, [search]);
+
+
+  useEffect(() => {
+    const fetchOrderSizes = async () => {
+      console.log(orderId)
+      if (orderId) {
+        try {
+          const response = await axios.get(`http://137.184.75.176:5000/fetchorders/${orderId}/sizes`);
+          setOrderSizes((prevSizes) => ({
+            ...prevSizes,
+            [orderId]: response.data, // Store sizes for this order
+          }));
+          console.log(orderSizes)
+        } catch (error) {
+          console.error('Error fetching sizes:', error);
+        }
+      }
+    };
+
+    if (openOrder) {
+      fetchOrderSizes(); // Fetch sizes only when an order is opened
+    }
+  }, [openOrder]);
+
+  const handleOrderClick = (orderNumber,order_Id) => {
+    setOpenOrder(openOrder === orderNumber ? null : orderNumber);
+    setOrderId(order_Id)
+
+  };
+
+  console.log(orderSizes);
+
+  const getSelectClass = (status) => {
+    switch (status) {
+      case 'DONE':
+        return 'select-done';
+      case 'COMPLETED':
+        return 'select-completed';
+      
+      default:
+        return '';
+    }
+  };
+  const updateOrderStatusInDatabase = async (e, id) => {
+    const status = e.target.value;
+    try {
+      const response = await fetch(`http://137.184.75.176:5000/updateOrderStatus/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update order status');
+      }
+
+      const updatedOrder = await response.json();
+      console.log('Order status updated successfully:', updatedOrder);
+
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order.id === id ? { ...order, orderStatus: status } : order
+        ).filter((order) => order.orderStatus !== 'SHIPPED')
+      );
+    } catch (error) {
+      console.error('Error updating order status:', error);
+    }
+  };
+
+  
+  const handleUpdateOrder = async () => {
+    if (!orderId || !field || updatedOrder === undefined || updatedOrder === null) {
+      alert('Please provide all necessary details before updating the order.');
+      return;
+    }
+  
+    try {
+      // Make the API call to update the selected order's specific field
+      const response = await axios.put(`http://137.184.75.176:5000/updateOrder/${orderId}`, { [field]: updatedOrder });
+  
+      if (response.status === 200) {
+        alert(response.data.message || 'Order updated successfully');
+  
+        // Update the local state with the new order data
+        setOrders((prevOrders) =>
+          prevOrders.map((order) => {
+            if (order.id === orderId) {
+              // Handle notes by appending the new note to the existing notes
+              if (field === 'notes') {
+                return { ...order, notes: `${order.notes ? order.notes + '\n' : ''}${updatedOrder}` };
+              }
+              // Handle other fields normally
+              return { ...order, [field]: updatedOrder };
+            }
+            return order;
+          })
+        );
+
+        setShowModal3(false);
+      setOrderId('');
+      setUpdatedOrder(''); 
+  
+        // Reset the modal state and clear inputs after successful update
+        
+      } else {
+        alert('Failed to update the order. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error updating order:', error);
+      alert('An error occurred while updating the order. Please try again.');
+    }
+  };
+
+
+  // Function to show modal and set the order and field being edited
+  const handleOrder = (id, field) => {
+    setShowModal3(true);
+    setOrderId(id);
+    setField(field); // Track the field being updated
+  };
+
+  const deleteOrder = async (id) => {
+    const confirmDelete = window.confirm('Are you sure you want to delete this order?');
+    if (confirmDelete) {
+      try {
+        const response = await axios.delete(`http://137.184.75.176:5000/deleteorder/${id}`);
+        if (response.status === 200) {
+          setOrders(orders.filter(order => order.id !== id));
+          alert('Order deleted successfully.');
+        }
+      } catch (error) {
+        console.error('Error deleting order:', error);
+        alert('Failed to delete the order.');
+      }
+    }
+  };
+
+  const toggleSortByDueDate = () => {
+    setSortByDueDate(!sortByDueDate);
+    const sortedOrders = [...orders].sort((a, b) => {
+      const dateA = new Date(a.dueDate);
+      const dateB = new Date(b.dueDate);
+      return sortByDueDate ? dateA - dateB : dateB - dateA;
+    });
+    setOrders(sortedOrders);
+  };
+
+  const downloadPDF = () => {
+    // Prepare data in the format for the table
+    const tableData = orders.map((order) => [
+      order.id, // Adding the order ID
+      order.orderNumber,
+      order.clientName,
+      
+      order.garmentPO,
+      
+      order.garmentDetails ? 
+      order.garmentDetails.split('\n').join(', ') : // Convert to a comma-separated string
+      'No Garment details',
+      order.jobType
+      
+    ]);
+  
+    // Define table columns (headers)
+    const tableColumns = [
+      'ID', 'Order Number', 'Client Name',  'Garment PO', 'Garment Details','JobType'
+    ];
+  
+    // Initialize jsPDF instance
+    const doc = new jsPDF('landscape'); // Use 'landscape' for wide tables
+  
+    // Set title for the document
+    doc.text('Completed Orders', 14, 22);
+  
+    // Add table with autoTable plugin
+    doc.autoTable({
+      head: [tableColumns], // Table headers
+      body: tableData,      // Table rows (order data)
+      startY: 30,           // Position of the table
+      theme: 'grid',        // You can also use 'striped', 'plain', etc.
+      styles: {
+        fontSize: 8,        // Adjust font size to fit more content
+      },
+      headStyles: {
+        fillColor: [22, 160, 133], // Customize header background color
+        textColor: 255,           // White text in headers
+      }
+    });
+  
+    // Save the PDF with a dynamic filename
+    doc.save(`Completed_orders_${moment().format('YYYY-MM-DD')}.pdf`);
+  };
+
+
+  return (
+    <div className="container" style={{ marginLeft: 250, paddingTop: 20,marginBottom:70 }}>
+      <h2>Completed List</h2>
       <div className="row">
         <div className="col-md-3">
-          <label>From Date:</label>
-          <input
-            type="date"
-            className="form-control"
-            name="fromDate"
-            value={fromDate}
-            onChange={handleDateChange}
-          />
-        </div>
-        <div className="col-md-3">
-          <label>To Date:</label>
-          <input
-            type="date"
-            className="form-control"
-            name="toDate"
-            value={toDate}
-            onChange={handleDateChange}
-          />
-        </div>
-        {/* Download Button */}
-      
-        <div className="col-md-4">
-          <label>Search Orders:</label>
           <input
             type="text"
             className="form-control"
+            style={{ width: '300px' }} 
             placeholder="Search orders... 🔍"
-            value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-        </div>
-        <div className="col-md-2">
-        <Button variant="primary" onClick={downloadPDF}>
-          <BsDownload style={{ marginRight: '5px' }} /> {/* Add download icon */}
-          Download
-        </Button>
-        </div>
+          </div>
+          <div className="col-md-2">
+            <Button variant="primary" onClick={downloadPDF}>
+              <BsDownload style={{ marginRight: '5px' }} /> {/* Add download icon */}
+              Download
+            </Button>
+            </div>
       </div>
-
+      
       <table className="table table-striped table-hover">
         <thead className="thead-dark table-header">
           <tr>
             <th scope="col">Order Number</th>
-            <th scope="col">Client Name</th>
-            <th scope="col">Client Phone</th>
-            <th scope="col">Client Gmail</th>
-            <th scope="col">Order Status</th>
-            <th scope="col">Order Method</th>
-            <th scope="col">Job Type</th>
-            <th scope="col">Due Date</th>
-            <th scope="col">Garment PO</th>
-            <th scope="col">Tracking Number</th>
+            <th scope="col" className="wide-col">Client Name</th>
+            <th scope="col" className="wide-col">Client Phone</th>
+            <th scope="col" className="extra-wide-col">Client Gmail</th>
+            <th scope="col" className="wide-col">Order Status</th>
+            <th scope="col" className="wide-col">Order Method</th>
+            <th scope="col" className="wide-col">Job Type</th>
+            <th scope="col" className="wide-col">
+              Due Date
+              <i
+                className={`bi bi-sort-${sortByDueDate ? 'down' : 'up'} sort-icon`}
+                onClick={toggleSortByDueDate}
+              ></i>
+            </th>
+            
+            <th scope="col" className="wide-col">Garment PO</th>
+            <th scope="col" className="extra-wide-col">Tracking Number</th>
           </tr>
         </thead>
         <tbody>
-          {orders.map((order, index) => (
-            <React.Fragment key={index}>
-              <tr >
-                <td className="order-cell" onClick={() => handleOrderClick(order.orderNumber,order.id)}>
-                  
-                  {order.orderNumber}
-                </td>
-                <td>{order.clientName}</td>
-                <td>{order.clientPhone}</td>
-                <td>{order.clientgmail}</td>
-                <td>{order.orderStatus}</td>
-                <td>{order.orderMethod}</td>
-                <td>{order.jobType}</td>
-                <td>{new Date(order.dueDate).toLocaleDateString('en-US')}</td>
-                <td>{order.garmentPO}</td>
-                <td>
-                
+          {orders.map((order, index) => {
+            console.log('Current Order Status:', order.orderStatus); // Debug log
+            return (
+              <React.Fragment key={index}>
+                <tr >
+                  <td className="order-cell" onClick={() => handleOrderClick(order.orderNumber,order.id)}>
+                     {order.orderNumber}
+                  </td>
+                  <td>{order.clientName}
+                    <>
+                    {isAdmin ? (<i 
+                          className="bi bi-pencil" 
+                          style={{ cursor: 'pointer', marginLeft: '5px' }} 
+                          onClick={() => handleOrder(order.id,"clientName")}
+                        ></i>) : ''}
+                    </>
+                  </td>
+                  <td>{order.clientPhone}
+                    <>
+                    {isAdmin ? (<i 
+                          className="bi bi-pencil" 
+                          style={{ cursor: 'pointer', marginLeft: '5px' }} 
+                          onClick={() => handleOrder(order.id,"clientPhone")}
+                        ></i>) : ''}
+                    </>
+                  </td>
+                  <td>{order.clientgmail}
+                    <>
+                    {isAdmin ? (<i 
+                          className="bi bi-pencil" 
+                          style={{ cursor: 'pointer', marginLeft: '5px' }} 
+                          onClick={() => handleOrder(order.id,"clientgmail")}
+                        ></i>) : ''}
+                    </>
+                  </td>
+                  <td>
+                    {order.orderStatus}
                       
+                  </td>
+
+
+                  <td>{order.orderMethod}</td>
+                  <td>{order.jobType}</td>
+                  
+                  <td>{new Date(order.dueDate).toLocaleDateString('en-US')}
+                  
+                  </td>
+                  
+                  
+
+                  <td>{order.garmentPO}
+                  <>
+                    {isAdmin ? (<i 
+                          className="bi bi-pencil" 
+                          style={{ cursor: 'pointer', marginLeft: '5px' }} 
+                          onClick={() => handleOrder(order.id,"garmentPO")}
+                        ></i>) : ''}
+                  </>
+                  </td>
+                  
+                  
+                  <td>
+                {order.trackingLabel ? (
+                      <>
                         {order.trackingLabel}
-                        
+                        <>
+                          {isAdmin && (
+                            <i
+                              className="bi bi-pencil"
+                              style={{ cursor: 'pointer', marginLeft: '5px' }}
+                              onClick={() => handleOrder(order.id, "trackingLabel")}
+                            ></i>
+                          )}
+                        </>
                         {/* Copy icon */}
                         {/* <i
                           className="bi bi-clipboard"
@@ -236,15 +499,41 @@ function cleanFileName(url) {
                             alert('Copied to clipboard!'); // Optional feedback for the user
                           }}
                         ></i> */}
-                      
-                    
+                      </>
+                    ) : (
+                      <button
+                        className="btn btn-primary"
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => handleOrder(order.id, "trackingLabel")}
+                      >
+                        Add num
+                      </button>
+                    )}
                   </td>
-              </tr>
-              <tr>
-                <td colSpan="12">
-                  <Collapse in={openOrder === order.orderNumber}>
-                    <div>
-                    <div>
+
+                  <td>
+                    <Button
+                      variant="primary"
+                      onClick={() => handleSizeModalShow(order.orderNumber,order.shippingAddress)}
+                    >
+                      Add Size
+                    </Button>
+                  </td>
+
+                  {isAdmin ? (<td>
+                    <i
+                      className="bi bi-trash"
+                      style={{ cursor: 'pointer', color: 'red' }}
+                      onClick={() => deleteOrder(order.id)}
+                    ></i>
+                  </td>  ): ''}
+
+                </tr>
+                <tr>
+                  <td colSpan="12">
+                    <Collapse in={openOrder === order.orderNumber}>
+                      <div>
+                      <div>
                             <p><strong>Garment Details:</strong></p>
                             <div style={{ paddingLeft: '20px' }}>
                               {order.garmentDetails ? (
@@ -258,7 +547,13 @@ function cleanFileName(url) {
                               )}
                             </div>
 
-                            
+                            {isAdmin && (
+                              <i
+                                className="bi bi-pencil"
+                                style={{ cursor: 'pointer', marginLeft: '5px' }}
+                                onClick={() => handleOrder(order.id, "garmentDetails")}
+                              ></i>
+                            )}
                           </div>
                           <p><strong>Notes:</strong> 
                           <div style={{ paddingLeft: '20px' }}>
@@ -272,30 +567,46 @@ function cleanFileName(url) {
                                 <p>No notes</p>
                               )}
                           </div>
+                        <i 
+                          className="bi bi-pencil" 
+                          style={{ cursor: 'pointer', marginLeft: '5px' }} 
+                          onClick={() => handleOrder(order.id,"notes")}
+                        ></i>
                         </p>
                         <p><strong>Team:</strong> {order.team}</p>
                         
                         
                         <p><strong>Shipping Address:</strong> {order.shippingAddress}
-                        
+                        <>
+                          {isAdmin ? (<i 
+                                className="bi bi-pencil" 
+                                style={{ cursor: 'pointer', marginLeft: '5px' }} 
+                                onClick={() => handleOrder(order.id,"shippingAddress")}
+                              ></i>) : ''}
+                        </>
                         </p>
                         
-                      <h5>Order Sizes</h5>
-                      {order.orderSizes ? (
-                        <ul>
-                          {order.orderSizes.map((size, idx) => (
-                            <li key={idx}>
-                              <b>{size.category}</b> - <i>{size.color}</i>: XS({size.xs}), S({size.s}),
-                              M({size.m}), L({size.l}), XL({size.xl}), XXL({size.xxl}),
-                              3XL({size.xxxl}), 4XL({size.xxxxl}), 5XL({size.xxxxxl})
-                            </li>
-                          ))}
-                        </ul>
-                      ) : (
-                        <p>No sizes added for this order yet.</p>
-                      )}
-                      <p><strong>Files Uploaded:</strong></p>
-                      <ul style={{ display: 'flex', flexWrap: 'wrap', listStyleType: 'none', padding: 0 }}>
+                        
+
+                        <h5>Order Sizes</h5>
+                        {orderSizes[order.id] ? (
+                          <ul>
+                            {orderSizes[order.id].map((size, idx) => (
+                              <li key={idx}>
+
+                                <b>{size.category} - </b>,<i> {size.color} </i> : XS({size.xs}), S({size.s}), M({size.m}),
+                                L({size.l}), XL({size.xl}), XXL({size.xxl}), 3XL({size.xxxl}),
+                                4XL({size.xxxxl}), 5XL({size.xxxxxl})
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <p>No sizes added for this order yet.</p>
+                        )}
+                        
+                       
+                        <p><strong>Files Uploaded:</strong></p>
+                        <ul style={{ display: 'flex', flexWrap: 'wrap', listStyleType: 'none', padding: 0 }}>
                               {order.files && order.files.length > 0 ? (
                                 order.files.filter((file) => file.fileUrl)
                                 .map((file, idx) => {
@@ -359,15 +670,53 @@ function cleanFileName(url) {
                             </ul>
 
 
-                    </div>
-                  </Collapse>
-                </td>
-              </tr>
-            </React.Fragment>
-          ))}
+
+                      </div>
+                    </Collapse>
+                  </td>
+                </tr>
+              </React.Fragment>
+            );
+          })}
         </tbody>
       </table>
 
+      <Modal show={showModal3} onHide={() => setShowModal3(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Enter {field}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form.Group>
+            <Form.Label>{field}</Form.Label>
+            {/* Render textarea for notes or garmentDetails, otherwise render input */}
+            {field === 'notes' || field === 'garmentDetails' ? (
+              <Form.Control
+                as="textarea"
+                rows={4} // Adjust the number of rows as needed
+                value={updatedOrder}
+                onChange={(e) => setUpdatedOrder(e.target.value)}
+              />
+            ) : (
+              <Form.Control
+                type="text"
+                value={updatedOrder}
+                onChange={(e) => setUpdatedOrder(e.target.value)}
+              />
+            )}
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal3(false)}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={() => handleUpdateOrder()}>
+            Submit
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+
+      
       {/* Modal for displaying enlarged image */}
       <Modal show={showImageModal} onHide={() => setShowImageModal(false)} centered>
         <Modal.Header closeButton>
@@ -382,6 +731,180 @@ function cleanFileName(url) {
           </Button>
         </Modal.Footer>
       </Modal>
+
+      {/* Size Entry Modal */}
+        <Modal show={showSizeModal} onHide={() => setShowSizeModal(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Add Sizes for Order #{selectedOrder}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              {/* Category Dropdown */}
+              <Form.Group controlId="formCategory">
+                <Form.Label>Category</Form.Label>
+                <Form.Control
+                  as="select"
+                  name="category"
+                  value={sizeData.category}
+                  onChange={handleSizeInputChange}
+                >
+                  <option value="Adult">Adult</option>
+                  <option value="Youth">Youth</option>
+                  <option value="Ladies">Ladies</option>
+                </Form.Control>
+              </Form.Group>
+
+              {/* Description */}
+              <Form.Group controlId="formDesc">
+                <Form.Label>Description</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="description"
+                  value={sizeData.description}
+                  onChange={handleSizeInputChange}
+                  placeholder="Enter description"
+                />
+              </Form.Group>
+
+              {/* Color */}
+              <Form.Group controlId="formColor">
+                <Form.Label>Color</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="color"
+                  value={sizeData.color}
+                  onChange={handleSizeInputChange}
+                  placeholder="Enter color"
+                />
+              </Form.Group>
+
+              {/* Size Inputs */}
+              <Form.Group controlId="formSizes">
+                <Form.Label>Sizes</Form.Label>
+
+                {/* First Row: XS, S, M, L */}
+                <div className="row mb-3">
+                  <div className="col-md-3 col-sm-4 col-6 mb-2">
+                    <Form.Label>XS</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="xs"
+                      value={sizeData.xs}
+                      onChange={handleSizeInputChange}
+                      placeholder="XS"
+                      min="0"
+                    />
+                  </div>
+                  <div className="col-md-3 col-sm-4 col-6 mb-2">
+                    <Form.Label>S</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="s"
+                      value={sizeData.s}
+                      onChange={handleSizeInputChange}
+                      placeholder="S"
+                      min="0"
+                    />
+                  </div>
+                  <div className="col-md-3 col-sm-4 col-6 mb-2">
+                    <Form.Label>M</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="m"
+                      value={sizeData.m}
+                      onChange={handleSizeInputChange}
+                      placeholder="M"
+                      min="0"
+                    />
+                  </div>
+                  <div className="col-md-3 col-sm-4 col-6 mb-2">
+                    <Form.Label>L</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="l"
+                      value={sizeData.l}
+                      onChange={handleSizeInputChange}
+                      placeholder="L"
+                      min="0"
+                    />
+                  </div>
+                </div>
+
+                {/* Second Row: XL, XXL, XXXL, XXXXL, XXXXXL */}
+                <div className="row">
+                  <div className="col-md-3 col-sm-4 col-6 mb-2">
+                    <Form.Label>XL</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="xl"
+                      value={sizeData.xl}
+                      onChange={handleSizeInputChange}
+                      placeholder="XL"
+                      min="0"
+                    />
+                  </div>
+                  <div className="col-md-3 col-sm-4 col-6 mb-2">
+                    <Form.Label>2XL</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="xxl"
+                      value={sizeData.xxl}
+                      onChange={handleSizeInputChange}
+                      placeholder="XXL"
+                      min="0"
+                    />
+                  </div>
+                  <div className="col-md-3 col-sm-4 col-6 mb-2">
+                    <Form.Label>3XL</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="xxxl"
+                      value={sizeData.xxxl}
+                      onChange={handleSizeInputChange}
+                      placeholder="XXXL"
+                      min="0"
+                    />
+                  </div>
+                  
+                </div>
+                <div className='row'>
+                  <div className="col-md-3 col-sm-4 col-6 mb-2">
+                      <Form.Label>4XL</Form.Label>
+                      <Form.Control
+                        type="number"
+                        name="xxxxl"
+                        value={sizeData.xxxxl}
+                        onChange={handleSizeInputChange}
+                        placeholder="XXXXL"
+                        min="0"
+                      />
+                    </div>
+                    <div className="col-md-3 col-sm-4 col-6 mb-2">
+                      <Form.Label>5XL</Form.Label>
+                      <Form.Control
+                        type="number"
+                        name="xxxxxl"
+                        value={sizeData.xxxxxl}
+                        onChange={handleSizeInputChange}
+                        placeholder="XXXXXL"
+                        min="0"
+                      />
+                    </div>
+                </div>
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowSizeModal(false)}>
+              Cancel
+            </Button>
+            <Button variant="primary" onClick={handleSizeFormSubmit}>
+              Submit
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+
     </div>
   );
 };
