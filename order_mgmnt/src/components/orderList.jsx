@@ -30,6 +30,10 @@ const OrderList = () => {
   const [address, setAddress] = useState('')
   const [sortByPO,setSortByPO] =useState(false)
 
+
+  const [filteredOrders, setFilteredOrders] = useState([]); // For filtered display
+  const [statusFilter, setStatusFilter] = useState(''); // State for the selected filter
+
   const [sizeData, setSizeData] = useState({
     category: 'Adult', // Default category
     description: '',
@@ -140,9 +144,9 @@ const OrderList = () => {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        console.log('Fetched Orders:', data); // Debug log
+        
         setOrders(data);
-        console.log(orders.files);
+        setFilteredOrders(response.data);
       } catch (error) {
         console.error('Error fetching orders:', error);
       }
@@ -150,6 +154,7 @@ const OrderList = () => {
 
     fetchOrders();
   }, []);
+
   useEffect(() => {
     // Fetch orders with the search query
     axios.get(`http://137.184.75.176:5000/ordersList?search=${search}`)
@@ -161,6 +166,23 @@ const OrderList = () => {
         console.error('Error fetching orders:', error);
       });
   }, [search]);
+
+  useEffect(() => {
+    if (statusFilter) {
+      setFilteredOrders(orders.filter(order => order.orderStatus === statusFilter));
+    } else {
+      setFilteredOrders(orders); // Show all orders when no filter is selected
+    }
+  }, [statusFilter, orders]);
+
+  const handleStatusFilterChange = (event) => {
+    setStatusFilter(event.target.value);
+  };
+
+  const resetFilters = () => {
+    setStatusFilter('');
+    setFilteredOrders(orders);
+  };
 
 
   useEffect(() => {
@@ -513,12 +535,37 @@ function cleanFileName(url) {
             onChange={(e) => setSearch(e.target.value)}
           />
           </div>
+
+          <div className="col-md-3">
+          <select
+            className="form-control"
+            value={statusFilter}
+            onChange={handleStatusFilterChange}
+          >
+            <option value="">Filter by Status</option>
+            <option value="READY">READY</option>
+            <option value="NEED PAYMENT">NEED PAYMENT</option>
+            <option value="PENDING">PENDING</option>
+            <option value="PENDING ARTWORK">PENDING ARTWORK</option>
+            <option value="APPROVED">APPROVED</option>
+            <option value="HARDDATE">HARDDATE</option>
+            <option value="PENDING APPROVAL">PENDING APPROVAL</option>
+            <option value="CANCEL">CANCEL</option>
+          </select>
+           </div>
+
+
           <div className="col-md-2">
             <Button variant="primary" onClick={downloadPDF}>
               <BsDownload style={{ marginRight: '5px' }} /> {/* Add download icon */}
               Download
             </Button>
             </div>
+            <div className="col-md-2">
+          <Button variant="secondary" onClick={resetFilters}>
+            Reset Filters
+          </Button>
+        </div>
       </div>
       
       <table className="table table-striped table-hover">
@@ -550,7 +597,7 @@ function cleanFileName(url) {
           </tr>
         </thead>
         <tbody>
-          {orders.map((order, index) => {
+          {filteredOrders.map((order, index) => {
             console.log('Job Type:', order.jobType); // Debug log
             return (
               <React.Fragment key={index}>
