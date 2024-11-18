@@ -305,56 +305,7 @@ function cleanFileName(url) {
       alert('An error occurred while updating the order. Please try again.');
     }
   };
-  const handleUpdateOrder = async () => {
-    if (!orderId || !field || updatedOrder === undefined || updatedOrder === null) {
-      alert('Please provide all necessary details before updating the order.');
-      return;
-    }
-  
-    try {
-      // Make the API call to update the selected order's specific field
-      const response = await axios.put(`http://137.184.75.176:5000/updateOrder/${orderId}`, { [field]: updatedOrder });
-  
-      if (response.status === 200) {
-        alert(response.data.message || 'Order updated successfully');
-  
-        // Update the local state with the new order data
-        setOrders((prevOrders) =>
-          prevOrders.map((order) => {
-            if (order.id === orderId) {
-              // Handle notes by appending the new note to the existing notes
-              if (field === 'notes') {
-                return { ...order, notes: `${order.notes ? order.notes + '\n' : ''}${updatedOrder}` };
-              }
-              // Handle other fields normally
-              return { ...order, [field]: updatedOrder };
-            }
-            return order;
-          })
-        );
 
-        setShowModal3(false);
-      setOrderId('');
-      setUpdatedOrder(''); 
-  
-        // Reset the modal state and clear inputs after successful update
-        
-      } else {
-        alert('Failed to update the order. Please try again.');
-      }
-    } catch (error) {
-      console.error('Error updating order:', error);
-      alert('An error occurred while updating the order. Please try again.');
-    }
-  };
-
-
-  // Function to show modal and set the order and field being edited
-  const handleOrder = (id, field) => {
-    setShowModal3(true);
-    setOrderId(id);
-    setField(field); // Track the field being updated
-  };
 
   const deleteOrder = async (id) => {
     const confirmDelete = window.confirm('Are you sure you want to delete this order?');
