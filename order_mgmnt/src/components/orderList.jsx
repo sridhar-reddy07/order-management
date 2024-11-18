@@ -597,7 +597,7 @@ function cleanFileName(url) {
           </tr>
         </thead>
         <tbody>
-          {filteredOrders.map((order, index) => {
+          {filteredOrders?.map((order, index) => {
             console.log('Job Type:', order.jobType); // Debug log
             return (
               <React.Fragment key={index}>
