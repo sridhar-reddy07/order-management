@@ -1295,19 +1295,19 @@ app.get('/karachiList', (req, res) => {
       SELECT * 
       FROM orders
       WHERE orderStatus = 'READY'
-      AND readyDate BETWEEN ? AND ?
-      AND (
-        orderNumber COLLATE utf8mb4_general_ci LIKE ? OR 
-        clientName COLLATE utf8mb4_general_ci LIKE ? OR 
-        shippingAddress COLLATE utf8mb4_general_ci LIKE ? OR 
-        trackingLabel COLLATE utf8mb4_general_ci LIKE ? OR
-        jobType COLLATE utf8mb4_general_ci LIKE ? OR
-        orderMethod COLLATE utf8mb4_general_ci LIKE ? OR
-        orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
-        team COLLATE utf8mb4_general_ci LIKE ? OR
-      garmentDetails COLLATE utf8mb4_general_ci LIKE ?
-      )
-      ORDER BY createdAt DESC`; // Sorting by the order creation/completion date
+        AND readyDate BETWEEN ? AND ?
+        AND (
+          orderNumber COLLATE utf8mb4_general_ci LIKE ? OR 
+          clientName COLLATE utf8mb4_general_ci LIKE ? OR 
+          shippingAddress COLLATE utf8mb4_general_ci LIKE ? OR 
+          trackingLabel COLLATE utf8mb4_general_ci LIKE ? OR
+          jobType COLLATE utf8mb4_general_ci LIKE ? OR
+          orderMethod COLLATE utf8mb4_general_ci LIKE ? OR
+          orderStatus COLLATE utf8mb4_general_ci LIKE ? OR
+          team COLLATE utf8mb4_general_ci LIKE ? OR
+          garmentDetails COLLATE utf8mb4_general_ci LIKE ?
+        )
+      ORDER BY garmentPO ASC`; // Sorting by the order creation/completion date
   
     const searchQuery = '%' + search + '%';
   
