@@ -157,24 +157,7 @@ function cleanFileName(url) {
   };
   
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await fetch('http://137.184.75.176:5000/completedList');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        console.log('Fetched Orders:', data); // Debug log
-        setOrders(data);
-        console.log(orders.files);
-      } catch (error) {
-        console.error('Error fetching orders:', error);
-      }
-    };
 
-    fetchOrders();
-  }, []);
   useEffect(() => {
     // Fetch orders with the search query
     axios.get(`http://137.184.75.176:5000/completedList?search=${search}&fromDate=${fromDate}&toDate=${toDate}`)
