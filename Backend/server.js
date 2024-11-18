@@ -312,7 +312,7 @@ app.put('/updateOrder/:id', (req, res) => {
 
   if (field === 'notes') {
     // Append new notes to existing notes
-    query = `UPDATE orders SET ${field} = CONCAT(IFNULL(${field}, ''), '\n', ?) WHERE id = ?`;
+    query = `UPDATE orders SET ${field} = CONCAT((${field}, ''), '\n', ?) WHERE id = ?`;
     queryParams = [value, id];
   } else {
     // Update other fields normally
