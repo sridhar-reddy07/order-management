@@ -270,6 +270,10 @@ const OrderList = () => {
             return order;
           })
         );
+
+        setShowModal3(false);
+      setOrderId('');
+      setUpdatedOrder(''); 
   
         // Reset the modal state and clear inputs after successful update
         
