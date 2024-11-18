@@ -29,6 +29,16 @@ const Completed = () => {
  
   const [address, setAddress] = useState('')
 
+  const [fromDate, setFromDate] = useState('');
+const [toDate, setToDate] = useState('');
+
+const handleDateChange = (e) => {
+  const { name, value } = e.target;
+  if (name === 'fromDate') setFromDate(value);
+  if (name === 'toDate') setToDate(value);
+};
+
+
   const [sizeData, setSizeData] = useState({
     category: 'Adult', // Default category
     description: '',
@@ -167,7 +177,7 @@ function cleanFileName(url) {
   }, []);
   useEffect(() => {
     // Fetch orders with the search query
-    axios.get(`http://137.184.75.176:5000/completedList?search=${search}`)
+    axios.get(`http://137.184.75.176:5000/completedList?search=${search}&fromDate=${fromDate}&toDate=${toDate}`)
       .then((response) => {
         console.log(response)
         setOrders(response.data);
@@ -175,7 +185,8 @@ function cleanFileName(url) {
       .catch((error) => {
         console.error('Error fetching orders:', error);
       });
-  }, [search]);
+  }, [search,fromDate, toDate]);
+
 
 
   useEffect(() => {
