@@ -306,6 +306,12 @@ function cleanFileName(url) {
     }
   };
 
+  // Function to show modal and set the order and field being edited
+  const handleOrder = (id, field) => {
+    setShowModal3(true);
+    setOrderId(id);
+    setField(field); // Track the field being updated
+  };
 
   const deleteOrder = async (id) => {
     const confirmDelete = window.confirm('Are you sure you want to delete this order?');
