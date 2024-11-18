@@ -302,15 +302,26 @@ app.delete('/deleteorder/:id', (req, res) => {
 
 app.put('/updateOrder/:id', (req, res) => {
   const { id } = req.params;
-  const updateData = req.body; // The field to update, e.g., { orderStatus: 'APPROVED' }
+  const updateData = req.body; // The field to update, e.g., { notes: 'New note content' }
 
   const field = Object.keys(updateData)[0]; // Get the field name
   const value = updateData[field]; // Get the new value
 
-  const query = `UPDATE orders SET ${field} = ? WHERE id = ?`;
+  let query;
+  let queryParams;
+
+  if (field === 'notes') {
+    // Append new notes to existing notes
+    query = `UPDATE orders SET ${field} = CONCAT(IFNULL(${field}, ''), '\n', ?) WHERE id = ?`;
+    queryParams = [value, id];
+  } else {
+    // Update other fields normally
+    query = `UPDATE orders SET ${field} = ? WHERE id = ?`;
+    queryParams = [value, id];
+  }
 
   // Execute the SQL query
-  db.query(query, [value, id], (err, result) => {
+  db.query(query, queryParams, (err, result) => {
     if (err) {
       console.error('Error updating order:', err);
       return res.status(500).send({ message: 'Internal server error' });
@@ -321,7 +332,12 @@ app.put('/updateOrder/:id', (req, res) => {
     }
 
     // Respond with success message or the updated data
-    res.status(200).send({ message: 'Order updated successfully', updatedField: { [field]: value } });
+    res.status(200).send({
+      message: 'Order updated successfully',
+      updatedField: field === 'notes' 
+        ? { [field]: `Appended to notes: "${value}"` } 
+        : { [field]: value }
+    });
   });
 });
 
