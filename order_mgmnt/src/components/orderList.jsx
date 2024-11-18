@@ -272,7 +272,7 @@ const OrderList = () => {
         );
   
         // Reset the modal state and clear inputs after successful update
-        resetUpdateForm();
+        
       } else {
         alert('Failed to update the order. Please try again.');
       }
