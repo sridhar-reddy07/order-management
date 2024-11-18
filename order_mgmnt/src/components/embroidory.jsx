@@ -264,28 +264,90 @@ function cleanFileName(url) {
 
   
   const handleUpdateOrder = async () => {
+    if (!orderId || !field || updatedOrder === undefined || updatedOrder === null) {
+      alert('Please provide all necessary details before updating the order.');
+      return;
+    }
+  
     try {
-      // API call to update the selected order's specific field
+      // Make the API call to update the selected order's specific field
       const response = await axios.put(`http://137.184.75.176:5000/updateOrder/${orderId}`, { [field]: updatedOrder });
-      
-      alert('Order updated successfully');
-      
-      // Update the local state with the new order data
-      setOrders((prevOrders) =>
-        prevOrders.map((order) =>
-          order.id === orderId ? { ...order, [field]: updatedOrder } : order
-        )
-      );
+  
+      if (response.status === 200) {
+        alert(response.data.message || 'Order updated successfully');
+  
+        // Update the local state with the new order data
+        setOrders((prevOrders) =>
+          prevOrders.map((order) => {
+            if (order.id === orderId) {
+              // Handle notes by appending the new note to the existing notes
+              if (field === 'notes') {
+                return { ...order, notes: `${order.notes ? order.notes + '\n' : ''}${updatedOrder}` };
+              }
+              // Handle other fields normally
+              return { ...order, [field]: updatedOrder };
+            }
+            return order;
+          })
+        );
 
-      // Reset the modal state after update
-      setShowModal3(false);
+        setShowModal3(false);
       setOrderId('');
-      setUpdatedOrder(''); // Clear updated order value
-      
+      setUpdatedOrder(''); 
+  
+        // Reset the modal state and clear inputs after successful update
+        
+      } else {
+        alert('Failed to update the order. Please try again.');
+      }
     } catch (error) {
       console.error('Error updating order:', error);
+      alert('An error occurred while updating the order. Please try again.');
     }
   };
+  const handleUpdateOrder = async () => {
+    if (!orderId || !field || updatedOrder === undefined || updatedOrder === null) {
+      alert('Please provide all necessary details before updating the order.');
+      return;
+    }
+  
+    try {
+      // Make the API call to update the selected order's specific field
+      const response = await axios.put(`http://137.184.75.176:5000/updateOrder/${orderId}`, { [field]: updatedOrder });
+  
+      if (response.status === 200) {
+        alert(response.data.message || 'Order updated successfully');
+  
+        // Update the local state with the new order data
+        setOrders((prevOrders) =>
+          prevOrders.map((order) => {
+            if (order.id === orderId) {
+              // Handle notes by appending the new note to the existing notes
+              if (field === 'notes') {
+                return { ...order, notes: `${order.notes ? order.notes + '\n' : ''}${updatedOrder}` };
+              }
+              // Handle other fields normally
+              return { ...order, [field]: updatedOrder };
+            }
+            return order;
+          })
+        );
+
+        setShowModal3(false);
+      setOrderId('');
+      setUpdatedOrder(''); 
+  
+        // Reset the modal state and clear inputs after successful update
+        
+      } else {
+        alert('Failed to update the order. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error updating order:', error);
+      alert('An error occurred while updating the order. Please try again.');
+    }
+  };
+
 
   // Function to show modal and set the order and field being edited
   const handleOrder = (id, field) => {
@@ -813,11 +875,21 @@ const handleDeleteFile = async (file ,index, id) => {
         <Modal.Body>
           <Form.Group>
             <Form.Label>{field}</Form.Label>
-            <Form.Control
-              type="text"
-              value={updatedOrder}
-              onChange={(e) => setUpdatedOrder(e.target.value)}
-            />
+            {/* Render textarea for notes or garmentDetails, otherwise render input */}
+            {field === 'notes' || field === 'garmentDetails' ? (
+              <Form.Control
+                as="textarea"
+                rows={4} // Adjust the number of rows as needed
+                value={updatedOrder}
+                onChange={(e) => setUpdatedOrder(e.target.value)}
+              />
+            ) : (
+              <Form.Control
+                type="text"
+                value={updatedOrder}
+                onChange={(e) => setUpdatedOrder(e.target.value)}
+              />
+            )}
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
@@ -829,6 +901,7 @@ const handleDeleteFile = async (file ,index, id) => {
           </Button>
         </Modal.Footer>
       </Modal>
+
 
       
       {/* Modal for displaying enlarged image */}

@@ -890,11 +890,21 @@ function cleanFileName(url) {
         <Modal.Body>
           <Form.Group>
             <Form.Label>{field}</Form.Label>
-            <Form.Control
-              type="text"
-              value={updatedOrder}
-              onChange={(e) => setUpdatedOrder(e.target.value)}
-            />
+            {/* Render textarea for notes or garmentDetails, otherwise render input */}
+            {field === 'notes' || field === 'garmentDetails' ? (
+              <Form.Control
+                as="textarea"
+                rows={4} // Adjust the number of rows as needed
+                value={updatedOrder}
+                onChange={(e) => setUpdatedOrder(e.target.value)}
+              />
+            ) : (
+              <Form.Control
+                type="text"
+                value={updatedOrder}
+                onChange={(e) => setUpdatedOrder(e.target.value)}
+              />
+            )}
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
@@ -906,6 +916,7 @@ function cleanFileName(url) {
           </Button>
         </Modal.Footer>
       </Modal>
+
 
       
       {/* Modal for displaying enlarged image */}
