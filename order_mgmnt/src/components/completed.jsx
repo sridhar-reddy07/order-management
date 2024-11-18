@@ -29,13 +29,17 @@ const Completed = () => {
  
   const [address, setAddress] = useState('')
 
-  const [fromDate, setFromDate] = useState('');
+  const [fromDate, setFromDate] = useState(getTodayDate());
 const [toDate, setToDate] = useState('');
 
 const handleDateChange = (e) => {
   const { name, value } = e.target;
   if (name === 'fromDate') setFromDate(value);
   if (name === 'toDate') setToDate(value);
+};
+const getTodayDate = () => {
+  const today = new Date();
+  return today.toISOString().split('T')[0]; // Formats as YYYY-MM-DD
 };
 
 
