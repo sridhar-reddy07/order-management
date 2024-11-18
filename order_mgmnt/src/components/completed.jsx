@@ -29,6 +29,11 @@ const Completed = () => {
  
   const [address, setAddress] = useState('')
 
+  const getTodayDate = () => {
+    const today = new Date();
+    return today.toISOString().split('T')[0]; // Formats as YYYY-MM-DD
+  };
+
   const [fromDate, setFromDate] = useState(getTodayDate());
 const [toDate, setToDate] = useState('');
 
@@ -37,10 +42,7 @@ const handleDateChange = (e) => {
   if (name === 'fromDate') setFromDate(value);
   if (name === 'toDate') setToDate(value);
 };
-const getTodayDate = () => {
-  const today = new Date();
-  return today.toISOString().split('T')[0]; // Formats as YYYY-MM-DD
-};
+
 
 
   const [sizeData, setSizeData] = useState({
