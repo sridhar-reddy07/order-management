@@ -373,24 +373,49 @@ function cleanFileName(url) {
 
 
   return (
-    <div className="container" style={{ marginLeft: 250, paddingTop: 20,marginBottom:70 }}>
-      <h2>Completed List</h2>
+    <div className="container" style={{ marginLeft: 250, paddingTop: 20, marginBottom: 70 }}>
+      <h2>Completed Jobs</h2>
+
+      {/* Date Filter Inputs */}
       <div className="row">
         <div className="col-md-3">
+          <label>From Date:</label>
+          <input
+            type="date"
+            className="form-control"
+            name="fromDate"
+            value={fromDate}
+            onChange={handleDateChange}
+          />
+        </div>
+        <div className="col-md-3">
+          <label>To Date:</label>
+          <input
+            type="date"
+            className="form-control"
+            name="toDate"
+            value={toDate}
+            onChange={handleDateChange}
+          />
+        </div>
+        {/* Download Button */}
+      
+        <div className="col-md-4">
+          <label>Search Orders:</label>
           <input
             type="text"
             className="form-control"
-            style={{ width: '300px' }} 
             placeholder="Search orders... 🔍"
+            value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          </div>
-          <div className="col-md-2">
-            <Button variant="primary" onClick={downloadPDF}>
-              <BsDownload style={{ marginRight: '5px' }} /> {/* Add download icon */}
-              Download
-            </Button>
-            </div>
+        </div>
+        <div className="col-md-2">
+        <Button variant="primary" onClick={downloadPDF}>
+          <BsDownload style={{ marginRight: '5px' }} /> {/* Add download icon */}
+          Download
+        </Button>
+        </div>
       </div>
       
       <table className="table table-striped table-hover">
