@@ -614,7 +614,18 @@ const handleDeleteFile = async (file ,index, id) => {
                               ></i>
                             )}
                           </div>
-                          <p><strong>Notes:</strong> {order.notes}
+                          <p><strong>Notes:</strong>
+                          <div style={{ paddingLeft: '20px' }}>
+                              {order.notes ? (
+                                <ul>
+                                  {order.notes.split('\n').map((detail, index) => (
+                                    <li key={index}>{detail}</li> // Display each detail as a list item
+                                  ))}
+                                </ul>
+                              ) : (
+                                <p>No notes</p>
+                              )}
+                          </div>
                         <i 
                           className="bi bi-pencil" 
                           style={{ cursor: 'pointer', marginLeft: '5px' }} 

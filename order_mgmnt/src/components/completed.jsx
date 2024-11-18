@@ -260,8 +260,18 @@ function cleanFileName(url) {
 
                             
                           </div>
-                          <p><strong>Notes:</strong> {order.notes}
-                        
+                          <p><strong>Notes:</strong> 
+                          <div style={{ paddingLeft: '20px' }}>
+                              {order.notes ? (
+                                <ul>
+                                  {order.notes.split('\n').map((detail, index) => (
+                                    <li key={index}>{detail}</li> // Display each detail as a list item
+                                  ))}
+                                </ul>
+                              ) : (
+                                <p>No notes</p>
+                              )}
+                          </div>
                         </p>
                         <p><strong>Team:</strong> {order.team}</p>
                         

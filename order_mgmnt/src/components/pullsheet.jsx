@@ -265,7 +265,17 @@ function cleanFileName(url) {
                                   <p><strong>Shipping Address:</strong> {order.shippingAddress}</p>
                                   <p><strong>Garment Details:</strong> {order.garmentDetails}</p>
                                   <p><strong>Team:</strong> {order.team}</p>
-                                  <p><strong>Notes:</strong> {order.notes}</p>
+                                  <p><strong>Notes:</strong> <div style={{ paddingLeft: '20px' }}>
+                              {order.notes ? (
+                                <ul>
+                                  {order.notes.split('\n').map((detail, index) => (
+                                    <li key={index}>{detail}</li> // Display each detail as a list item
+                                  ))}
+                                </ul>
+                              ) : (
+                                <p>No notes</p>
+                              )}
+                          </div></p>
                                   <h5>Order Sizes</h5>
                                   {order.orderSizes ? (
                                     <ul>
