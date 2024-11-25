@@ -801,6 +801,7 @@ function cleanFileName(url) {
                                           <i className="bi bi-trash"></i>
                                         </button>
                                         {/* Preview Button */}
+                                        {fileUrl.match(/\.(pdf)$/i)? (
                                         <button
                                           onClick={() => handlePDFPreview(fileUrl)}
                                           style={{
@@ -812,7 +813,7 @@ function cleanFileName(url) {
                                           }}
                                         >
                                           <i className="bi bi-eye"></i> Preview
-                                        </button>
+                                        </button>) : ""}
                                       </div>
                                     </>
                                   )}

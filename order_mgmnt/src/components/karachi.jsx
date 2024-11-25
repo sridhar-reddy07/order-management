@@ -727,7 +727,7 @@ function cleanFileName(url) {
                               <i className="bi bi-plus-circle" style={{ marginRight: '5px', fontSize: '20px' }}></i> Add File
                             </a> : ''}
                             
-                                                    <ul style={{ display: 'flex', flexWrap: 'wrap', listStyleType: 'none', padding: 0 }}>
+                          <ul style={{ display: 'flex', flexWrap: 'wrap', listStyleType: 'none', padding: 0 }}>
                           {order.files && order.files.length > 0 ? (
                             order.files.filter((file) => file.fileUrl)
                             .map((file, idx) => {
@@ -801,6 +801,7 @@ function cleanFileName(url) {
                                           <i className="bi bi-trash"></i>
                                         </button>
                                         {/* Preview Button */}
+                                        {fileUrl.match(/\.(pdf)$/i)? (
                                         <button
                                           onClick={() => handlePDFPreview(fileUrl)}
                                           style={{
@@ -812,7 +813,7 @@ function cleanFileName(url) {
                                           }}
                                         >
                                           <i className="bi bi-eye"></i> Preview
-                                        </button>
+                                        </button>) : ""}
                                       </div>
                                     </>
                                   )}
