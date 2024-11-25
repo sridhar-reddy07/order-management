@@ -138,7 +138,7 @@ const NavigationBar = () => {
                     </Dropdown.Item>
                     <Dropdown.Divider />
 
-                    {(user.email.toLowerCase() === "riz@tssprinting.com" && user.email.toLowerCase() === "karachi@tssprinting.com") ?
+                    {(user.email.toLowerCase() === "riz@tssprinting.com" || user.email.toLowerCase() === "karachi@tssprinting.com") ?
 
                     
                     
