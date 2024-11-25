@@ -136,13 +136,15 @@ const NavigationBar = () => {
                     <Dropdown.Item onClick={handleLogout}>
                       Logout
                     </Dropdown.Item>
-                    <Dropdown.Item onClick={handleLogout}>
-                      Logout
-                    </Dropdown.Item>
+                    <Dropdown.Divider />
+
+                    {(user.email.toLowerCase() === "riz@tssprinting.com" && user.email.toLowerCase() === "mussa@tssprinting.com") ?
+
                     
-                    <Dropdown.Item onClick={() => setShowRegisterModal(true)} className="register-link">
+                    
+                    <Dropdown.Item onClick={() => setShowRegisterModal(true)} className="register-link"> 
                       Register here
-                    </Dropdown.Item>
+                    </Dropdown.Item>:""}
                   </Dropdown.Menu>
                 </Dropdown>
 
