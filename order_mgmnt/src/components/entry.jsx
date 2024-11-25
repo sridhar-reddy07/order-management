@@ -25,6 +25,7 @@ const Entry = () => {
         body: JSON.stringify(userData),
       });
       const result = await response.json();
+
       console.log(response)
       console.log(result)
       if (response.ok) {
@@ -40,34 +41,7 @@ const Entry = () => {
     }
   };
 
-  const handleRegisterSubmit = async (e) => {
-    e.preventDefault();
-    const registerData = {
-      email: registerEmail,
-      password_hash: registerPassword,
-      name: registerName,
-    };
-
-    try {
-      const response = await fetch('http://137.184.75.176:5000/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(registerData),
-      });
-      const result = await response.json();
-      if (response.ok) {
-        alert('Registration successful! Please login.');
-        setShowRegisterModal(false);
-      } else {
-        alert(result.message);
-      }
-    } catch (err) {
-      console.error('Error registering:', err);
-    }
-  };
-
+  
   return (
     <div className="login-page">
       <div className="offer-section">
@@ -104,59 +78,11 @@ const Entry = () => {
           <button type="submit" className="submit-button">Login</button>
         </form>
 
-        <div className="register-section">
-          <p>Don’t have an account? <button onClick={() => setShowRegisterModal(true)} className="register-link">Register here</button></p>
-        </div>
+        
         
       </div>
 
-      {/* Registration Modal */}
-      <Modal show={showRegisterModal} onHide={() => setShowRegisterModal(false)} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Register</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <form onSubmit={handleRegisterSubmit}>
-            <div className="form-group">
-              <label>Full Name</label>
-              <input
-                type="text"
-                value={registerName}
-                onChange={(e) => setRegisterName(e.target.value)}
-                required
-                placeholder="Enter your name"
-                className="input-field"
-              />
-            </div>
-            <div className="form-group">
-              <label>Email Address</label>
-              <input
-                type="email"
-                value={registerEmail}
-                onChange={(e) => setRegisterEmail(e.target.value)}
-                required
-                placeholder="Enter your email"
-                className="input-field"
-              />
-            </div>
-            <div className="form-group">
-              <label>Password</label>
-              <input
-                type="password"
-                value={registerPassword}
-                onChange={(e) => setRegisterPassword(e.target.value)}
-                required
-                placeholder="Enter your password"
-                className="input-field"
-              />
-            </div>
-            <Button type="submit" className="submit-button">Register</Button>
-          </form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowRegisterModal(false)}>Close</Button>
-        </Modal.Footer>
-      </Modal>
+      
     </div>
   );
 };

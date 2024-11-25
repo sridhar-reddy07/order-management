@@ -10,6 +10,10 @@ const NavigationBar = () => {
   const [newPassword, setNewPassword] = useState(""); // State to hold new password
   const [confirmPassword, setConfirmPassword] = useState(""); // State to confirm password
   const [error, setError] = useState(""); // State for errors
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [registerEmail, setRegisterEmail] = useState('');
+  const [registerPassword, setRegisterPassword] = useState('');
+  const [registerName, setRegisterName] = useState('');
 
   // Handle logout
   const handleLogout = () => {
@@ -53,6 +57,35 @@ const NavigationBar = () => {
       setError('An error occurred.');
     }
   };
+
+  const handleRegisterSubmit = async (e) => {
+    e.preventDefault();
+    const registerData = {
+      email: registerEmail,
+      password_hash: registerPassword,
+      name: registerName,
+    };
+
+    try {
+      const response = await fetch('http://137.184.75.176:5000/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(registerData),
+      });
+      const result = await response.json();
+      if (response.ok) {
+        alert('Registration successful! Please login.');
+        setShowRegisterModal(false);
+      } else {
+        alert(result.message);
+      }
+    } catch (err) {
+      console.error('Error registering:', err);
+    }
+  };
+
 
   return (
     <Container fluid>
@@ -102,6 +135,13 @@ const NavigationBar = () => {
                     <Dropdown.Divider />
                     <Dropdown.Item onClick={handleLogout}>
                       Logout
+                    </Dropdown.Item>
+                    <Dropdown.Item onClick={handleLogout}>
+                      Logout
+                    </Dropdown.Item>
+                    
+                    <Dropdown.Item onClick={() => setShowRegisterModal(true)} className="register-link">
+                      Register here
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
@@ -154,6 +194,53 @@ const NavigationBar = () => {
             </Button>
           </Modal.Footer>
         </Modal>
+        {/* Registration Modal */}
+      <Modal show={showRegisterModal} onHide={() => setShowRegisterModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Register</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form onSubmit={handleRegisterSubmit}>
+            <div className="form-group">
+              <label>Full Name</label>
+              <input
+                type="text"
+                value={registerName}
+                onChange={(e) => setRegisterName(e.target.value)}
+                required
+                placeholder="Enter your name"
+                className="input-field"
+              />
+            </div>
+            <div className="form-group">
+              <label>Email Address</label>
+              <input
+                type="email"
+                value={registerEmail}
+                onChange={(e) => setRegisterEmail(e.target.value)}
+                required
+                placeholder="Enter your email"
+                className="input-field"
+              />
+            </div>
+            <div className="form-group">
+              <label>Password</label>
+              <input
+                type="password"
+                value={registerPassword}
+                onChange={(e) => setRegisterPassword(e.target.value)}
+                required
+                placeholder="Enter your password"
+                className="input-field"
+              />
+            </div>
+            <Button type="submit" className="submit-button">Register</Button>
+          </form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowRegisterModal(false)}>Close</Button>
+        </Modal.Footer>
+      </Modal>
 
       </Navbar>
     </Container>
