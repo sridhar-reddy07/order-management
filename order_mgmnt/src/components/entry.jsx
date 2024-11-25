@@ -6,10 +6,7 @@ import { Modal, Button } from 'react-bootstrap'; // You can use a different moda
 const Entry = () => {
   const [email, setEmail] = useState('');
   const [password_hash, setPassword_hash] = useState('');
-  const [showRegisterModal, setShowRegisterModal] = useState(false);
-  const [registerEmail, setRegisterEmail] = useState('');
-  const [registerPassword, setRegisterPassword] = useState('');
-  const [registerName, setRegisterName] = useState('');
+  
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
