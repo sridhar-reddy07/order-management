@@ -318,8 +318,104 @@ const Riz = () => {
     setOrders(sortedOrders);
   };
 
+  const handleFileUpload = async (id) => {
+    try {
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.multiple = true; // Allow multiple files to be selected
+        fileInput.onchange = async (event) => {
+            const files = Array.from(event.target.files);
+            if (files.length === 0) return;
 
+            const formData = new FormData();
+            files.forEach((file) => formData.append('files', file)); // Append each file
+
+            const response = await fetch(`http://137.184.75.176:5000/api/orders/${id}/files`, {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (response.ok) {
+                const uploadedFiles = await response.json(); // Assuming it returns an array of file URLs
+                const fileUrls = uploadedFiles.fileUrls || [];
+
+                if (fileUrls.length === 0) {
+                    console.error('File URLs are undefined or empty from backend.');
+                    return;
+                }
+
+                // Update state to include new file details
+                setOrders((prevOrders) =>
+                    prevOrders.map((order) =>
+                        order.id === id
+                            ? { 
+                                ...order, 
+                                files: [...(order.files || []), ...fileUrls.map((url) => ({ fileUrl: url }))] 
+                              }
+                            : order
+                    )
+                );
+                console.log(orders);
+            } else {
+                console.error('Failed to upload files:', response.statusText);
+            }
+        };
+        fileInput.click();
+    } catch (error) {
+        console.error('Error during file upload:', error);
+    }
+};
+
+
+const handlePDFPreview = (fileUrl) => {
+  if (fileUrl.match(/\.pdf$/i)) {
+    const googleViewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(fileUrl)}&embedded=true`;
+    window.open(googleViewerUrl, '_blank', 'noopener,noreferrer');
+  } else {
+    alert('The selected file is not a PDF.');
+  }
+};
+
+
+
+
+
+
+
+const handleDeleteFile = async (file ,index, id) => {
   
+  setOrders((prevOrders) =>
+    prevOrders.map((order) =>
+      order.id === id
+        ? { ...order, files: order.files.filter((f)=>f.fileUrl !== file.fileUrl) }
+        : order
+    )
+  );
+  try {
+    const response = await fetch(`http://137.184.75.176:5000/api/orders/${id}/files`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fileUrl: file.fileUrl }),
+    });
+
+    if (response.ok) {
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order.id === id
+            ? { ...order, files: order.files.filter((f)=>f.fileUrl !== file.fileUrl) }
+            : order
+        )
+      );
+    } else {
+      const errorText = await response.text();
+      console.error('Failed to delete file:', errorText);
+    }
+  } catch (error) {
+    console.error('Error during file deletion:', error);
+  }
+};
+
+
 function cleanFileName(url) {
   // Decode URI components to handle encoded characters like %20 for space
   let decodedUrl = decodeURIComponent(url);
